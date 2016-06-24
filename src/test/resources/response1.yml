@@ -1,0 +1,23 @@
+---
+swagger: "2.0"
+paths:
+  /:
+    get:
+      operationId: "get"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "string"
+          headers: {}
+  /sub:
+    get:
+      operationId: "subget"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "string"
+          headers: {}
