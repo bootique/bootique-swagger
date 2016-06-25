@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
@@ -73,9 +74,9 @@ public class SwaggerModuleIT {
         }
 
         @GET
-        @Path("/sub")
-        public String subget() {
-            return "get_";
+        @Path("/sub/{id}")
+        public String subget(@PathParam("id") int id) {
+            return "get_" + id;
         }
     }
 }

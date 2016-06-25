@@ -21,8 +21,13 @@
         <bootique-version>0.18-SNAPSHOT</bootique-version>
         <bootique-jetty-version>0.16-SNAPSHOT</bootique-jetty-version>
         <bootique-jeresey-version>0.16</bootique-jeresey-version>
-        <!-- Must match Bootique -->
+
+        <!-- Must match Jersey version in bootique-jeresey -->
+        <jeresey-version>2.21</jeresey-version>
+
+        <!-- Must match Bootique's Jackson version -->
         <jackson-version>2.6.4</jackson-version>
+
         <slf-version>1.7.13</slf-version>
         <swagger-version>1.5.9</swagger-version>
     </properties>
@@ -118,6 +123,11 @@
                 <version>${bootique-jeresey-version}</version>
             </dependency>
             <dependency>
+                <groupId>org.glassfish.jersey.media</groupId>
+                <artifactId>jersey-media-multipart</artifactId>
+                <version>${jeresey-version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.nhl.bootique.jetty</groupId>
                 <artifactId>bootique-jetty-test</artifactId>
                 <version>${bootique-jetty-version}</version>
@@ -197,6 +207,13 @@
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-jersey2-jaxrs</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Re-including Swagger excludes with the right versions -->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
             <scope>compile</scope>
         </dependency>
     </dependencies>
