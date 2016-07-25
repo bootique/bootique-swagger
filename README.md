@@ -2,7 +2,7 @@
 
 # bootique-swagger
 
-Integration of Swagger API documentation web service and libraries for Bootique apps. 
+Integration of [Swagger API ](http://swagger.io/) documentation web service and libraries for Bootique apps. 
 
 ## Usage
 
