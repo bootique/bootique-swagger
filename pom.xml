@@ -18,8 +18,8 @@
     <description>Provides Swagger.io integration with Bootique and Jersey</description>
 
     <properties>
-        <bootique-version>0.18-SNAPSHOT</bootique-version>
-        <bootique-jetty-version>0.16-SNAPSHOT</bootique-jetty-version>
+        <bootique-version>0.18</bootique-version>
+        <bootique-jetty-version>0.16</bootique-jetty-version>
         <bootique-jeresey-version>0.16</bootique-jeresey-version>
 
         <!-- Must match Jersey version in bootique-jeresey -->
@@ -33,8 +33,8 @@
     </properties>
 
     <scm>
-        <developerConnection>scm:git:ssh://git@github.com/io/bootique-swagger</developerConnection>
-        <url>https://github.com/io/bootique-swagger</url>
+        <developerConnection>scm:git:ssh://git@github.com/bootique/bootique-swagger</developerConnection>
+        <url>https://github.com/bootique/bootique-swagger</url>
         <tag>HEAD</tag>
     </scm>
 
