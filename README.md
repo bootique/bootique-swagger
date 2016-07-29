@@ -34,3 +34,6 @@ Include ```bootique-swagger```:
 	<artifactId>bootique-swagger</artifactId>
 </dependency>
 ```
+
+After this you can use Swagger annotations on your JAX-RS resources. After that you can hit Swagger endpoint at ```<your_resources_root>/swagger.json``` or ```<your_resources_root>/swagger.yaml```.
+
