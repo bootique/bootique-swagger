@@ -1,8 +1,8 @@
 package io.bootique.swagger;
 
-import com.nhl.bootique.jersey.JerseyModule;
-import com.nhl.bootique.jetty.JettyModule;
-import com.nhl.bootique.jetty.test.junit.JettyTestFactory;
+import io.bootique.jersey.JerseyModule;
+import io.bootique.jetty.JettyModule;
+import io.bootique.jetty.test.junit.JettyTestFactory;
 import io.swagger.annotations.Api;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;

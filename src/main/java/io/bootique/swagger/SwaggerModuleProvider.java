@@ -1,7 +1,7 @@
 package io.bootique.swagger;
 
 import com.google.inject.Module;
-import com.nhl.bootique.BQModuleProvider;
+import io.bootique.BQModuleProvider;
 
 public class SwaggerModuleProvider implements BQModuleProvider {
 

@@ -1,8 +1,8 @@
 package io.bootique.swagger;
 
 import com.google.inject.Binder;
-import com.nhl.bootique.ConfigModule;
-import com.nhl.bootique.jersey.JerseyModule;
+import io.bootique.ConfigModule;
+import io.bootique.jersey.JerseyModule;
 import io.swagger.jaxrs.listing.ApiListingResource;
 
 public class SwaggerModule extends ConfigModule {

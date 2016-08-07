@@ -1,6 +1,6 @@
 package io.bootique.swagger;
 
-import com.nhl.bootique.test.junit.BQModuleProviderChecker;
+import io.bootique.test.junit.BQModuleProviderChecker;
 import org.junit.Test;
 
 public class SwaggerModuleProviderTest {
