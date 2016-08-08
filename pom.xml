@@ -3,9 +3,9 @@
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>io.bootique.parent</groupId>
-        <artifactId>bootique-parent</artifactId>
-        <version>0.12</version>
+        <groupId>io.bootique.modules.parent</groupId>
+        <artifactId>bootique-modules-parent</artifactId>
+        <version>0.2</version>
     </parent>
 
     <groupId>io.bootique.swagger</groupId>
@@ -30,25 +30,6 @@
         <slf-version>1.7.13</slf-version>
         <swagger-version>1.5.9</swagger-version>
     </properties>
-
-    <scm>
-        <developerConnection>scm:git:ssh://git@github.com/bootique/bootique-swagger</developerConnection>
-        <url>https://github.com/bootique/bootique-swagger</url>
-        <tag>HEAD</tag>
-    </scm>
-
-    <repositories>
-        <repository>
-            <id>linkrest-snapshots</id>
-            <url>http://maven.objectstyle.org/nexus/content/repositories/linkrest-snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <dependencyManagement>
         <dependencies>
@@ -216,14 +197,6 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
     <!-- Optional profile used to sign artifacts -->
     <profiles>
