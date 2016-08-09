@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/bootique/bootique-swagger.svg)](https://travis-ci.org/bootique/bootique-swagger)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.bootique.swagger/bootique-swagger/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.bootique.swagger/bootique-swagger/)
 
 # bootique-swagger
 
