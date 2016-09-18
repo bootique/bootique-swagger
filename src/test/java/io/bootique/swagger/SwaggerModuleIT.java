@@ -28,10 +28,10 @@ public class SwaggerModuleIT {
 
     @BeforeClass
     public static void beforeClass() {
-        testFactory.newRuntime().configurator(bootique -> {
-            bootique.modules(JettyModule.class, JerseyModule.class, SwaggerModule.class)
-                    .module(binder -> JerseyModule.contributeResources(binder).addBinding().to(TestApi.class));
-        }).startServer();
+        testFactory.app()
+                .modules(JettyModule.class, JerseyModule.class, SwaggerModule.class)
+                .module(binder -> JerseyModule.contributeResources(binder).addBinding().to(TestApi.class))
+                .startServer();
     }
 
     @Test
