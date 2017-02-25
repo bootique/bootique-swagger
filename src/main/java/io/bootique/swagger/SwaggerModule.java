@@ -9,6 +9,6 @@ public class SwaggerModule extends ConfigModule {
 
     @Override
     public void configure(Binder binder) {
-        JerseyModule.contributePackages(binder).addBinding().toInstance(ApiListingResource.class.getPackage());
+        JerseyModule.extend(binder).addPackage(ApiListingResource.class);
     }
 }
