@@ -10,7 +10,7 @@
 
     <groupId>io.bootique.swagger</groupId>
     <artifactId>bootique-swagger</artifactId>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.4</version>
     <packaging>jar</packaging>
 
     <name>bootique-swagger: Swagger Integration with Bootique and Jersey</name>
@@ -31,7 +31,7 @@
     <scm>
         <developerConnection>scm:git:ssh://git@github.com/bootique/bootique-swagger</developerConnection>
         <url>https://github.com/bootique/bootique-swagger</url>
-        <tag>HEAD</tag>
+        <tag>bootique-swagger-0.4</tag>
     </scm>
 
     <distributionManagement>
