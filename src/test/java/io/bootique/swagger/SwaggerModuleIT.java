@@ -30,7 +30,7 @@ public class SwaggerModuleIT {
     public static void beforeClass() {
         testFactory.app()
                 .modules(JettyModule.class, JerseyModule.class, SwaggerModule.class)
-                .module(binder -> JerseyModule.contributeResources(binder).addBinding().to(TestApi.class))
+                .module(binder -> JerseyModule.extend(binder).addResource(TestApi.class))
                 .start();
     }
 
