@@ -17,9 +17,9 @@
     <description>Provides Swagger.io integration with Bootique and Jersey</description>
 
     <properties>
-        <bootique-version>0.22</bootique-version>
-        <bootique-jetty-version>0.20</bootique-jetty-version>
-        <bootique-jeresey-version>0.21</bootique-jeresey-version>
+        <bootique-version>0.23</bootique-version>
+        <bootique-jetty-version>0.21</bootique-jetty-version>
+        <bootique-jeresey-version>0.22</bootique-jeresey-version>
 
         <!-- Must match Jersey version in bootique-jeresey -->
         <jeresey-version>2.21</jeresey-version>
