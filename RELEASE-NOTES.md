@@ -1,3 +1,8 @@
+## 0.25
+
+* #6 Upgrade to bootique-modules-parent 0.8
+* #5 Java 9 support.
+
 ## 0.4
 
 * #4 Upgrade to Bootique 0.22

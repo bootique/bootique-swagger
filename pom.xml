@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.bootique.modules.parent</groupId>
         <artifactId>bootique-modules-parent</artifactId>
-        <version>0.7</version>
+        <version>0.8</version>
     </parent>
 
     <groupId>io.bootique.swagger</groupId>
@@ -18,11 +18,13 @@
 
     <properties>
         <bootique-version>${project.version}</bootique-version>
-        <!-- Must match Jersey version in bootique-jeresey -->
-        <jeresey-version>2.21</jeresey-version>
+        <!-- Must match Jersey version in bootique-jersey -->
+        <jersey-version>2.21</jersey-version>
         <!-- Must match Bootique's Jackson version -->
         <jackson-version>2.6.4</jackson-version>
         <swagger-version>1.5.9</swagger-version>
+        <jaxb-version>2.3.0</jaxb-version>
+        <activation-version>1.1.1</activation-version>
     </properties>
 
     <scm>
@@ -113,7 +115,7 @@
             <dependency>
                 <groupId>org.glassfish.jersey.media</groupId>
                 <artifactId>jersey-media-multipart</artifactId>
-                <version>${jeresey-version}</version>
+                <version>${jersey-version}</version>
             </dependency>
             <dependency>
                 <groupId>io.bootique.jetty</groupId>
@@ -138,7 +140,17 @@
             <dependency>
                 <groupId>org.glassfish.jersey.core</groupId>
                 <artifactId>jersey-client</artifactId>
-                <version>${jeresey-version}</version>
+                <version>${jersey-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${jaxb-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>${activation-version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -190,6 +202,16 @@
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-jersey2-jaxrs</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
             <scope>compile</scope>
         </dependency>
 
