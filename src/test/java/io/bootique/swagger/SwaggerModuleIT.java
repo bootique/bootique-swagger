@@ -1,8 +1,7 @@
 package io.bootique.swagger;
 
 import io.bootique.jersey.JerseyModule;
-import io.bootique.jetty.JettyModule;
-import io.bootique.jetty.test.junit.JettyTestFactory;
+import io.bootique.test.junit.BQTestFactory;
 import io.swagger.annotations.Api;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -22,16 +21,16 @@ import static org.junit.Assert.assertEquals;
 public class SwaggerModuleIT {
 
     @ClassRule
-    public static JettyTestFactory testFactory = new JettyTestFactory();
+    public static BQTestFactory TEST_FACTORY = new BQTestFactory();
 
     private static WebTarget BASE_TARGET = ClientBuilder.newClient().target("http://127.0.0.1:8080/");
 
     @BeforeClass
     public static void beforeClass() {
-        testFactory.app()
-                .modules(JettyModule.class, JerseyModule.class, SwaggerModule.class)
-                .module(binder -> JerseyModule.extend(binder).addResource(TestApi.class))
-                .start();
+        TEST_FACTORY.app("-s")
+                .module(new SwaggerModuleProvider())
+                .module(b -> JerseyModule.extend(b).addResource(TestApi.class))
+                .run();
     }
 
     @Test
