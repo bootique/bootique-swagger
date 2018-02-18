@@ -14,8 +14,8 @@ public class SwaggerModuleProviderTest {
     public BQTestFactory testFactory = new BQTestFactory();
 
     @Test
-    public void testPresentInJar() {
-        BQModuleProviderChecker.testPresentInJar(SwaggerModuleProvider.class);
+    public void testAutoLoadable() {
+        BQModuleProviderChecker.testAutoLoadable(SwaggerModuleProvider.class);
     }
 
     @Test
