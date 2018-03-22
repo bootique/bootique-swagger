@@ -18,12 +18,12 @@ jobs:
       script:
         - mvn clean verify
     - stage: build
-      if: branch = master AND type IN (push) AND repo = bootique/bootique-flyway
+      if: branch = master AND type IN (push) AND repo = bootique/bootique-swagger
       jdk: oraclejdk8
       script:
         - mvn clean source:jar javadoc:javadoc deploy --settings travis_settings.xml
     - stage: build
-      if: branch = master AND type IN (push) AND repo != bootique/bootique-flyway
+      if: branch = master AND type IN (push) AND repo != bootique/bootique-swagger
       jdk: oraclejdk8
       script:
         - mvn clean verify
