@@ -1,3 +1,7 @@
+## 0.26
+
+* #7 Update Jackson to 2.9.5
+
 ## 0.25
 
 * #6 Upgrade to bootique-modules-parent 0.8

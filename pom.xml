@@ -21,7 +21,7 @@
         <!-- Must match Jersey version in bootique-jersey -->
         <jersey-version>2.21</jersey-version>
         <!-- Must match Bootique's Jackson version -->
-        <jackson-version>2.6.4</jackson-version>
+        <jackson-version>2.9.5</jackson-version>
         <swagger-version>1.5.9</swagger-version>
         <jaxb-version>2.3.0</jaxb-version>
         <activation-version>1.1.1</activation-version>
