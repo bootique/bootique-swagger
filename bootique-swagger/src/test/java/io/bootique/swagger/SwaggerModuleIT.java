@@ -28,7 +28,7 @@ public class SwaggerModuleIT {
     @BeforeClass
     public static void beforeClass() {
         TEST_FACTORY.app("-s")
-                .module(new SwaggerModuleProvider())
+                .module(new io.bootique.swagger.SwaggerModuleProvider())
                 .module(b -> JerseyModule.extend(b).addResource(TestApi.class))
                 .run();
     }
