@@ -2,8 +2,8 @@ package io.bootique.swagger.console;
 
 import com.google.inject.Binder;
 import io.bootique.BQCoreModule;
+import io.bootique.ConfigModule;
 import io.bootique.jetty.JettyModule;
-import io.bootique.swagger.SwaggerModule;
 
 import javax.validation.constraints.NotNull;
 import java.io.BufferedInputStream;
@@ -12,21 +12,23 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class SwaggerConsoleModule extends SwaggerModule {
+/**
+ * Sins 0.26
+ */
+public class SwaggerConsoleModule extends ConfigModule {
 
     public static final String RESOURCE_BASE = "bq.jetty.servlets.swagger-ui.params.resourceBase";
 
     @Override
     public void configure(@NotNull final Binder binder) {
-        super.configure(binder);
-
         loadConsole(binder);
         JettyModule.extend(binder).addStaticServlet("swagger-ui", "/swagger-ui/*");
 
     }
 
     /**
-     * Loads the swagger-ui console files
+     * Loads the swagger-ui console files.
+     *
      * @param binder the guice binder
      */
     private void loadConsole(@NotNull final Binder binder) {
@@ -38,7 +40,13 @@ public class SwaggerConsoleModule extends SwaggerModule {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        BQCoreModule.extend(binder).setProperty(RESOURCE_BASE, prefix + currentJavaJarFile.getPath() + "!/");
+
+        String postfix = "/";
+        if(!prefix.isEmpty()) {
+            postfix = "!" + postfix;
+        }
+
+        BQCoreModule.extend(binder).setProperty(RESOURCE_BASE, prefix + currentJavaJarFile.getPath() + postfix);
 
     }
 
