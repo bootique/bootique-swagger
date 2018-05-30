@@ -12,6 +12,8 @@
     <artifactId>bootique-swagger</artifactId>
     <packaging>jar</packaging>
 
+    <name>bootique-swagger: Swagger Integration with Bootique and Jersey</name>
+    <description>Provides Swagger.io integration with Bootique and Jersey</description>
 
     <dependencies>
         <!-- Unit test dependencies -->

@@ -17,8 +17,6 @@
     <version>0.26-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>bootique-swagger: Swagger Integration with Bootique and Jersey</name>
-    <description>Provides Swagger.io integration with Bootique and Jersey</description>
 
     <properties>
         <bootique-version>${project.version}</bootique-version>

@@ -12,6 +12,9 @@
     <artifactId>bootique-swagger-console</artifactId>
     <packaging>jar</packaging>
 
+    <name>bootique-swagger-console: Swagger console Integration with Bootique and Jersey</name>
+    <description>Provides Swagger.io ui console integration with Bootique and Jersey</description>
+
     <dependencies>
         <dependency>
             <groupId>io.bootique.swagger</groupId>
