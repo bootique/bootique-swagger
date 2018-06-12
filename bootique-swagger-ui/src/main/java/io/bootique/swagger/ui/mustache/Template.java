@@ -17,29 +17,12 @@
  * under the License.
  */
 
-package io.bootique.swagger.ui;
-
-import com.google.inject.Module;
-import io.bootique.BQModuleProvider;
-
-import java.lang.reflect.Type;
-import java.util.Map;
-
-import static java.util.Collections.singletonMap;
+package io.bootique.swagger.ui.mustache;
 
 /**
  * @since  0.26
  */
-public class SwaggerUiModuleProvider implements BQModuleProvider {
+public interface Template {
 
-    @Override
-    public Module module() {
-        return new SwaggerUiModule();
-    }
-
-	@Override
-	public Map<String, Type> configs() {
-		return singletonMap("swaggerui", SwaggerUiFactory.class);
-	}
-
+	String getUrl();
 }

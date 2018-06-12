@@ -1,1 +1,2 @@
 io.bootique.swagger.ui.SwaggerUiModuleProvider
+io.bootique.jersey.JerseyModuleProvider
