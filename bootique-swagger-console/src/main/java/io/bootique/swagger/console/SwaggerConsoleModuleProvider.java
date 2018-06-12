@@ -4,7 +4,7 @@ import com.google.inject.Module;
 import io.bootique.BQModuleProvider;
 
 /**
- * Sins 0.26
+ * @since  0.26
  */
 public class SwaggerConsoleModuleProvider implements BQModuleProvider {
 
