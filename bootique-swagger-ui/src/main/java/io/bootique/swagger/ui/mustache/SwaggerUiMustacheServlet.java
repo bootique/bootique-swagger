@@ -77,8 +77,6 @@ public class SwaggerUiMustacheServlet extends HttpServlet {
 		return baseUrl;
 	}
 
-
-
 	private static class Model {
 
 		private String url;

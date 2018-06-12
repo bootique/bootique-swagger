@@ -37,7 +37,7 @@ import java.net.URL;
  */
 public class SwaggerUiModule extends ConfigModule {
 
-    public static final String RESOURCE_BASE = "bq.jetty.servlets.static.params.resourceBase";
+    public static final String RESOURCE_BASE = "bq.jetty.servlets.swagger-ui.params.resourceBase";
 
     @Override
     public void configure(Binder binder) {
@@ -46,7 +46,6 @@ public class SwaggerUiModule extends ConfigModule {
 		JettyModule.extend(binder).addMappedServlet(new TypeLiteral<MappedServlet<SwaggerUiMustacheServlet>>(){});
         JettyModule.extend(binder).addStaticServlet("static", "/static/*");
     }
-
 
 	@Provides
 	@Singleton
