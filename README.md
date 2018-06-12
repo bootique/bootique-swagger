@@ -30,7 +30,7 @@ file, containing Sagger model. Generation is done from JAX-RS endpoints, annotat
 with Swagger documentation annotations. I.e. it appropriate for Swagger "code-first"
 flow.
 
-* `bootique-swagger-ui`: provides swagger web UI that allows to inspect
+* `bootique-static`: provides swagger web UI that allows to inspect
 current app Swagger API model, as well as send test requests.
 
 ## Usage
@@ -69,8 +69,8 @@ that has Maven plugin and CLI flavors. From here the steps are the same
 as with any static file that you want to expose via HTTP in a Bootique app.
 Here is one possible setup:
 
-* Designate a "docroot" directory as a subdirectory of the project resources.
-E.g. `src/main/resources/doctroot`
+* Designate a "docroot" directory as a subdirectory of the project static.
+E.g. `src/main/static/doctroot`
 * Configure `bootique-jetty` to include the "default" servlet rooted in this
 directory:
 
@@ -79,14 +79,14 @@ JettyModule.extend(binder).useDefaultServlet();
 BQCoreModule.extend(binder).setProperty("bq.jetty.staticResourceBase", "classpath:docroot");
 ```
 
-* Put `swagger.json` under docroot (i.e. at  `src/main/resources/doctroot/swagger.json`).
+* Put `swagger.json` under docroot (i.e. at  `src/main/static/doctroot/swagger.json`).
 
 Start the app and verify that the JOSN is accessible. E.g. at http://127.0.0.1:8080/swagger.json
 
 ### `swagger.json` Auto-Generated from Java Annotations
 
 In a typical "code-first" flow, you might manually annotate your Java
-REST resources with Swagger annotations instead of creating a static
+REST static with Swagger annotations instead of creating a static
 `swagger.json`. In this case include `bootique-swagger` dependency to
 dynamically generate the API model in runtime:
 
@@ -97,7 +97,7 @@ dynamically generate the API model in runtime:
 </dependency>
 ```
 
-This results in two dynamic resources being added to your app, with URLs
+This results in two dynamic static being added to your app, with URLs
 relative to your Jersey root URL:
 
 * `<your_rest_resources_root>/swagger.json`. E.g. http://127.0.0.1:8080/swagger.json
@@ -115,7 +115,6 @@ To include UI console inside the app:
 </dependency>
 ```
 
-The UI will be accessible at `your_rest_resources_root/swagger-ui`. E.g. http://127.0.0.1:8080/swagger-ui/ .
-
-
+The UI will be accessible at `your_rest_resources_root/swagger`. E.g. http://127.0.0.1:8080/swagger/ .
+The static resources of swagger ui will be accessible at `your_rest_resources_root/static`. E.g. http://127.0.0.1:8080/static/swagger-ui.css .
 
