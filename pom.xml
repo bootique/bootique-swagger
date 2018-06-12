@@ -37,6 +37,7 @@
     <version>0.26-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <name>bootique-swagger-parent: Parent of Bootique Swagger integration modules</name>
 
     <properties>
         <bootique.version>${project.version}</bootique.version>
