@@ -219,5 +219,48 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.rat</groupId>
+                        <artifactId>apache-rat-plugin</artifactId>
+                        <version>0.12</version>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <excludes>
+                                <!-- This block will be moved to the modules parent module.
+                                     It can't be moved now because of fail of some depended modules.-->
+                                <exclude>**/RELEASE-NOTES.md</exclude>
+                                <exclude>**/LICENSE</exclude>
+                                <exclude>**/META-INF/services/</exclude>
+                                <exclude>**/.gitignore</exclude>
+                                <exclude>**/_*.java</exclude>
+                                <exclude>**/*.html</exclude>
+                                <exclude>**/*.css</exclude>
+                                <exclude>**/*.tml</exclude>
+                                <exclude>**/*.txt</exclude>
+                                <exclude>**/*.sql</exclude>
+                                <exclude>**/*.json</exclude>
+                                <exclude>**/*.log</exclude>
+
+                                <!--This block is used only for this module-->
+                                <exclude>src/test/resources/response1.yml</exclude>
+                                <exclude>src/test/resources/response1.json</exclude>
+                            </excludes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 </project>
