@@ -33,21 +33,6 @@ public class SwaggerConsoleModuleIT {
                 .module(b -> JerseyModule.extend(b).addResource(TestApi.class))
                 .run();
     }
-    @Test
-    public void testApi_Yaml() {
-
-        Response r = BASE_TARGET.path("/swagger.yaml").request().get();
-        assertEquals(200, r.getStatus());
-        assertEqualsToResourceContents("response1.yml", r.readEntity(String.class));
-    }
-
-    @Test
-    public void testApi_Json() {
-
-        Response r = BASE_TARGET.path("/swagger.json").request().get();
-        assertEquals(200, r.getStatus());
-        assertEqualsToResourceContents("response1.json", r.readEntity(String.class) + "\n");
-    }
 
     @Test
     public void testApi_Console() {
@@ -70,7 +55,6 @@ public class SwaggerConsoleModuleIT {
             assertEquals(builder.toString(), toTest);
         }
     }
-
 
 
     @Api
