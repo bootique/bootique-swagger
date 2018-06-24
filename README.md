@@ -52,9 +52,43 @@ Include ```bootique-bom```:
 </dependencyManagement>
 ```
 
-### "Code-first" Flow
+Next we need to provide a service that returns your app API spec (aka
+`swagger.json`). This service can then be used for manual inspection of
+the API structure, or more often accessed via the Swagger web UI, as described
+further down in this document. There are a few ways to serve `swagger.json`,
+depending on your workflow. Let's look at two of them - static file,
+and dynamically generated REST resource.
 
-Annotate your REST resources with Swagger annotations and then include `bootique-swagger`:
+### Static `swagger.json`
+
+In this scenario, developer bundles `swagger.json` with her app and makes
+it acessible via `bootique-jetty`. There are a few ways to obtain this JSON
+file. Typically you'd write `swagger.yaml` by hand, and then convert it
+to `swagger.json` with `swagger-codegen` [tool](https://github.com/swagger-api/swagger-codegen)
+that has Maven plugin and CLI flavors.
+
+From here the steps are the same as with any static file that you want to
+expose via HTTP in a Bootique app:
+
+* Designate a "docroot" directory. E.g. `src/main/resources/doctroot`
+* Configure `bootique-jetty` to include the "default" servlet rooted in this
+directory:
+
+```java
+JettyModule.extend(binder).useDefaultServlet();
+BQCoreModule.extend(binder).setProperty("bq.jetty.staticResourceBase", "classpath:docroot");
+```
+
+* Put `swagger.json` under docroot (i.e. at  `src/main/resources/doctroot/swagger.json`).
+
+Start the app and verify that the JOSN is accessible. E.g. at http://127.0.0.1:8080/swagger.json
+
+### `swagger.json` Auto-Generated from Java Annotations
+
+In a typical "code-first" flow, you might manually annotate your Java
+REST resources with Swagger annotations instead of creating a static
+`swagger.json`. In this case include `bootique-swagger` dependency to
+dynamically generate the API model in runtime:
 
 ```xml
 <dependency>
@@ -63,17 +97,12 @@ Annotate your REST resources with Swagger annotations and then include `bootique
 </dependency>
 ```
 
-This adds a few dynamic resources to your app:
+Adding the above dependency adds two dynamic resources to your app, relative to your Jersey
+root URL:
 
 * `<your_rest_resources_root>/swagger.json`. E.g. http://127.0.0.1:8080/swagger.json
 * `<your_rest_resources_root>/swagger.yaml`. E.g. http://127.0.0.1:8080/swagger.yaml
 
-
-### "Design-first" Flow
-
-For "design-first" flow, you usually create your own YAML file, then
-convert it to JSON using `swagger-codegen`, and then drop `swagger.json`
-at the top of your app docroot.
 
 ### Web UI
 
