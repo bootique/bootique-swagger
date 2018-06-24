@@ -1,6 +1,7 @@
-package io.bootique.swagger;
+package io.bootique.swagger.ui;
 
 import io.bootique.jersey.JerseyModule;
+import io.bootique.swagger.ui.SwaggerConsoleModuleProvider;
 import io.bootique.test.junit.BQTestFactory;
 import io.swagger.annotations.Api;
 import org.junit.BeforeClass;
@@ -29,7 +30,7 @@ public class SwaggerConsoleModuleIT {
     public static void beforeClass() {
         TEST_FACTORY.app("-s")
                 .module(new io.bootique.swagger.SwaggerModuleProvider())
-                .module(new io.bootique.swagger.console.SwaggerConsoleModuleProvider())
+                .module(new SwaggerConsoleModuleProvider())
                 .module(b -> JerseyModule.extend(b).addResource(TestApi.class))
                 .run();
     }

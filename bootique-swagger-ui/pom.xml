@@ -9,11 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bootique-swagger-console</artifactId>
+    <artifactId>bootique-swagger-ui</artifactId>
     <packaging>jar</packaging>
 
-    <name>bootique-swagger-console: Swagger console Integration with Bootique and Jersey</name>
-    <description>Provides Swagger.io ui console integration with Bootique and Jersey</description>
+    <name>bootique-swagger-ui: Swagger web UI Integration with Bootique</name>
+    <description>Provides Swagger.io web UI integration with Bootique</description>
 
     <dependencies>
         <!-- Compile dependencies -->

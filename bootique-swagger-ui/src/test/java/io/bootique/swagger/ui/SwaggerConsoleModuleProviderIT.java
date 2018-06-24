@@ -1,8 +1,8 @@
-package io.bootique.swagger;
+package io.bootique.swagger.ui;
 
 import io.bootique.BQRuntime;
-import io.bootique.swagger.console.SwaggerConsoleModule;
-import io.bootique.swagger.console.SwaggerConsoleModuleProvider;
+import io.bootique.swagger.ui.SwaggerConsoleModule;
+import io.bootique.swagger.ui.SwaggerConsoleModuleProvider;
 import io.bootique.test.junit.BQModuleProviderChecker;
 import io.bootique.test.junit.BQRuntimeChecker;
 import io.bootique.test.junit.BQTestFactory;

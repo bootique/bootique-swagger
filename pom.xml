@@ -22,10 +22,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <modules>
-        <module>bootique-swagger-console</module>
-        <module>bootique-swagger</module>
-    </modules>
     <parent>
         <groupId>io.bootique.modules.parent</groupId>
         <artifactId>bootique-modules-parent</artifactId>
@@ -36,13 +32,17 @@
     <artifactId>bootique-swagger-parent</artifactId>
     <version>0.26-SNAPSHOT</version>
     <packaging>pom</packaging>
-
     <name>bootique-swagger-parent: Parent of Bootique Swagger integration modules</name>
 
     <properties>
         <bootique.version>${project.version}</bootique.version>
         <swagger.version>1.5.9</swagger.version>
     </properties>
+
+    <modules>
+        <module>bootique-swagger-ui</module>
+        <module>bootique-swagger</module>
+    </modules>
 
     <scm>
         <developerConnection>scm:git:ssh://git@github.com/bootique/bootique-swagger</developerConnection>

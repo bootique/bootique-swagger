@@ -1,4 +1,4 @@
-package io.bootique.swagger.console;
+package io.bootique.swagger.ui;
 
 import com.google.inject.Module;
 import io.bootique.BQModuleProvider;
