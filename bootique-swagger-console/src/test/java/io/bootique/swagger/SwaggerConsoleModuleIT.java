@@ -36,11 +36,10 @@ public class SwaggerConsoleModuleIT {
 
     @Test
     public void testApi_Console() {
-
         Response r = BASE_TARGET.path("/swagger-ui/").request().get();
         assertEquals(200, r.getStatus());
+        assertEqualsToResourceContents("swagger-response1.html", r.readEntity(String.class));
     }
-
 
     private void assertEqualsToResourceContents(String expectedResource, String toTest) {
 
