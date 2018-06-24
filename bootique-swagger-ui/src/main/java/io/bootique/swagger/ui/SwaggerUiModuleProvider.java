@@ -6,10 +6,10 @@ import io.bootique.BQModuleProvider;
 /**
  * @since  0.26
  */
-public class SwaggerConsoleModuleProvider implements BQModuleProvider {
+public class SwaggerUiModuleProvider implements BQModuleProvider {
 
     @Override
     public Module module() {
-        return new SwaggerConsoleModule();
+        return new SwaggerUiModule();
     }
 }

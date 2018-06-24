@@ -35,6 +35,8 @@ current app Swagger API model, as well as send test requests.
 
 ## Usage
 
+### Prerequisites
+
 Include ```bootique-bom```:
 ```xml
 <dependencyManagement>
@@ -50,19 +52,30 @@ Include ```bootique-bom```:
 </dependencyManagement>
 ```
 
-For "code-first" flow, annotate your REST resources with Swagger annotations and then include `bootique-swagger`:
+### "Code-first" Flow
 
+Annotate your REST resources with Swagger annotations and then include `bootique-swagger`:
+
+```xml
 <dependency>
 	<groupId>io.bootique.swagger</groupId>
 	<artifactId>bootique-swagger</artifactId>
 </dependency>
 ```
 
-This adds a few resources to your app:
+This adds a few dynamic resources to your app:
 
 * `<your_rest_resources_root>/swagger.json`. E.g. http://127.0.0.1:8080/swagger.json
-*  `<your_rest_resources_root>/swagger.yaml`. E.g. http://127.0.0.1:8080/swagger.yaml
+* `<your_rest_resources_root>/swagger.yaml`. E.g. http://127.0.0.1:8080/swagger.yaml
 
+
+### "Design-first" Flow
+
+For "design-first" flow, you usually create your own YAML file, then
+convert it to JSON using `swagger-codegen`, and then drop `swagger.json`
+at the top of your app docroot.
+
+### Web UI
 
 To include UI console inside the app:
 

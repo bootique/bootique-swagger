@@ -1,7 +1,6 @@
 package io.bootique.swagger.ui;
 
 import io.bootique.jersey.JerseyModule;
-import io.bootique.swagger.ui.SwaggerConsoleModuleProvider;
 import io.bootique.test.junit.BQTestFactory;
 import io.swagger.annotations.Api;
 import org.junit.BeforeClass;
@@ -19,7 +18,7 @@ import java.util.Scanner;
 
 import static org.junit.Assert.assertEquals;
 
-public class SwaggerConsoleModuleIT {
+public class SwaggerUiModuleIT {
 
     @ClassRule
     public static BQTestFactory TEST_FACTORY = new BQTestFactory();
@@ -30,7 +29,7 @@ public class SwaggerConsoleModuleIT {
     public static void beforeClass() {
         TEST_FACTORY.app("-s")
                 .module(new io.bootique.swagger.SwaggerModuleProvider())
-                .module(new SwaggerConsoleModuleProvider())
+                .module(new SwaggerUiModuleProvider())
                 .module(b -> JerseyModule.extend(b).addResource(TestApi.class))
                 .run();
     }

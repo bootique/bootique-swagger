@@ -10,7 +10,7 @@ import java.net.URL;
 /**
  * @since  0.26
  */
-public class SwaggerConsoleModule extends ConfigModule {
+public class SwaggerUiModule extends ConfigModule {
 
     public static final String RESOURCE_BASE = "bq.jetty.servlets.swagger-ui.params.resourceBase";
 
