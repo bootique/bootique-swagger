@@ -56,7 +56,7 @@ Next we need to provide a service that returns your app API spec (aka
 `swagger.json`). This service can then be used for manual inspection of
 the API structure, or more often accessed via the Swagger web UI, as described
 further down in this document. There are a few ways to serve `swagger.json`,
-depending on your workflow. Let's look at two of them - static file,
+depending on your workflow. Let's look at two of them - a static file
 and dynamically generated REST resource.
 
 ### Static `swagger.json`
@@ -65,9 +65,7 @@ In this scenario, developer bundles `swagger.json` with her app and makes
 it acessible via `bootique-jetty`. There are a few ways to obtain this JSON
 file. Typically you'd write `swagger.yaml` by hand, and then convert it
 to `swagger.json` with `swagger-codegen` [tool](https://github.com/swagger-api/swagger-codegen)
-that has Maven plugin and CLI flavors.
-
-From here the steps are the same as with any static file that you want to
+that has Maven plugin and CLI flavors. From here the steps are the same as with any static file that you want to
 expose via HTTP in a Bootique app:
 
 * Designate a "docroot" directory. E.g. `src/main/resources/doctroot`
