@@ -16,11 +16,14 @@
     <description>Provides Swagger.io ui console integration with Bootique and Jersey</description>
 
     <dependencies>
+        <!-- Compile dependencies -->
         <dependency>
-            <groupId>io.bootique.swagger</groupId>
-            <artifactId>bootique-swagger</artifactId>
+            <groupId>io.bootique.jetty</groupId>
+            <artifactId>bootique-jetty</artifactId>
             <version>${project.version}</version>
+            <scope>compile</scope>
         </dependency>
+
         <!-- Unit test dependencies -->
         <dependency>
             <groupId>junit</groupId>
@@ -45,6 +48,12 @@
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.bootique.swagger</groupId>
+            <artifactId>bootique-swagger</artifactId>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
