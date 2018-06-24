@@ -22,11 +22,20 @@
 
 # bootique-swagger
 
-Integration of [Swagger API ](http://swagger.io/) documentation web service and libraries for Bootique apps. 
+This project integrates [Swagger API](http://swagger.io/) documentation services into Bootique.
+It contains two modules:
+
+* `bootique-swagger`: provides a REST service to dynamically generate JSON or YAML
+file, containing Sagger model. Generation is done from JAX-RS endpoints, annotated
+with Swagger documentation annotations. I.e. it appropriate for Swagger "code-first"
+flow.
+
+* `bootique-swagger-ui`: provides swagger web UI that allows to inspect
+current app Swagger API model, as well as send test requests.
 
 ## Usage
 
-Include ```bootique-swagger```:
+Include ```bootique-bom```:
 ```xml
 <dependencyManagement>
     <dependencies>
@@ -39,8 +48,9 @@ Include ```bootique-swagger```:
         </dependency>
     </dependencies>
 </dependencyManagement>
+```
 
-...
+For "code-first" flow, annotate your REST resources with Swagger annotations and then include `bootique-swagger`:
 
 <dependency>
 	<groupId>io.bootique.swagger</groupId>
@@ -48,5 +58,22 @@ Include ```bootique-swagger```:
 </dependency>
 ```
 
-Now you can use Swagger annotations on your JAX-RS resources. Swagger endpoint will be available at ```<your_rest_resources_root>/swagger.json``` or ```<your_rest_resources_root>/swagger.yaml```.
+This adds a few resources to your app:
+
+* `<your_rest_resources_root>/swagger.json`. E.g. http://127.0.0.1:8080/swagger.json
+*  `<your_rest_resources_root>/swagger.yaml`. E.g. http://127.0.0.1:8080/swagger.yaml
+
+
+To include UI console inside the app:
+
+```xml
+<dependency>
+	<groupId>io.bootique.swagger</groupId>
+	<artifactId>bootique-swagger-ui</artifactId>
+</dependency>
+```
+
+The UI will be accessible at `your_rest_resources_root/swagger-ui`. E.g. http://127.0.0.1:8080/swagger-ui/
+
+
 
