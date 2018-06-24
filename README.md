@@ -65,10 +65,12 @@ In this scenario, developer bundles `swagger.json` with her app and makes
 it acessible via `bootique-jetty`. There are a few ways to obtain this JSON
 file. Typically you'd write `swagger.yaml` by hand, and then convert it
 to `swagger.json` with `swagger-codegen` [tool](https://github.com/swagger-api/swagger-codegen)
-that has Maven plugin and CLI flavors. From here the steps are the same as with any static file that you want to
-expose via HTTP in a Bootique app:
+that has Maven plugin and CLI flavors. From here the steps are the same
+as with any static file that you want to expose via HTTP in a Bootique app.
+Here is one possible setup:
 
-* Designate a "docroot" directory. E.g. `src/main/resources/doctroot`
+* Designate a "docroot" directory as a subdirectory of the project resources.
+E.g. `src/main/resources/doctroot`
 * Configure `bootique-jetty` to include the "default" servlet rooted in this
 directory:
 
@@ -95,8 +97,8 @@ dynamically generate the API model in runtime:
 </dependency>
 ```
 
-Adding the above dependency adds two dynamic resources to your app, relative to your Jersey
-root URL:
+This results in two dynamic resources being added to your app, with URLs
+relative to your Jersey root URL:
 
 * `<your_rest_resources_root>/swagger.json`. E.g. http://127.0.0.1:8080/swagger.json
 * `<your_rest_resources_root>/swagger.yaml`. E.g. http://127.0.0.1:8080/swagger.yaml
@@ -113,7 +115,7 @@ To include UI console inside the app:
 </dependency>
 ```
 
-The UI will be accessible at `your_rest_resources_root/swagger-ui`. E.g. http://127.0.0.1:8080/swagger-ui/
+The UI will be accessible at `your_rest_resources_root/swagger-ui`. E.g. http://127.0.0.1:8080/swagger-ui/ .
 
 
 
