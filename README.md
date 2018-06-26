@@ -44,7 +44,7 @@ Include ```bootique-bom```:
         <dependency>
             <groupId>io.bootique.bom</groupId>
             <artifactId>bootique-bom</artifactId>
-            <version>0.19</version>
+            <version>0.25</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
@@ -104,7 +104,7 @@ relative to your Jersey root URL:
 * `<your_rest_resources_root>/swagger.yaml`. E.g. http://127.0.0.1:8080/swagger.yaml
 
 
-### Web UI
+### Web UI (Since 0.26)
 
 To include UI console inside the app:
 
