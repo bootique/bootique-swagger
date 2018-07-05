@@ -42,6 +42,11 @@
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.spullara.mustache.java</groupId>
+            <artifactId>compiler</artifactId>
+            <scope>compile</scope>
+        </dependency>
 
         <!-- Unit test dependencies -->
         <dependency>
@@ -76,6 +81,15 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.github.spullara.mustache.java</groupId>
+                <artifactId>compiler</artifactId>
+                <version>0.9.1</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <profiles>
         <profile>
@@ -87,7 +101,10 @@
                         <artifactId>apache-rat-plugin</artifactId>
                         <configuration>
                             <excludes>
-                                <exclude>src/main/resources/console/swagger-ui/**</exclude>
+                                <exclude>src/main/resources/swagger/index.mustache</exclude>
+                                <exclude>src/main/resources/swagger/static/**</exclude>
+                                <exclude>src/test/resources/swagger-response1.html</exclude>
+                                <exclude>src/test/resources/swagger-response2.html</exclude>
                             </excludes>
                         </configuration>
                     </plugin>

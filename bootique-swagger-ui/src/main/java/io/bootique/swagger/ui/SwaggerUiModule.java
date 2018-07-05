@@ -20,9 +20,15 @@
 package io.bootique.swagger.ui;
 
 import com.google.inject.Binder;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import com.google.inject.TypeLiteral;
 import io.bootique.BQCoreModule;
 import io.bootique.ConfigModule;
+import io.bootique.config.ConfigurationFactory;
 import io.bootique.jetty.JettyModule;
+import io.bootique.jetty.MappedServlet;
+import io.bootique.swagger.ui.mustache.SwaggerUiMustacheServlet;
 
 import java.net.URL;
 
@@ -35,8 +41,18 @@ public class SwaggerUiModule extends ConfigModule {
 
     @Override
     public void configure(Binder binder) {
-        URL resource = this.getClass().getClassLoader().getResource("console/");
-        BQCoreModule.extend(binder).setProperty(RESOURCE_BASE, resource.toString());
-        JettyModule.extend(binder).addStaticServlet("swagger-ui", "/swagger-ui/*");
+        URL resource = this.getClass().getClassLoader().getResource("swagger/");
+		BQCoreModule.extend(binder).setProperty(RESOURCE_BASE, resource.toString());
+		JettyModule.extend(binder).addMappedServlet(new TypeLiteral<MappedServlet<SwaggerUiMustacheServlet>>(){});
+        JettyModule.extend(binder).addStaticServlet("static", "/static/*");
     }
+
+	@Provides
+	@Singleton
+	private MappedServlet<SwaggerUiMustacheServlet> provideJerseyServlet(ConfigurationFactory configFactory) {
+		return configFactory
+				.config(SwaggerUiFactory.class, configPrefix)
+				.initUrlPattern("/swagger")
+				.createJerseyServlet();
+	}
 }
