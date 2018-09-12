@@ -1,4 +1,4 @@
-## 0.26
+## 1.0.RC1
 
 * #1 Add integration with Swagger web console
 * #7 Update Jackson to 2.9.5

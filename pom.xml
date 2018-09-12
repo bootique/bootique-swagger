@@ -30,7 +30,7 @@
 
     <groupId>io.bootique.swagger</groupId>
     <artifactId>bootique-swagger-parent</artifactId>
-    <version>0.26-SNAPSHOT</version>
+    <version>1.0.RC1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>bootique-swagger-parent: Parent of Bootique Swagger integration modules</name>
 

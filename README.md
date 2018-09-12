@@ -104,7 +104,7 @@ relative to your Jersey root URL:
 * `<your_rest_resources_root>/swagger.yaml`. E.g. http://127.0.0.1:8080/swagger.yaml
 
 
-### Web UI (Since 0.26)
+### Web UI (Since 1.0.RC1)
 
 To include UI console inside the app:
 
