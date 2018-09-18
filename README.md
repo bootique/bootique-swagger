@@ -18,7 +18,7 @@
   -->
 
 [![Build Status](https://travis-ci.org/bootique/bootique-swagger.svg)](https://travis-ci.org/bootique/bootique-swagger)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.bootique.swagger/bootique-swagger/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.bootique.swagger/bootique-swagger/)
+[![Maven Central](https://img.shields.io/maven-central/v/io.bootique.swagger/bootique-swagger.svg?colorB=brightgreen)](https://search.maven.org/artifact/io.bootique.swagger/bootique-swagger/)
 
 # bootique-swagger
 
