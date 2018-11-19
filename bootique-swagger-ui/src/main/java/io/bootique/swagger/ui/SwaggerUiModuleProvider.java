@@ -22,6 +22,11 @@ package io.bootique.swagger.ui;
 import com.google.inject.Module;
 import io.bootique.BQModuleProvider;
 
+import java.lang.reflect.Type;
+import java.util.Map;
+
+import static java.util.Collections.singletonMap;
+
 /**
  * @since  1.0.RC1
  */
@@ -31,4 +36,10 @@ public class SwaggerUiModuleProvider implements BQModuleProvider {
     public Module module() {
         return new SwaggerUiModule();
     }
+
+	@Override
+	public Map<String, Type> configs() {
+		return singletonMap("swaggerui", SwaggerUiFactory.class);
+	}
+
 }

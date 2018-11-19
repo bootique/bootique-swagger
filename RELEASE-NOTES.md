@@ -2,6 +2,7 @@
 
 * #1 Add integration with Swagger web console
 * #7 Update Jackson to 2.9.5
+* #11 configurable location of swagger.json
 
 ## 0.25
 
