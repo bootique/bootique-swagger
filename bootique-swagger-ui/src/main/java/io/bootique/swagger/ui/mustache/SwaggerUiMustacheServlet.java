@@ -33,7 +33,7 @@ import java.io.Reader;
 import java.net.URL;
 
 /**
- * @since  0.26
+ * @since  1.0.RC1
  */
 public class SwaggerUiMustacheServlet extends HttpServlet {
 
@@ -73,8 +73,10 @@ public class SwaggerUiMustacheServlet extends HttpServlet {
 		int port = request.getServerPort();
 		String contextPath = request.getContextPath();
 
-		String baseUrl = scheme + "://" + host + ((("http".equals(scheme) && port == 80) || ("https".equals(scheme) && port == 443)) ? "" : ":" + port) + contextPath;
-		return baseUrl;
+		String portExp = ("http".equals(scheme) && port == 80) || ("https".equals(scheme) && port == 443)
+				? ""
+				: ":" + port;
+		return scheme + "://" + host + portExp + contextPath;
 	}
 
 	private static class Model {

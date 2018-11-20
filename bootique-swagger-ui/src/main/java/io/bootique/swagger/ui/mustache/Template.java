@@ -20,7 +20,7 @@
 package io.bootique.swagger.ui.mustache;
 
 /**
- * @since  0.26
+ * @since  1.0.RC1
  */
 public interface Template {
 
