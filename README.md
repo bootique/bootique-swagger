@@ -26,7 +26,7 @@ This project integrates [Swagger API](http://swagger.io/) documentation services
 It contains two modules:
 
 * `bootique-swagger`: provides a REST service to dynamically generate JSON or YAML
-file, containing Sagger model. Generation is done from JAX-RS endpoints, annotated
+file, containing Swagger model. Generation is done from JAX-RS endpoints, annotated
 with Swagger documentation annotations. I.e. it appropriate for Swagger "code-first"
 flow.
 
