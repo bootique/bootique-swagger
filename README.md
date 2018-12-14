@@ -115,6 +115,5 @@ To include UI console inside the app:
 </dependency>
 ```
 
-The UI will be accessible at `your_rest_resources_root/swagger`. E.g. http://127.0.0.1:8080/swagger/ .
-The static resources of swagger ui will be accessible at `your_rest_resources_root/static`. E.g. http://127.0.0.1:8080/static/swagger-ui.css .
+The UI will be accessible at `your_rest_resources_root/swagger-ui`. E.g. http://127.0.0.1:8080/swagger-ui/ .
 
