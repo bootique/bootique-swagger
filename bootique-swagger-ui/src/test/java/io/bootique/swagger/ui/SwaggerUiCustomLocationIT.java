@@ -41,7 +41,7 @@ public class SwaggerUiCustomLocationIT extends SwaggerUiBaseIT {
 
 	@Test
 	public void testApi_Console() {
-		Response r = BASE_TARGET.path("/swagger").request().get();
+		Response r = BASE_TARGET.path("/swagger-ui/").request().get();
 		assertEquals(200, r.getStatus());
 		assertEqualsToResourceContents("swagger-response2.html", r.readEntity(String.class));
 	}

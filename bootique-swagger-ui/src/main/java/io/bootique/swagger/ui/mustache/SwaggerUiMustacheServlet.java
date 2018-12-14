@@ -58,7 +58,7 @@ public class SwaggerUiMustacheServlet extends HttpServlet {
 
 		Reader reader = null;
 
-		URL templateUrl = getClass().getClassLoader().getResource("swagger/index.mustache");
+		URL templateUrl = getClass().getClassLoader().getResource("swagger-ui/index.mustache");
 		try {
 			reader = new InputStreamReader(templateUrl.openStream());
 		} catch (IOException e) {

@@ -37,22 +37,24 @@ import java.net.URL;
  */
 public class SwaggerUiModule extends ConfigModule {
 
-    public static final String RESOURCE_BASE = "bq.jetty.servlets.static.params.resourceBase";
+	private static final String RESOURCE_BASE = "bq.jetty.servlets.static.params.resourceBase";
+	private static final String PATH_INFO_ONLY = "bq.jetty.servlets.static.params.pathInfoOnly";
 
-    @Override
-    public void configure(Binder binder) {
-        URL resource = this.getClass().getClassLoader().getResource("swagger/");
+	@Override
+	public void configure(Binder binder) {
+		URL resource = this.getClass().getClassLoader().getResource("swagger-ui/static/");
 		BQCoreModule.extend(binder).setProperty(RESOURCE_BASE, resource.toString());
+		BQCoreModule.extend(binder).setProperty(PATH_INFO_ONLY, "true");
 		JettyModule.extend(binder).addMappedServlet(new TypeLiteral<MappedServlet<SwaggerUiMustacheServlet>>(){});
-        JettyModule.extend(binder).addStaticServlet("static", "/static/*");
-    }
+		JettyModule.extend(binder).addStaticServlet("static", "/swagger-ui/static/*");
+	}
 
 	@Provides
 	@Singleton
 	private MappedServlet<SwaggerUiMustacheServlet> provideJerseyServlet(ConfigurationFactory configFactory) {
 		return configFactory
 				.config(SwaggerUiFactory.class, configPrefix)
-				.initUrlPattern("/swagger")
+				.initUrlPattern("/swagger-ui/")
 				.createJerseyServlet();
 	}
 }
