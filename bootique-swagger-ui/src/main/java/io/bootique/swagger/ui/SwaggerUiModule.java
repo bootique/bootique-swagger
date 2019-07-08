@@ -50,8 +50,7 @@ public class SwaggerUiModule extends ConfigModule {
 	@Provides
 	@Singleton
 	private MappedServlet<SwaggerUiMustacheServlet> provideJerseyServlet(ConfigurationFactory configFactory) {
-		return configFactory
-				.config(SwaggerUiFactory.class, configPrefix)
+		return config(SwaggerUiFactory.class, configFactory)
 				.initUrlPattern("/swagger")
 				.createJerseyServlet();
 	}
