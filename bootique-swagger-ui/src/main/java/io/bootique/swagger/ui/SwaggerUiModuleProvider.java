@@ -19,8 +19,8 @@
 
 package io.bootique.swagger.ui;
 
-import com.google.inject.Module;
 import io.bootique.BQModuleProvider;
+import io.bootique.di.BQModule;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -33,7 +33,7 @@ import static java.util.Collections.singletonMap;
 public class SwaggerUiModuleProvider implements BQModuleProvider {
 
     @Override
-    public Module module() {
+    public BQModule module() {
         return new SwaggerUiModule();
     }
 

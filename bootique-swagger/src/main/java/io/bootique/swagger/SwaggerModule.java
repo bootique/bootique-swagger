@@ -19,8 +19,8 @@
 
 package io.bootique.swagger;
 
-import com.google.inject.Binder;
 import io.bootique.ConfigModule;
+import io.bootique.di.Binder;
 import io.bootique.jersey.JerseyModule;
 import io.swagger.jaxrs.listing.ApiListingResource;
 

@@ -19,18 +19,18 @@
 
 package io.bootique.swagger.ui;
 
-import com.google.inject.Binder;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
-import com.google.inject.TypeLiteral;
 import io.bootique.BQCoreModule;
 import io.bootique.ConfigModule;
 import io.bootique.config.ConfigurationFactory;
+import io.bootique.di.Binder;
+import io.bootique.di.Provides;
+import io.bootique.di.TypeLiteral;
 import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedServlet;
 import io.bootique.swagger.ui.mustache.SwaggerUiMustacheServlet;
 
 import java.net.URL;
+import javax.inject.Singleton;
 
 /**
  * @since  1.0.RC1

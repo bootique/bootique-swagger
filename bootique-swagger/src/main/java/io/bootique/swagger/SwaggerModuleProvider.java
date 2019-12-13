@@ -19,8 +19,8 @@
 
 package io.bootique.swagger;
 
-import com.google.inject.Module;
 import io.bootique.BQModuleProvider;
+import io.bootique.di.BQModule;
 import io.bootique.jersey.JerseyModuleProvider;
 
 import java.util.Collection;
@@ -29,7 +29,7 @@ import java.util.Collections;
 public class SwaggerModuleProvider implements BQModuleProvider {
 
     @Override
-    public Module module() {
+    public BQModule module() {
         return new SwaggerModule();
     }
 
