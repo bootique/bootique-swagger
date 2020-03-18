@@ -36,6 +36,7 @@ public class SwaggerUiFactory {
 
 	private String specUrl;
 	private String urlPattern;
+	private String specFile;
 
 	public String getSpecUrl() {
 		return specUrl;
@@ -51,8 +52,17 @@ public class SwaggerUiFactory {
 		return this;
 	}
 
+	public String getSpecFile() {
+		return specFile;
+	}
+
+	@BQConfigProperty
+	public void setSpecFile(String specFile) {
+		this.specFile = specFile;
+	}
+
 	public MappedServlet<SwaggerUiMustacheServlet> createJerseyServlet() {
-		SwaggerUiMustacheServlet servlet = new SwaggerUiMustacheServlet(specUrl);
+		SwaggerUiMustacheServlet servlet = new SwaggerUiMustacheServlet(specUrl, specFile);
 		Set<String> urlPatterns = Collections.singleton(Objects.requireNonNull(urlPattern));
 		return new MappedServlet<>(servlet, urlPatterns, "swagger");
 	}

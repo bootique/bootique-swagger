@@ -38,6 +38,7 @@ import java.net.URL;
 public class SwaggerUiMustacheServlet extends HttpServlet {
 
 	private String url;
+	private String specFile;
 	private MustacheFactory mustacheFactory;
 
 	public SwaggerUiMustacheServlet( String url) {
@@ -45,10 +46,15 @@ public class SwaggerUiMustacheServlet extends HttpServlet {
 		this.mustacheFactory = new DefaultMustacheFactory();
 	}
 
+	public SwaggerUiMustacheServlet( String url, String specFile) {
+		this(url);
+		this.specFile = specFile;
+	}
+
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		PrintWriter out = response.getWriter();
-		Model swaggerUiModel = new Model(url != null ? url: getBaseUrl(request) + "/swagger.json");
+		Model swaggerUiModel = new Model(url != null ? url : getBaseUrl(request) + (specFile != null ? "/" + specFile : "/swagger.json"));
 		Mustache mustache = compile();
 
 		mustache.execute(out, swaggerUiModel).flush();

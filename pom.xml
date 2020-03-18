@@ -36,11 +36,13 @@
     <properties>
         <bootique.version>${project.version}</bootique.version>
         <swagger.version>1.5.9</swagger.version>
+        <openapi.version>2.0.6</openapi.version>
     </properties>
 
     <modules>
         <module>bootique-swagger-ui</module>
         <module>bootique-swagger</module>
+        <module>bootique-openapi</module>
     </modules>
 
     <scm>
@@ -142,6 +144,21 @@
                 <groupId>org.glassfish.jersey.media</groupId>
                 <artifactId>jersey-media-multipart</artifactId>
                 <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-core</artifactId>
+                <version>${openapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-jaxrs2</artifactId>
+                <version>${openapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-jaxrs2-servlet-initializer</artifactId>
+                <version>${openapi.version}</version>
             </dependency>
         </dependencies>
 
