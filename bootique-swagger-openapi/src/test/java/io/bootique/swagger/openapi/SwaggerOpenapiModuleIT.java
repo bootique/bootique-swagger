@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package io.bootique.openapi;
+package io.bootique.swagger.openapi;
 
 import io.bootique.jersey.JerseyModule;
 import io.bootique.test.junit.BQTestFactory;
@@ -37,7 +37,7 @@ import java.util.Scanner;
 
 import static org.junit.Assert.assertEquals;
 
-public class OpenapiModuleIT {
+public class SwaggerOpenapiModuleIT {
 
     @ClassRule
     public static BQTestFactory TEST_FACTORY = new BQTestFactory();
@@ -47,7 +47,7 @@ public class OpenapiModuleIT {
     @BeforeClass
     public static void beforeClass() {
         TEST_FACTORY.app("-s")
-                .module(new OpenapiModuleProvider())
+                .module(new SwaggerOpenapiModuleProvider())
                 .module(b -> JerseyModule.extend(b).addResource(TestApi.class))
                 .run();
     }

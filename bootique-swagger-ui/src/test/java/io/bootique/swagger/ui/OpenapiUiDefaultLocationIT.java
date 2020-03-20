@@ -20,6 +20,7 @@
 package io.bootique.swagger.ui;
 
 import io.bootique.jersey.JerseyModule;
+import io.bootique.swagger.openapi.SwaggerOpenapiModuleProvider;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -33,7 +34,7 @@ public class OpenapiUiDefaultLocationIT extends SwaggerUiBaseIT {
 	public static void beforeClass() {
 		TEST_FACTORY.app("-s")
 				.args("-c", "classpath:test_openapi.yml")
-				.module(new io.bootique.openapi.OpenapiModuleProvider())
+				.module(new SwaggerOpenapiModuleProvider())
 				.module(new SwaggerUiModuleProvider())
 				.module(b -> JerseyModule.extend(b).addResource(TestApi.class))
 				.run();

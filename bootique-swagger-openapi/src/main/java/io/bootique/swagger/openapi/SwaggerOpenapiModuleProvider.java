@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package io.bootique.openapi;
+package io.bootique.swagger.openapi;
 
 import io.bootique.BQModuleProvider;
 import io.bootique.di.BQModule;
@@ -26,11 +26,11 @@ import io.bootique.jersey.JerseyModuleProvider;
 import java.util.Collection;
 import java.util.Collections;
 
-public class OpenapiModuleProvider implements BQModuleProvider {
+public class SwaggerOpenapiModuleProvider implements BQModuleProvider {
 
     @Override
     public BQModule module() {
-        return new OpenapiModule();
+        return new SwaggerOpenapiModule();
     }
 
     @Override

@@ -17,32 +17,17 @@
  * under the License.
  */
 
-package io.bootique.openapi;
+package io.bootique.swagger.openapi;
 
-import io.bootique.BQRuntime;
+import io.bootique.ConfigModule;
+import io.bootique.di.Binder;
 import io.bootique.jersey.JerseyModule;
-import io.bootique.test.junit.BQModuleProviderChecker;
-import io.bootique.test.junit.BQRuntimeChecker;
-import io.bootique.test.junit.BQTestFactory;
-import org.junit.Rule;
-import org.junit.Test;
+import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 
-public class OpenapiModuleProviderTest {
+public class SwaggerOpenapiModule extends ConfigModule {
 
-    @Rule
-    public BQTestFactory testFactory = new BQTestFactory();
-
-    @Test
-    public void testAutoLoadable() {
-        BQModuleProviderChecker.testAutoLoadable(OpenapiModuleProvider.class);
-    }
-
-    @Test
-    public void testModuleDeclaresDependencies() {
-        final BQRuntime bqRuntime = testFactory.app().module(new OpenapiModuleProvider()).createRuntime();
-        BQRuntimeChecker.testModulesLoaded(bqRuntime,
-                JerseyModule.class,
-                OpenapiModule.class
-        );
+    @Override
+    public void configure(Binder binder) {
+        JerseyModule.extend(binder).addPackage(OpenApiResource.class);
     }
 }

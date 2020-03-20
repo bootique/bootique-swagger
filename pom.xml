@@ -42,7 +42,7 @@
     <modules>
         <module>bootique-swagger-ui</module>
         <module>bootique-swagger</module>
-        <module>bootique-openapi</module>
+        <module>bootique-swagger-openapi</module>
     </modules>
 
     <scm>
