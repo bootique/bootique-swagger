@@ -61,7 +61,7 @@ Include ```bootique-bom```:
 ### "Code-First" - exposing annotated endpoints
 
 Swagger can generate application API specification dynamically based purely on the endpoint class/method signatures and JAX-RS
-annotations (such as `@Path`, `@GET`, etc.). Additionally you would enrich this model via the following mechanisms:
+annotations (such as `@Path`, `@GET`, etc.). And then you would "enrich" the basic specification via the following mechanisms:
 
 * [Swagger annotations](https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Annotations)
 * [Static API descriptors](https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Integration-and-Configuration#known-locations)
