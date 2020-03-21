@@ -55,11 +55,11 @@ public class SwaggerUiFactory {
 
 	public MappedServlet<SwaggerUiMustacheServlet> createJerseyServlet() {
 		SwaggerUiMustacheServlet servlet = new SwaggerUiMustacheServlet(specUrl);
-		return new MappedServlet<>(servlet, urlPatterns(), "swagger");
+		return new MappedServlet<>(servlet, urlPatterns(), "swagger-ui");
 	}
 
 	private Set<String> urlPatterns() {
-		String pattern = this.urlPattern != null ? this.urlPattern : "/swagger";
+		String pattern = this.urlPattern != null ? this.urlPattern : "/swagger-ui";
 		return Collections.singleton(pattern);
 	}
 

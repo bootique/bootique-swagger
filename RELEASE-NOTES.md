@@ -1,6 +1,7 @@
 ## 2.0
 
 * #17 Configurable Swagger UI servlet mapping 
+* #18 Change default mapping for UI servlet from /swagger to /swagger-ui
 
 ## 1.0
 

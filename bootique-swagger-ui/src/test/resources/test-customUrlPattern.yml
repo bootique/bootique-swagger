@@ -14,4 +14,4 @@
 # limitations under the License.
 
 swaggerui:
-  urlPattern: "/swaggerui"
+  urlPattern: "/swagger-uix"
