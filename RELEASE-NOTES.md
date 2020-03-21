@@ -1,3 +1,9 @@
+## 2.0
+
+* #17 Configurable Swagger UI servlet mapping 
+
+## 1.0
+
 ## 1.0.RC1
 
 * #1 Add integration with Swagger web console

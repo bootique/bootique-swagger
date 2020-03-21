@@ -25,7 +25,6 @@ import io.bootique.jetty.MappedServlet;
 import io.bootique.swagger.ui.mustache.SwaggerUiMustacheServlet;
 
 import java.util.Collections;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -46,15 +45,22 @@ public class SwaggerUiFactory {
 			this.specUrl = specUrl;
 	}
 
-	public SwaggerUiFactory initUrlPattern(String urlPattern) {
+	/**
+	 * @since 2.0
+	 */
+	@BQConfigProperty
+	public void setUrlPattern(String urlPattern) {
 		this.urlPattern = urlPattern;
-		return this;
 	}
 
 	public MappedServlet<SwaggerUiMustacheServlet> createJerseyServlet() {
 		SwaggerUiMustacheServlet servlet = new SwaggerUiMustacheServlet(specUrl);
-		Set<String> urlPatterns = Collections.singleton(Objects.requireNonNull(urlPattern));
-		return new MappedServlet<>(servlet, urlPatterns, "swagger");
+		return new MappedServlet<>(servlet, urlPatterns(), "swagger");
+	}
+
+	private Set<String> urlPatterns() {
+		String pattern = this.urlPattern != null ? this.urlPattern : "/swagger";
+		return Collections.singleton(pattern);
 	}
 
 }

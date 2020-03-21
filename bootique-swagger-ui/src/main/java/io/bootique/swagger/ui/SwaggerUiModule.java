@@ -29,8 +29,8 @@ import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedServlet;
 import io.bootique.swagger.ui.mustache.SwaggerUiMustacheServlet;
 
-import java.net.URL;
 import javax.inject.Singleton;
+import java.net.URL;
 
 /**
  * @since  1.0.RC1
@@ -51,7 +51,6 @@ public class SwaggerUiModule extends ConfigModule {
 	@Singleton
 	private MappedServlet<SwaggerUiMustacheServlet> provideJerseyServlet(ConfigurationFactory configFactory) {
 		return config(SwaggerUiFactory.class, configFactory)
-				.initUrlPattern("/swagger")
 				.createJerseyServlet();
 	}
 }
