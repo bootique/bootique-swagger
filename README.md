@@ -101,6 +101,7 @@ java -jar swagger-codegen-cli-3.0.18.jar generate -l jaxrs-jersey \
     -o myproject
     -i mymodel.yaml
 ```
+There are also options to integrate this in Maven.
 
 ### Web UI
 
