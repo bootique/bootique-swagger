@@ -78,6 +78,28 @@ Now, when you run the app, you should be able to access the models at URLs simil
 * http://127.0.0.1:8080/swagger.json
 * http://127.0.0.1:8080/swagger.yaml
 
+### "Spec-Code-Spec"
+
+A more complex workflow is when you have one or more API specifications, generate Java code from them (models, API
+endpoints), and then need to combine them together, extending them with extra specification fragments. So essentially going
+from specification to code and then back to specification. Everything described in the "Code-First" section above applies
+to the last step (code to spec).
+
+Going from spec to code is outside the scope of `bootique-swagger-openapi`, yet let us mention some ideas on code
+generation. There are various code generators available (e.g.
+[openapi-generator](https://github.com/OpenAPITools/openapi-generator), but as of this writing (March 2020), most do not
+support OpenAPI-compatible Swagger annotations (`io.swagger.core.v3:swagger-annotations` package). The only tool that
+we found to support it is unsurprisingly coming from Swagger itself. It is
+[swagger-codegen, v.3.0.x](https://github.com/swagger-api/swagger-codegen/tree/3.0.0). You can download
+[the jar file](https://search.maven.org/remotecontent?filepath=io/swagger/codegen/v3/swagger-codegen-cli/3.0.18/swagger-codegen-cli-3.0.18.jar)
+from Maven Central, and run the generator like this:
+
+```
+java -jar swagger-codegen-cli-3.0.18.jar generate -l jaxrs-jersey \
+    -o myproject
+    -i mymodel.yaml
+```
+
 ### Web UI
 
 Bootique integrates Swagger browser UI to be able to view and interact with the API models:
