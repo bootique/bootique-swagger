@@ -37,14 +37,21 @@ import java.net.URL;
  */
 public class SwaggerUiModule extends ConfigModule {
 
-    public static final String RESOURCE_BASE = "bq.jetty.servlets.static.params.resourceBase";
+	private static final String RESOURCE_BASE = "bq.jetty.servlets.swagger-ui-static.params.resourceBase";
+	private static final String PATH_INFO_ONLY = "bq.jetty.servlets.swagger-ui-static.params.pathInfoOnly";
 
     @Override
     public void configure(Binder binder) {
-        URL resource = this.getClass().getClassLoader().getResource("swagger/");
-		BQCoreModule.extend(binder).setProperty(RESOURCE_BASE, resource.toString());
-		JettyModule.extend(binder).addMappedServlet(new TypeLiteral<MappedServlet<SwaggerUiMustacheServlet>>(){});
-        JettyModule.extend(binder).addStaticServlet("static", "/static/*");
+
+        URL resource = getClass().getClassLoader().getResource("swagger-ui/static/");
+        BQCoreModule.extend(binder)
+				.setProperty(RESOURCE_BASE, resource.toString())
+				.setProperty(PATH_INFO_ONLY, "true");
+
+		JettyModule.extend(binder)
+				.addMappedServlet(new TypeLiteral<MappedServlet<SwaggerUiMustacheServlet>>(){})
+				// TODO: this should follow SwaggerUiMustacheServlet URL pattern
+				.addStaticServlet("swagger-ui-static", "/swagger-ui/static/*");
     }
 
 	@Provides
