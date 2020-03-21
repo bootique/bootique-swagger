@@ -89,8 +89,8 @@ Bootique integrates Swagger browser UI to be able to view and interact with the 
 </dependency>
 ```
 
-To view the model from the same app (e.g. via `bootique-swagger-openapi` as described above), add the following
-configuration:
+To view the model from the same app (e.g. the one added via `bootique-swagger-openapi` as described above), add the
+relative path of the model resource to the app configuration:
 ```yml
 swaggerui:
   specPath: openapi.json
