@@ -24,53 +24,85 @@ import io.bootique.annotation.BQConfigProperty;
 import io.bootique.jetty.MappedServlet;
 import io.bootique.swagger.ui.mustache.SwaggerUiMustacheServlet;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
- * @since  1.0.RC1
+ * @since 1.0.RC1
  */
 @BQConfig
 public class SwaggerUiFactory {
 
-	private String specUrl;
-	private String urlPattern;
-	private String specFile;
+    private String specUrl;
+    private String specPath;
+    private String urlPattern;
 
-	public String getSpecUrl() {
-		return specUrl;
-	}
+    private static String getBaseUrl(HttpServletRequest request) {
+        String scheme = request.getScheme();
+        String host = request.getServerName();
+        int port = request.getServerPort();
+        String contextPath = request.getContextPath();
 
-	@BQConfigProperty
-	public void setSpecUrl(String specUrl) {
-			this.specUrl = specUrl;
-	}
+        String portExp = ("http".equals(scheme) && port == 80) || ("https".equals(scheme) && port == 443)
+                ? ""
+                : ":" + port;
+        return scheme + "://" + host + portExp + contextPath;
+    }
 
-	/**
-	 * @since 2.0
-	 */
-	@BQConfigProperty
-	public void setUrlPattern(String urlPattern) {
-		this.urlPattern = urlPattern;
-	}
+    @BQConfigProperty("A full URL of the JSON/YAML descriptor resource")
+    public void setSpecUrl(String specUrl) {
+        this.specUrl = specUrl;
+    }
 
-	public String getSpecFile() {
-		return specFile;
-	}
+    /**
+     * @since 2.0
+     */
+    @BQConfigProperty
+    public void setUrlPattern(String urlPattern) {
+        this.urlPattern = urlPattern;
+    }
 
-	@BQConfigProperty
-	public void setSpecFile(String specFile) {
-		this.specFile = specFile;
-	}
+    public MappedServlet<SwaggerUiMustacheServlet> createJerseyServlet() {
+        SwaggerUiMustacheServlet servlet = new SwaggerUiMustacheServlet(specUrlResolver());
+        return new MappedServlet<>(servlet, urlPatterns(), "swagger-ui");
+    }
 
-	public MappedServlet<SwaggerUiMustacheServlet> createJerseyServlet() {
-		SwaggerUiMustacheServlet servlet = new SwaggerUiMustacheServlet(specUrl, specFile);
-		return new MappedServlet<>(servlet, urlPatterns(), "swagger-ui");
-	}
+    private Function<HttpServletRequest, String> specUrlResolver() {
 
-	private Set<String> urlPatterns() {
-		String pattern = this.urlPattern != null ? this.urlPattern : "/swagger-ui";
-		return Collections.singleton(pattern);
-	}
+        // use full URL
+        if (specUrl != null) {
+            return r -> specUrl;
+        }
 
+        // resolve relative to the current app context
+        String specPath = getSpecPath();
+        return r -> getBaseUrl(r) + specPath;
+    }
+
+    private String getSpecPath() {
+        if (specPath == null) {
+            return "/swagger.json";
+        }
+
+        if (specPath.startsWith("/")) {
+            return specPath;
+        }
+
+        return "/" + specPath;
+    }
+
+    /**
+     * @since 2.0
+     */
+    @BQConfigProperty("A path of the JSON/YAML descriptor resource relative to this app context. Ignored if 'specUrl' is set.")
+    public void setSpecPath(String specPath) {
+        this.specPath = specPath;
+    }
+
+    private Set<String> urlPatterns() {
+        String pattern = this.urlPattern != null ? this.urlPattern : "/swagger-ui";
+        return Collections.singleton(pattern);
+    }
 }

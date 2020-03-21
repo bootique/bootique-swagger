@@ -28,74 +28,56 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.io.Reader;
 import java.net.URL;
+import java.util.function.Function;
 
 /**
- * @since  1.0.RC1
+ * @since 1.0.RC1
  */
 public class SwaggerUiMustacheServlet extends HttpServlet {
 
-	private String url;
-	private String specFile;
-	private MustacheFactory mustacheFactory;
+    private Function<HttpServletRequest, String> specUrlResolver;
+    private MustacheFactory mustacheFactory;
 
-	public SwaggerUiMustacheServlet( String url) {
-		this.url = url;
-		this.mustacheFactory = new DefaultMustacheFactory();
-	}
+    public SwaggerUiMustacheServlet(Function<HttpServletRequest, String> specUrlResolver) {
+        this.mustacheFactory = new DefaultMustacheFactory();
+        this.specUrlResolver = specUrlResolver;
+    }
 
-	public SwaggerUiMustacheServlet( String url, String specFile) {
-		this(url);
-		this.specFile = specFile;
-	}
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String url = specUrlResolver.apply(request);
+        Model swaggerUiModel = new Model(url);
 
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		PrintWriter out = response.getWriter();
-		Model swaggerUiModel = new Model(url != null ? url : getBaseUrl(request) + (specFile != null ? "/" + specFile : "/swagger.json"));
-		Mustache mustache = compile();
+        // TODO: compile once, not on every request
+        Mustache mustache = compile();
+        mustache.execute(response.getWriter(), swaggerUiModel).flush();
+    }
 
-		mustache.execute(out, swaggerUiModel).flush();
-	}
+    Mustache compile() {
 
-	Mustache compile() {
+        Reader reader = null;
 
-		Reader reader = null;
+        URL templateUrl = getClass().getClassLoader().getResource("swagger-ui/index.mustache");
+        try {
+            reader = new InputStreamReader(templateUrl.openStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return mustacheFactory.compile(reader, "index.mustache");
+    }
 
-		URL templateUrl = getClass().getClassLoader().getResource("swagger-ui/index.mustache");
-		try {
-			reader = new InputStreamReader(templateUrl.openStream());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return mustacheFactory.compile(reader, "index.mustache");
-	}
+    private static class Model {
 
-	public static String getBaseUrl(HttpServletRequest request) {
-		String scheme = request.getScheme();
-		String host = request.getServerName();
-		int port = request.getServerPort();
-		String contextPath = request.getContextPath();
+        private String url;
 
-		String portExp = ("http".equals(scheme) && port == 80) || ("https".equals(scheme) && port == 443)
-				? ""
-				: ":" + port;
-		return scheme + "://" + host + portExp + contextPath;
-	}
+        public Model(String url) {
+            this.url = url;
+        }
 
-	private static class Model {
-
-		private String url;
-
-		public Model(String url) {
-			this.url = url;
-		}
-
-		String getUrl() {
-			return url;
-		}
-
-	}
+        String getUrl() {
+            return url;
+        }
+    }
 }

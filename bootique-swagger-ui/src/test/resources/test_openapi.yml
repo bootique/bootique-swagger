@@ -14,4 +14,4 @@
 # limitations under the License.
 
 swaggerui:
-  specFile: "openapi.json"
+  specPath: "openapi.json"
