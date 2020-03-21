@@ -84,9 +84,9 @@ A more complex workflow is when you have one or more API specifications, generat
 endpoints), and then need to combine them together and/or extend them with extra app-specific fragments. So essentially
 going from specification(s) to code and then back to a single specification ("Spec-Code-Spec").
 
-Everything described in the "Code-First" section above applies to the last step (code to spec), but Going from spec to
-code (the first step in this workflow) is outside the responsibility of `bootique-swagger-openapi` and is handled by a
-third-party code generator.
+Everything described in the "Code-First" section above is fully applicable to the last step of this workflow
+(i.e. going from code to spec), but the first step (going from spec(s) to code) is not handled by
+`bootique-swagger-openapi` and requires a third-party code generator.
 
 There are various code generators available (such as
 [openapi-generator](https://github.com/OpenAPITools/openapi-generator), but as of this writing (March 2020), most do not
