@@ -20,6 +20,7 @@
 package io.bootique.swagger.ui;
 
 import io.bootique.jersey.JerseyModule;
+import io.bootique.swagger.SwaggerModuleProvider;
 import io.bootique.test.junit.BQTestFactory;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -37,7 +38,7 @@ public class SwaggerUiDefaultLocationIT extends SwaggerUiBaseIT {
     @BeforeClass
     public static void beforeClass() {
         TEST_FACTORY.app("-s")
-                .module(new io.bootique.swagger.SwaggerModuleProvider())
+                .module(new SwaggerModuleProvider())
                 .module(new SwaggerUiModuleProvider())
                 .module(b -> JerseyModule.extend(b).addResource(TestApi.class))
                 .run();

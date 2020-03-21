@@ -28,12 +28,12 @@ import javax.ws.rs.core.Response;
 
 import static org.junit.Assert.assertEquals;
 
-public class SwaggerUiCustomLocationIT extends SwaggerUiBaseIT {
+public class SwaggerUiCustomUILocationIT extends SwaggerUiBaseIT {
 
 	@BeforeClass
 	public static void beforeClass() {
 		TEST_FACTORY.app("-s")
-				.args("-c", "classpath:test.yml")
+				.args("-c", "classpath:test-customUrlPattern.yml")
 				.module(new SwaggerModuleProvider())
 				.module(new SwaggerUiModuleProvider())
 				.module(b -> JerseyModule.extend(b).addResource(TestApi.class))
@@ -42,9 +42,9 @@ public class SwaggerUiCustomLocationIT extends SwaggerUiBaseIT {
 
 	@Test
 	public void testApi_Console() {
-		Response r = BASE_TARGET.path("/swagger").request().get();
+		Response r = BASE_TARGET.path("/swaggerui").request().get();
 		assertEquals(200, r.getStatus());
-		assertEqualsToResourceContents("swagger-response2.html", r.readEntity(String.class));
+		assertEqualsToResourceContents("swagger-response1.html", r.readEntity(String.class));
 	}
 
 }
