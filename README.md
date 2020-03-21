@@ -105,7 +105,7 @@ There are also options to integrate this in Maven.
 
 ### Web UI
 
-Bootique integrates Swagger browser UI to be able to view and interact with the API models:
+Bootique integrates Swagger browser UI to be able to view and interact with the API specs:
 
 ```xml
 <dependency>
@@ -114,13 +114,13 @@ Bootique integrates Swagger browser UI to be able to view and interact with the 
 </dependency>
 ```
 
-To view the model from the same app (e.g. the one added via `bootique-swagger-openapi` as described above), add the
+To view the spec from the same app (e.g. the one added via `bootique-swagger-openapi` as described above), add the
 relative path of the model resource to the app configuration:
 ```yml
 swaggerui:
   specPath: openapi.json
 ```
-To view the model from another app, configure model public URL like this:
+To view the spec from another app, configure model public URL like this:
 ```yml
 swaggerui:
   specUrl: https://example.org/path/to/openapi.json
