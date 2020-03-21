@@ -22,7 +22,7 @@ package io.bootique.swagger.ui;
 import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
 import io.bootique.jetty.MappedServlet;
-import io.bootique.swagger.ui.mustache.SwaggerUiMustacheServlet;
+import io.bootique.swagger.ui.mustache.SwaggerUiServlet;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
@@ -64,8 +64,8 @@ public class SwaggerUiFactory {
         this.urlPattern = urlPattern;
     }
 
-    public MappedServlet<SwaggerUiMustacheServlet> createJerseyServlet() {
-        SwaggerUiMustacheServlet servlet = new SwaggerUiMustacheServlet(specUrlResolver());
+    public MappedServlet<SwaggerUiServlet> createJerseyServlet() {
+        SwaggerUiServlet servlet = new SwaggerUiServlet(specUrlResolver());
         return new MappedServlet<>(servlet, urlPatterns(), "swagger-ui");
     }
 

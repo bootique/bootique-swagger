@@ -33,14 +33,14 @@ import java.net.URL;
 import java.util.function.Function;
 
 /**
- * @since 1.0.RC1
+ * @since 2.0
  */
-public class SwaggerUiMustacheServlet extends HttpServlet {
+public class SwaggerUiServlet extends HttpServlet {
 
     private Function<HttpServletRequest, String> specUrlResolver;
     private MustacheFactory mustacheFactory;
 
-    public SwaggerUiMustacheServlet(Function<HttpServletRequest, String> specUrlResolver) {
+    public SwaggerUiServlet(Function<HttpServletRequest, String> specUrlResolver) {
         this.mustacheFactory = new DefaultMustacheFactory();
         this.specUrlResolver = specUrlResolver;
     }

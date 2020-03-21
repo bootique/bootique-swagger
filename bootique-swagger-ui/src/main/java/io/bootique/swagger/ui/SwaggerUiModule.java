@@ -27,7 +27,7 @@ import io.bootique.di.Provides;
 import io.bootique.di.TypeLiteral;
 import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedServlet;
-import io.bootique.swagger.ui.mustache.SwaggerUiMustacheServlet;
+import io.bootique.swagger.ui.mustache.SwaggerUiServlet;
 
 import javax.inject.Singleton;
 import java.net.URL;
@@ -49,14 +49,14 @@ public class SwaggerUiModule extends ConfigModule {
 				.setProperty(PATH_INFO_ONLY, "true");
 
 		JettyModule.extend(binder)
-				.addMappedServlet(new TypeLiteral<MappedServlet<SwaggerUiMustacheServlet>>(){})
+				.addMappedServlet(new TypeLiteral<MappedServlet<SwaggerUiServlet>>(){})
 				// TODO: this should follow SwaggerUiMustacheServlet URL pattern
 				.addStaticServlet("swagger-ui-static", "/swagger-ui/static/*");
     }
 
 	@Provides
 	@Singleton
-	private MappedServlet<SwaggerUiMustacheServlet> provideJerseyServlet(ConfigurationFactory configFactory) {
+	private MappedServlet<SwaggerUiServlet> provideJerseyServlet(ConfigurationFactory configFactory) {
 		return config(SwaggerUiFactory.class, configFactory).createJerseyServlet();
 	}
 }
