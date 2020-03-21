@@ -89,14 +89,13 @@ Bootique integrates Swagger browser UI to be able to view and interact with the 
 </dependency>
 ```
 
-To access tge model built into the same app (e.g. via `bootique-swagger-openapi` as described above), add the following
-configuration to the app:
-
+To view the model from the same app (e.g. via `bootique-swagger-openapi` as described above), add the following
+configuration:
 ```yml
 swaggerui:
   specPath: openapi.json
 ```
-Alternatively you can access models via any public URL as follows:
+To view the model from another app, configure model public URL like this:
 ```yml
 swaggerui:
   specUrl: https://example.org/path/to/openapi.json
