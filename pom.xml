@@ -36,6 +36,7 @@
     <properties>
         <bootique.version>${project.version}</bootique.version>
         <swagger.version>1.5.9</swagger.version>
+        <!-- TODO: since version 2.0.7, Swagger generates "/application.wadl" sections. What are those for?  -->
         <swagger.openapi.version>2.0.6</swagger.openapi.version>
     </properties>
 
