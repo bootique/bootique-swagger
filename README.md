@@ -101,4 +101,4 @@ swaggerui:
   specUrl: https://example.org/path/to/openapi.json
 ```
 
-When you start the application, the console will be available as `/myapp/swagger-ui`. E.g. http://127.0.0.1:8080/swagger-ui/ .
+When you start the application, the console will be available at `/<appcontext>/swagger-ui`. E.g. http://127.0.0.1:8080/swagger-ui/ .
