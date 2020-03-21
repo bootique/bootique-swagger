@@ -89,7 +89,7 @@ Everything described in the "Code-First" section above is fully applicable to th
 `bootique-swagger-openapi` and requires a third-party code generator.
 
 There are various code generators available (such as
-[openapi-generator](https://github.com/OpenAPITools/openapi-generator), but as of this writing (March 2020), most do not
+[openapi-generator](https://github.com/OpenAPITools/openapi-generator)), but as of this writing (March 2020), most do not
 support OpenAPI-compatible Swagger annotations (`io.swagger.core.v3:swagger-annotations` package). The only tool that
 we found to support it is unsurprisingly coming from Swagger itself. It is
 [swagger-codegen, v.3.0.x](https://github.com/swagger-api/swagger-codegen/tree/3.0.0). You can download
