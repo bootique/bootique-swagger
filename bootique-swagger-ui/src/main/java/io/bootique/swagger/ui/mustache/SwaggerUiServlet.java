@@ -19,17 +19,12 @@
 
 package io.bootique.swagger.ui.mustache;
 
-import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
-import com.github.mustachejava.MustacheFactory;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URL;
 import java.util.function.Function;
 
 /**
@@ -38,10 +33,10 @@ import java.util.function.Function;
 public class SwaggerUiServlet extends HttpServlet {
 
     private Function<HttpServletRequest, String> specUrlResolver;
-    private MustacheFactory mustacheFactory;
+    private Mustache template;
 
-    public SwaggerUiServlet(Function<HttpServletRequest, String> specUrlResolver) {
-        this.mustacheFactory = new DefaultMustacheFactory();
+    public SwaggerUiServlet(Mustache template, Function<HttpServletRequest, String> specUrlResolver) {
+        this.template = template;
         this.specUrlResolver = specUrlResolver;
     }
 
@@ -49,23 +44,7 @@ public class SwaggerUiServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String url = specUrlResolver.apply(request);
         Model swaggerUiModel = new Model(url);
-
-        // TODO: compile once, not on every request
-        Mustache mustache = compile();
-        mustache.execute(response.getWriter(), swaggerUiModel).flush();
-    }
-
-    Mustache compile() {
-
-        Reader reader = null;
-
-        URL templateUrl = getClass().getClassLoader().getResource("swagger-ui/index.mustache");
-        try {
-            reader = new InputStreamReader(templateUrl.openStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return mustacheFactory.compile(reader, "index.mustache");
+        template.execute(response.getWriter(), swaggerUiModel).flush();
     }
 
     private static class Model {

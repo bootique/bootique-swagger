@@ -19,12 +19,18 @@
 
 package io.bootique.swagger.ui;
 
+import com.github.mustachejava.DefaultMustacheFactory;
+import com.github.mustachejava.Mustache;
 import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
 import io.bootique.jetty.MappedServlet;
 import io.bootique.swagger.ui.mustache.SwaggerUiServlet;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
 import java.util.Collections;
 import java.util.Set;
 import java.util.function.Function;
@@ -65,8 +71,17 @@ public class SwaggerUiFactory {
     }
 
     public MappedServlet<SwaggerUiServlet> createJerseyServlet() {
-        SwaggerUiServlet servlet = new SwaggerUiServlet(specUrlResolver());
+        SwaggerUiServlet servlet = new SwaggerUiServlet(compileTemplate(), specUrlResolver());
         return new MappedServlet<>(servlet, urlPatterns(), "swagger-ui");
+    }
+
+    protected Mustache compileTemplate() {
+        URL templateUrl = getClass().getClassLoader().getResource("swagger-ui/index.mustache");
+        try (Reader reader = new InputStreamReader(templateUrl.openStream())) {
+            return new DefaultMustacheFactory().compile(reader, "index.mustache");
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading Mustache template " + templateUrl, e);
+        }
     }
 
     private Function<HttpServletRequest, String> specUrlResolver() {
