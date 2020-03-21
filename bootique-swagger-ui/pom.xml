@@ -44,6 +44,11 @@
             <artifactId>compiler</artifactId>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-jaxrs2</artifactId>
+            <scope>compile</scope>
+        </dependency>
 
         <!-- Unit test dependencies -->
         <dependency>
@@ -74,6 +79,12 @@
         <dependency>
             <groupId>io.bootique.swagger</groupId>
             <artifactId>bootique-swagger</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.bootique.swagger</groupId>
+            <artifactId>bootique-openapi</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
