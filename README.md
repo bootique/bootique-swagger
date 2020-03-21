@@ -82,11 +82,13 @@ Now, when you run the app, you should be able to access the specs at the URLs si
 
 A more complex workflow is when you have one or more API specifications, generate Java code from them (models, API
 endpoints), and then need to combine them together and/or extend them with extra app-specific fragments. So essentially
-going from specification(s) to code and then back to a single specification ("Spec-Code-Spec"). Everything described in
-the "Code-First" section above applies to the last step (code to spec).
+going from specification(s) to code and then back to a single specification ("Spec-Code-Spec").
 
-Going from spec to code is outside the scope of `bootique-swagger-openapi`, yet let us mention some ideas on code
-generation. There are various code generators available (e.g.
+Everything described in the "Code-First" section above applies to the last step (code to spec), but Going from spec to
+code (the first step in this workflow) is outside the responsibility of `bootique-swagger-openapi` and is handled by a
+third-party code generator.
+
+There are various code generators available (such as
 [openapi-generator](https://github.com/OpenAPITools/openapi-generator), but as of this writing (March 2020), most do not
 support OpenAPI-compatible Swagger annotations (`io.swagger.core.v3:swagger-annotations` package). The only tool that
 we found to support it is unsurprisingly coming from Swagger itself. It is
