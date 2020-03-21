@@ -60,20 +60,20 @@ Include ```bootique-bom```:
 
 ### "Code-First" - exposing annotated endpoints
 
-Swagger can generate application model dynamically based purely on the endpoint class/method signatures and JAX-RS
-annotations (such as `@Path`, `@GET`, etc.). You would usually enrich this model via a few mechanisms:
+Swagger can generate application API specification dynamically based purely on the endpoint class/method signatures and JAX-RS
+annotations (such as `@Path`, `@GET`, etc.). Additionally you would enrich this model via the following mechanisms:
 
-* [Swagger annotations](https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Annotations).
+* [Swagger annotations](https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Annotations)
 * [Static API descriptors](https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Integration-and-Configuration#known-locations)
 
-To expose the API model as both JSON and YAML, add the following dependency:
+To expose the final specification as JSON and YAML resources, add the following dependency:
 ```xml
 <dependency>
 	<groupId>io.bootique.swagger</groupId>
 	<artifactId>bootique-swagger-openapi</artifactId>
 </dependency>
 ```
-Now, when you run the app, you should be able to access the models at URLs similar to these:
+Now, when you run the app, you should be able to access the specs at the URLs similar to these:
 
 * http://127.0.0.1:8080/swagger.json
 * http://127.0.0.1:8080/swagger.yaml
