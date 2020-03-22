@@ -32,6 +32,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+import java.lang.reflect.Method;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -66,6 +67,13 @@ public class SwaggerOpenapiModuleIT {
         Response r = BASE_TARGET.path("/openapi.json").request().get();
         assertEquals(200, r.getStatus());
         assertEqualsToResourceContents("response1.json", r.readEntity(String.class) + "\n");
+    }
+
+    @Test
+    public void testDebugTravisFailures() {
+        for(Method m : TestApi.class.getMethods()) {
+            System.out.println(m.getName());
+        }
     }
 
     private void assertEqualsToResourceContents(String expectedResource, String toTest) {
