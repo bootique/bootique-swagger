@@ -46,6 +46,10 @@ public class SwaggerUiFactory {
     private String urlPattern;
 
     private static String getBaseUrl(HttpServletRequest request) {
+
+        // this scheme works when Jetty is accessed directly. When running behind the proxy, it requires the proxy
+        // to pass a "Host:" header with the public host[:port] name..
+
         String scheme = request.getScheme();
         String host = request.getServerName();
         int port = request.getServerPort();

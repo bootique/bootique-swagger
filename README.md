@@ -120,10 +120,20 @@ relative path of the model resource to the app configuration:
 swaggerui:
   specPath: openapi.json
 ```
-To view the spec from another app, configure model public URL like this:
+When you start the application, the console will be available at `/<appcontext>/swagger-ui`. E.g.
+http://127.0.0.1:8080/swagger-ui/ .
+
+If you are _running behind a proxy_, make sure you pass the correct "Host:" header with the `host[:port]` of the proxy,
+or the browser will not be able to discover your specification endpoint and/or won't be able to invoke it properly.
+E.g. for `nginx` proxy you might use the following config:
+
+```
+proxy_set_header  Host $http_host;
+```
+
+To view a spec from another app, configure specification public URL like this:
 ```yml
 swaggerui:
   specUrl: https://example.org/path/to/openapi.json
 ```
 
-When you start the application, the console will be available at `/<appcontext>/swagger-ui`. E.g. http://127.0.0.1:8080/swagger-ui/ .
