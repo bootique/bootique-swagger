@@ -32,11 +32,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
-import java.lang.reflect.Method;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
-import java.util.Scanner;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class SwaggerOpenapiModuleIT {
 
@@ -58,7 +59,7 @@ public class SwaggerOpenapiModuleIT {
 
         Response r = BASE_TARGET.path("/openapi.yaml").request().get();
         assertEquals(200, r.getStatus());
-        assertEqualsToResourceContents("response1.yml", r.readEntity(String.class));
+        assertEqualsToResourceContents(r.readEntity(String.class), "response1.yml", "response1_alt.yml");
     }
 
     @Test
@@ -66,27 +67,42 @@ public class SwaggerOpenapiModuleIT {
 
         Response r = BASE_TARGET.path("/openapi.json").request().get();
         assertEquals(200, r.getStatus());
-        assertEqualsToResourceContents("response1.json", r.readEntity(String.class) + "\n");
+        assertEqualsToResourceContents(r.readEntity(String.class), "response1.json", "response1_alt.json");
     }
 
-    @Test
-    public void testDebugTravisFailures() {
-        for(Method m : TestApi.class.getMethods()) {
-            System.out.println(m.getName());
-        }
-    }
+    // allow comparison with multiple alternatives, as reflection method order seems to be JVM dependent
+    private void assertEqualsToResourceContents(String toTest, String... expectedAlternatives) {
 
-    private void assertEqualsToResourceContents(String expectedResource, String toTest) {
+        ClassLoader cl = getClass().getClassLoader();
 
-        try (Scanner scanner = new Scanner(
-                Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(expectedResource)), "UTF-8")) {
+        for (int i = 0; i < expectedAlternatives.length; i++) {
+            String expected = expectedAlternatives[i];
 
-            StringBuilder builder = new StringBuilder();
-            while (scanner.hasNextLine()) {
-                builder.append(scanner.nextLine()).append("\n");
+
+            try (InputStream in = cl.getResourceAsStream(expected)) {
+                assertNotNull(in);
+
+                // read as bytes to preserve line breaks
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                int nRead;
+                byte[] data = new byte[1024];
+                while ((nRead = in.read(data, 0, data.length)) != -1) {
+                    out.write(data, 0, nRead);
+                }
+
+                String expectedString = new String(out.toByteArray(), "UTF-8");
+
+                // don't use assert if there are still alternatives left
+                if (i < expectedAlternatives.length - 1) {
+                    if (Objects.equals(expectedString, toTest)) {
+                        break;
+                    }
+                } else {
+                    assertEquals(expectedString, toTest);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-
-            assertEquals(builder.toString(), toTest);
         }
     }
 
