@@ -74,8 +74,8 @@ To expose the final specification as JSON and YAML resources, add the following 
 ```
 Now, when you run the app, you should be able to access the specs at the URLs similar to these:
 
-* http://127.0.0.1:8080/swagger.json
-* http://127.0.0.1:8080/swagger.yaml
+* http://127.0.0.1:8080/openapi.json
+* http://127.0.0.1:8080/openapi.yaml
 
 ### "Spec-Code-Spec"
 
