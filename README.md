@@ -36,7 +36,7 @@ to produce application-specific API models.
 * `bootique-swagger-ui`: embeddable Swagger web UI to visualize and interact with API specifications. Supports both
 OpenAPI 3 and legacy Swagger 2 specifications.
 
-_TODO: the examples shows yet unreleased 2.0 API, only available as snapshots_
+_TODO: the examples below are based on the yet unreleased Bootique 2.0, and are only available as snapshots._
 
 ## Usage
 
