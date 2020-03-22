@@ -26,16 +26,15 @@ Integrates [Swagger](http://swagger.io/) REST API documentation services with Bo
 [OpenAPI 3 specification](https://swagger.io/docs/specification/about/), as well as the legacy Swagger 2 spec. Contains
 the following modules:
 
-* `bootique-swagger-openapi`: provides a REST service to dynamically generate OpenAPI specification resources as either
-JSON or YAML. Combines the information from the app API resources annotated with JAX-RS and
-[Swagger annotations](https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Annotations) with
+* `bootique-swagger-openapi`: a REST service to dynamically generate OpenAPI specification resources as either
+JSON or YAML. Combines metadata from annotated API resources in the application with
 [static API descriptors](https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Integration-and-Configuration#known-locations)
 to produce application-specific API models.
 
 * `bootique-swagger`: a legacy service generating Swagger 2 API descriptors.
 
-* `bootique-swagger-ui`: provides Swagger web UI that allows to visually inspect in-app and external API models (both
-in OpenAPI and legacy Swagger 2 formats).
+* `bootique-swagger-ui`: embeddable Swagger web UI to visualize and interact with API specifications. Supports both
+OpenAPI 3 and legacy Swagger 2 specifications.
 
 _TODO: the examples shows yet unreleased 2.0 API, only available as snapshots_
 
