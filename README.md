@@ -22,9 +22,9 @@
 
 # bootique-swagger
 
-Integrates [Swagger](http://swagger.io/) REST API documentation services into Bootique. Supports modern
-[OpenAPI specification](https://swagger.io/docs/specification/about/), as well as legacy Swagger 2. Contains the
-following modules:
+Integrates [Swagger](http://swagger.io/) REST API documentation services with Bootique. Supports modern
+[OpenAPI 3 specification](https://swagger.io/docs/specification/about/), as well as the legacy Swagger 2 spec. Contains
+the following modules:
 
 * `bootique-swagger-openapi`: provides a REST service to dynamically generate OpenAPI specification resources as either
 JSON or YAML. Combines the information from the app API resources annotated with JAX-RS and
