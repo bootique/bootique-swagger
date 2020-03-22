@@ -71,13 +71,14 @@ public class SwaggerOpenapiModuleIT {
     }
 
     // allow comparison with multiple alternatives, as reflection method order seems to be JVM dependent
+    // TODO: this is really a bug in Swagger. Maybe version > 2.0.6 can deal with it better. Also Swagger 2 spec
+    //  is not prone to this issue, even though it does the same reflection. Are they reordering explicitly?
     private void assertEqualsToResourceContents(String toTest, String... expectedAlternatives) {
 
         ClassLoader cl = getClass().getClassLoader();
 
         for (int i = 0; i < expectedAlternatives.length; i++) {
             String expected = expectedAlternatives[i];
-
 
             try (InputStream in = cl.getResourceAsStream(expected)) {
                 assertNotNull(in);
