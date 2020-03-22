@@ -17,12 +17,17 @@
  * under the License.
  */
 
-package io.bootique.swagger.ui.mustache;
+package io.bootique.swagger.openapi;
 
-/**
- * @since  1.0.RC1
- */
-public interface Template {
+import io.bootique.ConfigModule;
+import io.bootique.di.Binder;
+import io.bootique.jersey.JerseyModule;
+import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 
-	String getUrl();
+public class SwaggerOpenapiModule extends ConfigModule {
+
+    @Override
+    public void configure(Binder binder) {
+        JerseyModule.extend(binder).addPackage(OpenApiResource.class);
+    }
 }

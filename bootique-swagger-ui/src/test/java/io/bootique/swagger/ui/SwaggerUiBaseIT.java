@@ -45,7 +45,7 @@ public class SwaggerUiBaseIT {
 
             StringBuilder builder = new StringBuilder();
             while (scanner.hasNextLine()) {
-                builder.append(scanner.nextLine()).append('\n');
+                builder.append(scanner.nextLine()).append(System.lineSeparator());
             }
 
             assertEquals(builder.toString(), toTest);

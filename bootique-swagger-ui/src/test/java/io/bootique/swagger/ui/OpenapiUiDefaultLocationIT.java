@@ -20,35 +20,31 @@
 package io.bootique.swagger.ui;
 
 import io.bootique.jersey.JerseyModule;
-import io.bootique.swagger.SwaggerModuleProvider;
-import io.bootique.test.junit.BQTestFactory;
+import io.bootique.swagger.openapi.SwaggerOpenapiModuleProvider;
 import org.junit.BeforeClass;
-import org.junit.ClassRule;
 import org.junit.Test;
 
 import javax.ws.rs.core.Response;
 
 import static org.junit.Assert.assertEquals;
 
-public class SwaggerUiDefaultLocationIT extends SwaggerUiBaseIT {
+public class OpenapiUiDefaultLocationIT extends SwaggerUiBaseIT {
 
-    @ClassRule
-    public static BQTestFactory TEST_FACTORY = new BQTestFactory();
+	@BeforeClass
+	public static void beforeClass() {
+		TEST_FACTORY.app("-s")
+				.args("-c", "classpath:test_openapi.yml")
+				.module(new SwaggerOpenapiModuleProvider())
+				.module(new SwaggerUiModuleProvider())
+				.module(b -> JerseyModule.extend(b).addResource(TestApi.class))
+				.run();
+	}
 
-    @BeforeClass
-    public static void beforeClass() {
-        TEST_FACTORY.app("-s")
-                .module(new SwaggerModuleProvider())
-                .module(new SwaggerUiModuleProvider())
-                .module(b -> JerseyModule.extend(b).addResource(TestApi.class))
-                .run();
-    }
-
-    @Test
-    public void testApi_Console() {
-        Response r = BASE_TARGET.path("/swagger-ui").request().get();
-        assertEquals(200, r.getStatus());
-        assertEqualsToResourceContents("swagger-response1.html", r.readEntity(String.class));
-    }
+	@Test
+	public void testApi_Console() {
+		Response r = BASE_TARGET.path("/swagger-ui").request().get();
+		assertEquals(200, r.getStatus());
+		assertEqualsToResourceContents("openapi-response1.html", r.readEntity(String.class));
+	}
 
 }

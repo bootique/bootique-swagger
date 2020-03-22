@@ -22,16 +22,21 @@
 
 # bootique-swagger
 
-This project integrates [Swagger API](http://swagger.io/) documentation services into Bootique.
-It contains two modules:
+Integrates [Swagger](http://swagger.io/) REST API documentation services with Bootique. Supports modern
+[OpenAPI 3 specification](https://swagger.io/docs/specification/about/), as well as the legacy Swagger 2 spec. Contains
+the following modules:
 
-* `bootique-swagger`: provides a REST service to dynamically generate JSON or YAML
-file, containing Swagger model. Generation is done from JAX-RS endpoints, annotated
-with Swagger documentation annotations. I.e. it appropriate for Swagger "code-first"
-flow.
+* `bootique-swagger-openapi`: a REST service to dynamically generate OpenAPI specifications as either
+JSON or YAML. Combines metadata from annotated API resources within the application with
+[static API descriptors](https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Integration-and-Configuration#known-locations)
+to produce application-specific API specs.
 
-* `bootique-swagger-ui`: provides swagger web UI that allows to inspect
-current app Swagger API model, as well as send test requests.
+* `bootique-swagger`: a legacy service generating Swagger 2 API descriptors.
+
+* `bootique-swagger-ui`: embeddable Swagger web UI to visualize and interact with API specifications. Supports both
+OpenAPI 3 and legacy Swagger 2 specifications.
+
+_TODO: the examples below are based on the yet unreleased Bootique 2.0, and are only available as snapshots._
 
 ## Usage
 
@@ -44,7 +49,7 @@ Include ```bootique-bom```:
         <dependency>
             <groupId>io.bootique.bom</groupId>
             <artifactId>bootique-bom</artifactId>
-            <version>1.0</version>
+            <version>2.0-SNAPSHOTS</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
@@ -52,61 +57,54 @@ Include ```bootique-bom```:
 </dependencyManagement>
 ```
 
-Next we need to provide a service that returns your app API spec (aka
-`swagger.json`). This service can then be used for manual inspection of
-the API structure, or more often accessed via the Swagger web UI, as described
-further down in this document. There are a few ways to serve `swagger.json`,
-depending on your workflow. Let's look at two of them - a static file
-and dynamically generated REST resource.
+### "Code-First" - exposing annotated endpoints
 
-### Static `swagger.json`
+Swagger can generate application API specification dynamically based purely on the endpoint class/method signatures and JAX-RS
+annotations (such as `@Path`, `@GET`, etc.). And then you would "enrich" the basic specification via the following mechanisms:
 
-In this scenario, developer bundles `swagger.json` with her app and makes
-it acessible via `bootique-jetty`. There are a few ways to obtain this JSON
-file. Typically you'd write `swagger.yaml` by hand, and then convert it
-to `swagger.json` with `swagger-codegen` [tool](https://github.com/swagger-api/swagger-codegen)
-that has Maven plugin and CLI flavors. From here the steps are the same
-as with any static file that you want to expose via HTTP in a Bootique app.
-Here is one possible setup:
+* [Swagger annotations](https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Annotations)
+* [Static API descriptors](https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Integration-and-Configuration#known-locations)
 
-* Designate a "docroot" directory as a subdirectory of the project resources.
-E.g. `src/main/resources/doctroot`
-* Configure `bootique-jetty` to include the "default" servlet rooted in this
-directory:
-
-```java
-JettyModule.extend(binder).useDefaultServlet();
-BQCoreModule.extend(binder).setProperty("bq.jetty.staticResourceBase", "classpath:docroot");
-```
-
-* Put `swagger.json` under docroot (i.e. at  `src/main/resources/doctroot/swagger.json`).
-
-Start the app and verify that the JOSN is accessible. E.g. at http://127.0.0.1:8080/swagger.json
-
-### `swagger.json` Auto-Generated from Java Annotations
-
-In a typical "code-first" flow, you might manually annotate your Java
-REST resources with Swagger annotations instead of creating a static
-`swagger.json`. In this case include `bootique-swagger` dependency to
-dynamically generate the API model in runtime:
-
+To expose the final specification as JSON and YAML resources, add the following dependency:
 ```xml
 <dependency>
 	<groupId>io.bootique.swagger</groupId>
-	<artifactId>bootique-swagger</artifactId>
+	<artifactId>bootique-swagger-openapi</artifactId>
 </dependency>
 ```
+Now, when you run the app, you should be able to access the specs at the URLs similar to these:
 
-This results in two dynamic resources being added to your app, with URLs
-relative to your Jersey root URL:
+* http://127.0.0.1:8080/openapi.json
+* http://127.0.0.1:8080/openapi.yaml
 
-* `<your_rest_resources_root>/swagger.json`. E.g. http://127.0.0.1:8080/swagger.json
-* `<your_rest_resources_root>/swagger.yaml`. E.g. http://127.0.0.1:8080/swagger.yaml
+### "Spec-Code-Spec"
 
+A more complex workflow is when you have one or more API specifications, generate Java code from them (models, API
+endpoints), and then need to combine them together and/or extend them with extra app-specific fragments. So essentially
+going from specification(s) to code and then back to a single specification ("Spec-Code-Spec").
+
+Everything described in the "Code-First" section above is fully applicable to the last step of this workflow
+(i.e. going from code to spec), but the first step (going from spec(s) to code) is not handled by
+`bootique-swagger-openapi` and requires a third-party code generator.
+
+There are various code generators available (such as
+[openapi-generator](https://github.com/OpenAPITools/openapi-generator)), but as of this writing (March 2020), most do not
+support OpenAPI-compatible Swagger annotations (`io.swagger.core.v3:swagger-annotations` package). The only tool that
+we found to support it is unsurprisingly coming from Swagger itself. It is
+[swagger-codegen, v.3.0.x](https://github.com/swagger-api/swagger-codegen/tree/3.0.0). You can download
+[the jar file](https://search.maven.org/remotecontent?filepath=io/swagger/codegen/v3/swagger-codegen-cli/3.0.18/swagger-codegen-cli-3.0.18.jar)
+from Maven Central, and run the generator like this:
+
+```
+java -jar swagger-codegen-cli-3.0.18.jar generate -l jaxrs-jersey \
+    -o myproject
+    -i mymodel.yaml
+```
+There are also options to integrate this in Maven.
 
 ### Web UI
 
-To include UI console inside the app:
+Bootique integrates Swagger browser UI to be able to view and interact with the API specs:
 
 ```xml
 <dependency>
@@ -115,6 +113,26 @@ To include UI console inside the app:
 </dependency>
 ```
 
-The UI will be accessible at `your_rest_resources_root/swagger`. E.g. http://127.0.0.1:8080/swagger/ .
-The static resources of swagger ui will be accessible at `your_rest_resources_root/static`. E.g. http://127.0.0.1:8080/static/swagger-ui.css .
+To view the spec from the same app (e.g. the one added via `bootique-swagger-openapi` as described above), add the
+relative path of the model resource to the app configuration:
+```yml
+swaggerui:
+  specPath: openapi.json
+```
+When you start the application, the console will be available at `/<appcontext>/swagger-ui`. E.g.
+http://127.0.0.1:8080/swagger-ui/ .
+
+If you are running behind a proxy, make sure you pass the correct `Host` header with the `host[:port]` of the proxy,
+or the browser will not be able to discover your specification endpoint and/or won't be able to invoke it properly.
+E.g. for `nginx` proxy you might use the following config:
+
+```
+proxy_set_header  Host $http_host;
+```
+
+To view a spec from another app, configure specification public URL like this:
+```yml
+swaggerui:
+  specUrl: https://example.org/path/to/openapi.json
+```
 

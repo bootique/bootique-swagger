@@ -27,31 +27,36 @@ import io.bootique.di.Provides;
 import io.bootique.di.TypeLiteral;
 import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedServlet;
-import io.bootique.swagger.ui.mustache.SwaggerUiMustacheServlet;
+import io.bootique.swagger.ui.mustache.SwaggerUiServlet;
 
-import java.net.URL;
 import javax.inject.Singleton;
+import java.net.URL;
 
 /**
  * @since  1.0.RC1
  */
 public class SwaggerUiModule extends ConfigModule {
 
-    public static final String RESOURCE_BASE = "bq.jetty.servlets.static.params.resourceBase";
+	private static final String RESOURCE_BASE = "bq.jetty.servlets.swagger-ui-static.params.resourceBase";
+	private static final String PATH_INFO_ONLY = "bq.jetty.servlets.swagger-ui-static.params.pathInfoOnly";
 
     @Override
     public void configure(Binder binder) {
-        URL resource = this.getClass().getClassLoader().getResource("swagger/");
-		BQCoreModule.extend(binder).setProperty(RESOURCE_BASE, resource.toString());
-		JettyModule.extend(binder).addMappedServlet(new TypeLiteral<MappedServlet<SwaggerUiMustacheServlet>>(){});
-        JettyModule.extend(binder).addStaticServlet("static", "/static/*");
+
+        URL resource = getClass().getClassLoader().getResource("swagger-ui/static/");
+        BQCoreModule.extend(binder)
+				.setProperty(RESOURCE_BASE, resource.toString())
+				.setProperty(PATH_INFO_ONLY, "true");
+
+		JettyModule.extend(binder)
+				.addMappedServlet(new TypeLiteral<MappedServlet<SwaggerUiServlet>>(){})
+				// TODO: this should follow SwaggerUiMustacheServlet URL pattern
+				.addStaticServlet("swagger-ui-static", "/swagger-ui/static/*");
     }
 
 	@Provides
 	@Singleton
-	private MappedServlet<SwaggerUiMustacheServlet> provideJerseyServlet(ConfigurationFactory configFactory) {
-		return config(SwaggerUiFactory.class, configFactory)
-				.initUrlPattern("/swagger")
-				.createJerseyServlet();
+	private MappedServlet<SwaggerUiServlet> provideJerseyServlet(ConfigurationFactory configFactory) {
+		return config(SwaggerUiFactory.class, configFactory).createJerseyServlet();
 	}
 }

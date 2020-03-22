@@ -17,7 +17,6 @@
   specific language governing permissions and limitations
   under the License.
   -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
@@ -36,11 +35,14 @@
     <properties>
         <bootique.version>${project.version}</bootique.version>
         <swagger.version>1.5.9</swagger.version>
+        <!-- TODO: since version 2.0.7, Swagger generates "/application.wadl" sections. What are those for?  -->
+        <swagger.openapi.version>2.0.6</swagger.openapi.version>
     </properties>
 
     <modules>
         <module>bootique-swagger-ui</module>
         <module>bootique-swagger</module>
+        <module>bootique-swagger-openapi</module>
     </modules>
 
     <scm>
@@ -142,6 +144,21 @@
                 <groupId>org.glassfish.jersey.media</groupId>
                 <artifactId>jersey-media-multipart</artifactId>
                 <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-core</artifactId>
+                <version>${swagger.openapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-jaxrs2</artifactId>
+                <version>${swagger.openapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-jaxrs2-servlet-initializer</artifactId>
+                <version>${swagger.openapi.version}</version>
             </dependency>
         </dependencies>
 

@@ -19,42 +19,109 @@
 
 package io.bootique.swagger.ui;
 
+import com.github.mustachejava.DefaultMustacheFactory;
+import com.github.mustachejava.Mustache;
 import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
 import io.bootique.jetty.MappedServlet;
-import io.bootique.swagger.ui.mustache.SwaggerUiMustacheServlet;
+import io.bootique.swagger.ui.mustache.SwaggerUiServlet;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
 import java.util.Collections;
-import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
- * @since  1.0.RC1
+ * @since 1.0.RC1
  */
 @BQConfig
 public class SwaggerUiFactory {
 
-	private String specUrl;
-	private String urlPattern;
+    private String specUrl;
+    private String specPath;
+    private String urlPattern;
 
-	public String getSpecUrl() {
-		return specUrl;
-	}
+    private static String getBaseUrl(HttpServletRequest request) {
 
-	@BQConfigProperty
-	public void setSpecUrl(String specUrl) {
-			this.specUrl = specUrl;
-	}
+        // this scheme works when Jetty is accessed directly. When running behind the proxy, it requires the proxy
+        // to pass a "Host:" header with the public host[:port] name..
 
-	public SwaggerUiFactory initUrlPattern(String urlPattern) {
-		this.urlPattern = urlPattern;
-		return this;
-	}
+        String scheme = request.getScheme();
+        String host = request.getServerName();
+        int port = request.getServerPort();
+        String contextPath = request.getContextPath();
 
-	public MappedServlet<SwaggerUiMustacheServlet> createJerseyServlet() {
-		SwaggerUiMustacheServlet servlet = new SwaggerUiMustacheServlet(specUrl);
-		Set<String> urlPatterns = Collections.singleton(Objects.requireNonNull(urlPattern));
-		return new MappedServlet<>(servlet, urlPatterns, "swagger");
-	}
+        String portExp = ("http".equals(scheme) && port == 80) || ("https".equals(scheme) && port == 443)
+                ? ""
+                : ":" + port;
+        return scheme + "://" + host + portExp + contextPath;
+    }
 
+    @BQConfigProperty("A full URL of the JSON/YAML descriptor resource")
+    public void setSpecUrl(String specUrl) {
+        this.specUrl = specUrl;
+    }
+
+    /**
+     * @since 2.0
+     */
+    @BQConfigProperty
+    public void setUrlPattern(String urlPattern) {
+        this.urlPattern = urlPattern;
+    }
+
+    public MappedServlet<SwaggerUiServlet> createJerseyServlet() {
+        SwaggerUiServlet servlet = new SwaggerUiServlet(compileTemplate(), specUrlResolver());
+        return new MappedServlet<>(servlet, urlPatterns(), "swagger-ui");
+    }
+
+    protected Mustache compileTemplate() {
+        URL templateUrl = getClass().getClassLoader().getResource("swagger-ui/index.mustache");
+        try (Reader reader = new InputStreamReader(templateUrl.openStream())) {
+            return new DefaultMustacheFactory().compile(reader, "index.mustache");
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading Mustache template " + templateUrl, e);
+        }
+    }
+
+    private Function<HttpServletRequest, String> specUrlResolver() {
+
+        // use full URL
+        if (specUrl != null) {
+            return r -> specUrl;
+        }
+
+        // resolve relative to the current app context
+        String specPath = getSpecPath();
+        return r -> getBaseUrl(r) + specPath;
+    }
+
+    private String getSpecPath() {
+        if (specPath == null) {
+            return "/swagger.json";
+        }
+
+        if (specPath.startsWith("/")) {
+            return specPath;
+        }
+
+        return "/" + specPath;
+    }
+
+    /**
+     * @since 2.0
+     */
+    @BQConfigProperty("A path of the JSON/YAML descriptor resource relative to this app context. Ignored if 'specUrl' is set.")
+    public void setSpecPath(String specPath) {
+        this.specPath = specPath;
+    }
+
+    private Set<String> urlPatterns() {
+        String pattern = this.urlPattern != null ? this.urlPattern : "/swagger-ui";
+        return Collections.singleton(pattern);
+    }
 }

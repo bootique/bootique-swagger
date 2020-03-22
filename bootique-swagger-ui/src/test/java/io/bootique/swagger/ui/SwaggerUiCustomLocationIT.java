@@ -20,6 +20,7 @@
 package io.bootique.swagger.ui;
 
 import io.bootique.jersey.JerseyModule;
+import io.bootique.swagger.SwaggerModuleProvider;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -33,7 +34,7 @@ public class SwaggerUiCustomLocationIT extends SwaggerUiBaseIT {
 	public static void beforeClass() {
 		TEST_FACTORY.app("-s")
 				.args("-c", "classpath:test.yml")
-				.module(new io.bootique.swagger.SwaggerModuleProvider())
+				.module(new SwaggerModuleProvider())
 				.module(new SwaggerUiModuleProvider())
 				.module(b -> JerseyModule.extend(b).addResource(TestApi.class))
 				.run();
@@ -41,7 +42,7 @@ public class SwaggerUiCustomLocationIT extends SwaggerUiBaseIT {
 
 	@Test
 	public void testApi_Console() {
-		Response r = BASE_TARGET.path("/swagger").request().get();
+		Response r = BASE_TARGET.path("/swagger-ui").request().get();
 		assertEquals(200, r.getStatus());
 		assertEqualsToResourceContents("swagger-response2.html", r.readEntity(String.class));
 	}
