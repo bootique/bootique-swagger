@@ -32,10 +32,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
-import java.util.Objects;
-import java.util.Scanner;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class SwaggerModuleIT {
 
@@ -65,20 +67,28 @@ public class SwaggerModuleIT {
 
         Response r = BASE_TARGET.path("/swagger.json").request().get();
         assertEquals(200, r.getStatus());
-        assertEqualsToResourceContents("response1.json", r.readEntity(String.class) + "\n");
+        assertEqualsToResourceContents("response1.json", r.readEntity(String.class));
     }
 
     private void assertEqualsToResourceContents(String expectedResource, String toTest) {
 
-        try (Scanner scanner = new Scanner(
-                Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(expectedResource)), "UTF-8")) {
+        ClassLoader cl = getClass().getClassLoader();
 
-            StringBuilder builder = new StringBuilder();
-            while (scanner.hasNextLine()) {
-                builder.append(scanner.nextLine()).append("\n");
+        try (InputStream in = cl.getResourceAsStream(expectedResource)) {
+            assertNotNull(in);
+
+            // read as bytes to preserve line breaks
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            int nRead;
+            byte[] data = new byte[1024];
+            while ((nRead = in.read(data, 0, data.length)) != -1) {
+                out.write(data, 0, nRead);
             }
 
-            assertEquals(builder.toString(), toTest);
+            String expectedString = new String(out.toByteArray(), "UTF-8");
+            assertEquals(expectedString, toTest);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

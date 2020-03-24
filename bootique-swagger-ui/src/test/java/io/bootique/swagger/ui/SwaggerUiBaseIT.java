@@ -19,7 +19,9 @@
 
 package io.bootique.swagger.ui;
 
-import java.util.Scanner;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -31,6 +33,7 @@ import io.swagger.annotations.Api;
 import org.junit.ClassRule;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class SwaggerUiBaseIT {
 
@@ -40,15 +43,24 @@ public class SwaggerUiBaseIT {
     static WebTarget BASE_TARGET = ClientBuilder.newClient().target("http://127.0.0.1:8080/");
 
     void assertEqualsToResourceContents(String expectedResource, String toTest) {
-        try (Scanner scanner = new Scanner(getClass().getClassLoader()
-                .getResourceAsStream(expectedResource), "UTF-8")) {
 
-            StringBuilder builder = new StringBuilder();
-            while (scanner.hasNextLine()) {
-                builder.append(scanner.nextLine()).append(System.lineSeparator());
+        ClassLoader cl = getClass().getClassLoader();
+
+        try (InputStream in = cl.getResourceAsStream(expectedResource)) {
+            assertNotNull(in);
+
+            // read as bytes to preserve line breaks
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            int nRead;
+            byte[] data = new byte[1024];
+            while ((nRead = in.read(data, 0, data.length)) != -1) {
+                out.write(data, 0, nRead);
             }
 
-            assertEquals(builder.toString(), toTest);
+            String expectedString = new String(out.toByteArray(), "UTF-8");
+            assertEquals(expectedString, toTest);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
