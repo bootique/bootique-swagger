@@ -33,30 +33,33 @@ import javax.inject.Singleton;
 import java.net.URL;
 
 /**
- * @since  1.0.RC1
+ * @since 1.0.RC1
  */
 public class SwaggerUiModule extends ConfigModule {
 
-	private static final String RESOURCE_BASE = "bq.jetty.servlets.swagger-ui-static.params.resourceBase";
-	private static final String PATH_INFO_ONLY = "bq.jetty.servlets.swagger-ui-static.params.pathInfoOnly";
+    private static final String RESOURCE_BASE = "bq.jetty.servlets.swagger-ui-static.params.resourceBase";
+    private static final String PATH_INFO_ONLY = "bq.jetty.servlets.swagger-ui-static.params.pathInfoOnly";
 
     @Override
     public void configure(Binder binder) {
 
         URL resource = getClass().getClassLoader().getResource("swagger-ui/static/");
         BQCoreModule.extend(binder)
-				.setProperty(RESOURCE_BASE, resource.toString())
-				.setProperty(PATH_INFO_ONLY, "true");
+                .setProperty(RESOURCE_BASE, resource.toString())
+                // "pathInfoOnly = true" ensures that the part of the URL matching the servlet path (i.e. "/swagger-ui"
+                // in our case) is not included in the file path when resolving a static resource.
+                .setProperty(PATH_INFO_ONLY, "true");
 
-		JettyModule.extend(binder)
-				.addMappedServlet(new TypeLiteral<MappedServlet<SwaggerUiServlet>>(){})
-				// TODO: this should follow SwaggerUiMustacheServlet URL pattern
-				.addStaticServlet("swagger-ui-static", "/swagger-ui/static/*");
+        JettyModule.extend(binder)
+                .addMappedServlet(new TypeLiteral<MappedServlet<SwaggerUiServlet>>() {
+                })
+                // TODO: this should follow SwaggerUiMustacheServlet URL pattern
+                .addStaticServlet("swagger-ui-static", "/swagger-ui/static/*");
     }
 
-	@Provides
-	@Singleton
-	private MappedServlet<SwaggerUiServlet> provideJerseyServlet(ConfigurationFactory configFactory) {
-		return config(SwaggerUiFactory.class, configFactory).createJerseyServlet();
-	}
+    @Provides
+    @Singleton
+    private MappedServlet<SwaggerUiServlet> provideJerseyServlet(ConfigurationFactory configFactory) {
+        return config(SwaggerUiFactory.class, configFactory).createJerseyServlet();
+    }
 }
