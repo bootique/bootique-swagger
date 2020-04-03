@@ -21,16 +21,16 @@ package io.bootique.swagger.ui;
 
 import io.bootique.jersey.JerseyModule;
 import io.bootique.swagger.openapi.SwaggerOpenapiModuleProvider;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import javax.ws.rs.core.Response;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class OpenapiUiDefaultLocationIT extends SwaggerUiBaseIT {
 
-	@BeforeClass
+	@BeforeAll
 	public static void beforeClass() {
 		TEST_FACTORY.app("-s")
 				.args("-c", "classpath:test_openapi.yml")

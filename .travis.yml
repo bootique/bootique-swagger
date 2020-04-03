@@ -20,6 +20,9 @@ jdk:
   - oraclejdk11
   - openjdk-ea
 
+addons:
+  chrome: stable
+
 script:
   - mvn clean verify
 

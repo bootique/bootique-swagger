@@ -28,17 +28,17 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
-import io.bootique.test.junit.BQTestFactory;
+import io.bootique.test.junit5.BQTestClassFactory;
 import io.swagger.annotations.Api;
-import org.junit.ClassRule;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SwaggerUiBaseIT {
 
-    @ClassRule
-    public static BQTestFactory TEST_FACTORY = new BQTestFactory();
+    @RegisterExtension
+    public static BQTestClassFactory TEST_FACTORY = new BQTestClassFactory();
 
     static WebTarget BASE_TARGET = ClientBuilder.newClient().target("http://127.0.0.1:8080/");
 

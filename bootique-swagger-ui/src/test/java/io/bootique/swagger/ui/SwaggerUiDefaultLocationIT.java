@@ -21,21 +21,22 @@ package io.bootique.swagger.ui;
 
 import io.bootique.jersey.JerseyModule;
 import io.bootique.swagger.SwaggerModuleProvider;
-import io.bootique.test.junit.BQTestFactory;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
+import io.bootique.test.junit5.BQTestClassFactory;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import javax.ws.rs.core.Response;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class SwaggerUiDefaultLocationIT extends SwaggerUiBaseIT {
 
-    @ClassRule
-    public static BQTestFactory TEST_FACTORY = new BQTestFactory();
+    @RegisterExtension
+    public static BQTestClassFactory TEST_FACTORY = new BQTestClassFactory();
 
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass() {
         TEST_FACTORY.app("-s")
                 .module(new SwaggerModuleProvider())
