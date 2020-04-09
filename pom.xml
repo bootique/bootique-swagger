@@ -37,7 +37,9 @@
         <swagger.version>1.5.9</swagger.version>
         <!-- TODO: since version 2.0.7, Swagger generates "/application.wadl" sections. What are those for?  -->
         <swagger.openapi.version>2.0.6</swagger.openapi.version>
+        <mustache.version>0.9.1</mustache.version>
         <selenium.version>4.0.0-alpha-1</selenium.version>
+        <selenium-jupiter.version>3.3.4</selenium-jupiter.version>
     </properties>
 
     <modules>
@@ -127,6 +129,11 @@
                 <version>${bootique.version}</version>
             </dependency>
             <dependency>
+                <groupId>io.bootique</groupId>
+                <artifactId>bootique-test-junit5</artifactId>
+                <version>${bootique.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>io.bootique.jersey</groupId>
                 <artifactId>bootique-jersey</artifactId>
                 <version>${bootique.version}</version>
@@ -160,6 +167,21 @@
                 <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-jaxrs2-servlet-initializer</artifactId>
                 <version>${swagger.openapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium-java</artifactId>
+                <version>${selenium.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.bonigarcia</groupId>
+                <artifactId>selenium-jupiter</artifactId>
+                <version>${selenium-jupiter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.spullara.mustache.java</groupId>
+                <artifactId>compiler</artifactId>
+                <version>${mustache.version}</version>
             </dependency>
         </dependencies>
 
