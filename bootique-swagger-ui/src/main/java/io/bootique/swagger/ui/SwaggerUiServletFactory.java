@@ -66,7 +66,9 @@ public class SwaggerUiServletFactory {
         Set<String> urlPatterns = new HashSet<>();
         models.values().stream().map(SwaggerUIServletModel::getUrlPattern).forEach(urlPatterns::add);
 
-        SwaggerUiServlet servlet = new SwaggerUiServlet(compileTemplate(), models);
+        URL resourceBase = getClass().getClassLoader().getResource("io/bootique/swagger/ui/docroot/");
+
+        SwaggerUiServlet servlet = new SwaggerUiServlet(resourceBase.toString(), compileTemplate(), models);
         return new MappedServlet<>(servlet, urlPatterns, "swagger-ui");
     }
 

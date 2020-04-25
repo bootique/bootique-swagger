@@ -29,7 +29,6 @@ import io.bootique.jetty.MappedServlet;
 import io.bootique.type.TypeRef;
 
 import javax.inject.Singleton;
-import java.net.URL;
 import java.util.Map;
 
 /**
@@ -37,19 +36,8 @@ import java.util.Map;
  */
 public class SwaggerUiModule extends ConfigModule {
 
-    private static final String RESOURCE_BASE = "bq.jetty.servlets.swagger-ui.params.resourceBase";
-    private static final String PATH_INFO_ONLY = "bq.jetty.servlets.swagger-ui.params.pathInfoOnly";
-
     @Override
     public void configure(Binder binder) {
-
-        URL resource = getClass().getClassLoader().getResource("io/bootique/swagger/ui/docroot/");
-        JettyModule.extend(binder)
-                .setServletParam("swagger-ui", "resourceBase", resource.toString())
-                // "pathInfoOnly = true" ensures that the part of the URL matching the servlet path
-                // ("/swagger-ui" in our case) is not included in the file path when resolving a static resource.
-                .setServletParam("swagger-ui", "pathInfoOnly", "true");
-
         JettyModule.extend(binder).addMappedServlet(new TypeLiteral<MappedServlet<SwaggerUiServlet>>() {
         });
     }

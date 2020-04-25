@@ -20,7 +20,7 @@
 package io.bootique.swagger.ui;
 
 import com.github.mustachejava.Mustache;
-import io.bootique.jetty.servlet.BQDefaultServlet;
+import io.bootique.jetty.servlet.StaticServlet;
 import io.bootique.swagger.ui.model.SwaggerUIServletModel;
 import io.bootique.swagger.ui.model.SwaggerUIServletTemplateModel;
 
@@ -33,18 +33,31 @@ import java.util.Map;
 /**
  * @since 2.0
  */
-public class SwaggerUiServlet extends BQDefaultServlet {
+// TODO: delegate to the StaticServlet instead of inheriting from it?
+public class SwaggerUiServlet extends StaticServlet {
+
+    static final String PATH_INFO_ONLY_PARAMETER = "pathInfoOnly";
 
     private Mustache template;
     private Map<String, SwaggerUIServletModel> models;
 
-    public SwaggerUiServlet(Mustache template, Map<String, SwaggerUIServletModel> models) {
+    public SwaggerUiServlet(String resourceBase, Mustache template, Map<String, SwaggerUIServletModel> models) {
+        super(resourceBase);
         this.template = template;
         this.models = models;
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public String getInitParameter(String name) {
+
+        // "pathInfoOnly = true" ensures that the part of the URL matching the servlet path
+        // ("/swagger-ui" in our case) is not included in the file path when resolving a static resource.
+
+        return PATH_INFO_ONLY_PARAMETER.equals(name) ? "true" : super.getInitParameter(name);
+    }
+
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         String pathInfo = request.getPathInfo();
         if (pathInfo != null && !"/".equals(pathInfo)) {
