@@ -19,18 +19,18 @@
 
 package io.bootique.swagger.ui;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import io.bootique.test.junit5.BQTestClassFactory;
+import io.swagger.annotations.Api;
+import org.junit.jupiter.api.extension.RegisterExtension;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
-
-import io.bootique.test.junit5.BQTestClassFactory;
-import io.swagger.annotations.Api;
-import org.junit.jupiter.api.extension.RegisterExtension;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -42,9 +42,9 @@ public class SwaggerUiBaseIT {
 
     static WebTarget BASE_TARGET = ClientBuilder.newClient().target("http://127.0.0.1:8080/");
 
-    void assertEqualsToResourceContents(String expectedResource, String toTest) {
+    public static void assertEqualsToResourceContents(String expectedResource, String toTest) {
 
-        ClassLoader cl = getClass().getClassLoader();
+        ClassLoader cl = SwaggerUiBaseIT.class.getClassLoader();
 
         try (InputStream in = cl.getResourceAsStream(expectedResource)) {
             assertNotNull(in);

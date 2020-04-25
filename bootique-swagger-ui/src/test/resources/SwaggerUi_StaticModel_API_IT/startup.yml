@@ -1,0 +1,8 @@
+jetty:
+  context: "/doc"
+  servlets:
+    doc:
+      params:
+        resourceBase: "classpath:doc/"
+        pathInfoOnly: true
+

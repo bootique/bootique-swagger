@@ -1,0 +1,13 @@
+openAPI:
+  info:
+    version: '1.0'
+paths:
+  /api1:
+    get:
+      summary: Test API 1
+      responses:
+        '200':
+          content:
+            text/plain:
+              schema:
+                type: string

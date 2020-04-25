@@ -89,8 +89,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-client</artifactId>
+            <groupId>io.bootique.jersey</groupId>
+            <artifactId>bootique-jersey-client</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
