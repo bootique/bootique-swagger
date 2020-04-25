@@ -36,7 +36,7 @@ import javax.ws.rs.core.Response;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DisplayName("Mix of APIs, static models and Swagger UI")
+@DisplayName("Multi-tenancy: mix of APIs, OpenAPI models and swagger-ui consoles")
 public class SwaggerUi_StaticModel_API_IT {
 
     @RegisterExtension
@@ -47,15 +47,21 @@ public class SwaggerUi_StaticModel_API_IT {
     @BeforeAll
     public static void startServer() {
 
-        // server layout:
-        // "/"          - jersey
-        // "/doc"       - static servlet
-        // "/doc/*.yml" - open API specs
+        // URL layout:
+
+        // "/"                          - Jersey root
+        // "/api*"                      - API endpoints handled by Jersey
+
+        // "/models"                    - Servlet serving OpenAPI specs
+        // "/models/api*./model.yml"    - OpenAPI specs
+
+        // "/doc/"                      - documentation root
+        // "/doc/api*"                  - swagger-ui consoles
 
         testFactory.app("-s", "-c", "classpath:SwaggerUi_StaticModel_API_IT/startup.yml")
                 .autoLoadModules()
                 .module(b -> JerseyModule.extend(b).addResource(Api1.class).addResource(Api2.class))
-                .module(b -> JettyModule.extend(b).addStaticServlet("doc", "/doc/*"))
+                .module(b -> JettyModule.extend(b).addStaticServlet("models", "/models/*"))
                 .run();
     }
 
@@ -74,12 +80,24 @@ public class SwaggerUi_StaticModel_API_IT {
     @Test
     @DisplayName("Static models available")
     public void testStaticModelsAvailable() {
-        Response r1 = target.path("doc/api1/model.yml").request().get();
+        Response r1 = target.path("models/api1/model.yml").request().get();
         assertEquals(200, r1.getStatus());
-
         SwaggerUiBaseIT.assertEqualsToResourceContents(
-                "SwaggerUi_StaticModel_API_IT/doc/api1/model.yml",
+                "SwaggerUi_StaticModel_API_IT/models/api1/model.yml",
                 r1.readEntity(String.class));
+
+        Response r2 = target.path("models/api2/model.yml").request().get();
+        assertEquals(200, r2.getStatus());
+        SwaggerUiBaseIT.assertEqualsToResourceContents(
+                "SwaggerUi_StaticModel_API_IT/models/api2/model.yml",
+                r2.readEntity(String.class));
+    }
+
+    @Test
+    @DisplayName("Swagger UI")
+    public void testMultipleSwaggerUIAvailable() {
+        Response r1 = target.path("doc/api1").request().get();
+        assertEquals(200, r1.getStatus());
     }
 
     @Path("api1")

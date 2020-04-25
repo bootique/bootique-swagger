@@ -53,7 +53,7 @@ public class SwaggerUiModule extends ConfigModule {
         JettyModule.extend(binder)
                 .addMappedServlet(new TypeLiteral<MappedServlet<SwaggerUiServlet>>() {
                 })
-                // TODO: this should follow SwaggerUiMustacheServlet URL pattern
+                // TODO: this should follow SwaggerUiServlet URL pattern to avoid polluting URL namespace
                 .addStaticServlet("swagger-ui-static", "/swagger-ui/static/*");
     }
 

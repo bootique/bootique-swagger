@@ -1,8 +1,11 @@
 jetty:
-  context: "/doc"
   servlets:
-    doc:
+    models:
       params:
-        resourceBase: "classpath:doc/"
+        # TODO: "classpath:" resourceBase
+        resourceBase: "src/test/resources/SwaggerUi_StaticModel_API_IT/models/"
         pathInfoOnly: true
 
+swaggerui:
+  urlPattern: "/doc/api1"
+  specPath: "/models/api1/model.yml"
