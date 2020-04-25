@@ -1,12 +1,13 @@
-package io.bootique.swagger.ui.selenium;
+package io.bootique.swagger.ui;
 
-import io.bootique.swagger.openapi.SwaggerOpenapiModuleProvider;
 import io.bootique.BQCoreModule;
 import io.bootique.jersey.JerseyModule;
-import io.bootique.swagger.ui.SwaggerUiModuleProvider;
+import io.bootique.swagger.openapi.SwaggerOpenapiModuleProvider;
 import io.bootique.test.junit5.BQTestClassFactory;
 import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,20 +18,25 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SeleniumExtension.class)
-public class SeleniumTest {
+public class SwaggerUi_SeleniumIT {
 
     @Options
     ChromeOptions chromeOptions = new ChromeOptions();
@@ -203,4 +209,23 @@ public class SeleniumTest {
         }
     }
 
+    @OpenAPIDefinition
+    @Path("/")
+    public static class TestApi {
+
+        @GET
+        @Produces(MediaType.APPLICATION_JSON)
+        @Operation(description = "Returns hello message")
+        public String get() {
+            return "TEST";
+        }
+
+        @POST
+        @Produces(MediaType.APPLICATION_JSON)
+        @Operation(description = "Returns hello message")
+        public String post(String request) {
+            return request;
+        }
+
+    }
 }
