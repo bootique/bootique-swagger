@@ -2,13 +2,11 @@ jetty:
   servlets:
     models:
       params:
-        # TODO: "classpath:" resourceBase
-        resourceBase: "src/test/resources/SwaggerUi_StaticModel_API_IT/models/"
+        resourceBase: "classpath:SwaggerUi_StaticModel_API_IT/models/"
         pathInfoOnly: true
     doc:
       params:
-        # TODO: "classpath:" resourceBase
-        resourceBase: "src/test/resources/SwaggerUi_StaticModel_API_IT/doc/"
+        resourceBase: "classpath:SwaggerUi_StaticModel_API_IT/doc/"
         pathInfoOnly: true
 
 swaggerui:
