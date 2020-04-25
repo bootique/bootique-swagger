@@ -19,7 +19,6 @@
 
 package io.bootique.swagger.ui;
 
-import io.bootique.BQCoreModule;
 import io.bootique.ConfigModule;
 import io.bootique.config.ConfigurationFactory;
 import io.bootique.di.Binder;
@@ -38,24 +37,21 @@ import java.util.Map;
  */
 public class SwaggerUiModule extends ConfigModule {
 
-    private static final String RESOURCE_BASE = "bq.jetty.servlets.swagger-ui-static.params.resourceBase";
-    private static final String PATH_INFO_ONLY = "bq.jetty.servlets.swagger-ui-static.params.pathInfoOnly";
+    private static final String RESOURCE_BASE = "bq.jetty.servlets.swagger-ui.params.resourceBase";
+    private static final String PATH_INFO_ONLY = "bq.jetty.servlets.swagger-ui.params.pathInfoOnly";
 
     @Override
     public void configure(Binder binder) {
 
-        URL resource = getClass().getClassLoader().getResource("swagger-ui/static/");
-        BQCoreModule.extend(binder)
-                .setProperty(RESOURCE_BASE, resource.toString())
-                // "pathInfoOnly = true" ensures that the part of the URL matching the servlet path (i.e. "/swagger-ui"
-                // in our case) is not included in the file path when resolving a static resource.
-                .setProperty(PATH_INFO_ONLY, "true");
-
+        URL resource = getClass().getClassLoader().getResource("io/bootique/swagger/ui/docroot/");
         JettyModule.extend(binder)
-                .addMappedServlet(new TypeLiteral<MappedServlet<SwaggerUiServlet>>() {
-                })
-                // TODO: this should follow SwaggerUiServlet URL pattern to avoid polluting URL namespace
-                .addStaticServlet("swagger-ui-static", "/swagger-ui/static/*");
+                .setServletParam("swagger-ui", "resourceBase", resource.toString())
+                // "pathInfoOnly = true" ensures that the part of the URL matching the servlet path
+                // ("/swagger-ui" in our case) is not included in the file path when resolving a static resource.
+                .setServletParam("swagger-ui", "pathInfoOnly", "true");
+
+        JettyModule.extend(binder).addMappedServlet(new TypeLiteral<MappedServlet<SwaggerUiServlet>>() {
+        });
     }
 
     @Provides

@@ -35,14 +35,25 @@ public class SwaggerUIServletModel {
     }
 
     public SwaggerUIServletTemplateModel createTemplateModel(HttpServletRequest request) {
-        return new SwaggerUIServletTemplateModel(getSpecUrl(request));
+        String apiUrl = getSpecUrl(request);
+        String resourcePath = getResourcePath(request);
+        return new SwaggerUIServletTemplateModel(apiUrl, resourcePath);
     }
 
     public String getUiPath() {
         return uiPath;
     }
 
+    public String getUrlPattern() {
+        return uiPath + "/*";
+    }
+
     private String getSpecUrl(HttpServletRequest request) {
         return specUrlResolver.apply(request);
+    }
+
+    private String getResourcePath(HttpServletRequest request) {
+        String context = request.getContextPath();
+        return context + uiPath + "/static";
     }
 }

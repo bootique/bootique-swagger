@@ -119,6 +119,16 @@ public class SwaggerUi_StaticModel_API_IT {
         assertTrue(body2.contains("url: \"http://127.0.0.1:8080/models/api2/model.yml\""));
     }
 
+    @Test
+    @DisplayName("Swagger UI Resources")
+    public void testMultipleSwaggerUIResourcesAvailable() {
+        Response r1 = target.path("doc/api1/static/swagger-ui.css").request().get();
+        assertEquals(200, r1.getStatus());
+
+        Response r2 = target.path("doc/api2/static/swagger-ui.css").request().get();
+        assertEquals(200, r2.getStatus());
+    }
+
     @Path("api1")
     public static class Api1 {
 

@@ -20,10 +20,11 @@
 package io.bootique.swagger.ui;
 
 import com.github.mustachejava.Mustache;
+import io.bootique.jetty.servlet.BQDefaultServlet;
 import io.bootique.swagger.ui.model.SwaggerUIServletModel;
 import io.bootique.swagger.ui.model.SwaggerUIServletTemplateModel;
 
-import javax.servlet.http.HttpServlet;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -32,19 +33,28 @@ import java.util.Map;
 /**
  * @since 2.0
  */
-public class SwaggerUiServlet extends HttpServlet {
+public class SwaggerUiServlet extends BQDefaultServlet {
 
     private Mustache template;
     private Map<String, SwaggerUIServletModel> models;
-    
+
     public SwaggerUiServlet(Mustache template, Map<String, SwaggerUIServletModel> models) {
         this.template = template;
         this.models = models;
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
+        String pathInfo = request.getPathInfo();
+        if (pathInfo != null && !"/".equals(pathInfo)) {
+            super.doGet(request, response);
+        } else {
+            doGetConsole(request, response);
+        }
+    }
+
+    protected void doGetConsole(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String servletPath = request.getServletPath();
         SwaggerUIServletModel model = models.get(servletPath);
         if (model == null) {
