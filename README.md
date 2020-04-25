@@ -117,7 +117,8 @@ To view the spec from the same app (e.g. the one added via `bootique-swagger-ope
 relative path of the model resource to the app configuration:
 ```yml
 swaggerui:
-  specPath: openapi.json
+  default:
+    specPath: openapi.json
 ```
 When you start the application, the console will be available at `/<appcontext>/swagger-ui`. E.g.
 http://127.0.0.1:8080/swagger-ui/ .
@@ -133,6 +134,7 @@ proxy_set_header  Host $http_host;
 To view a spec from another app, configure specification public URL like this:
 ```yml
 swaggerui:
-  specUrl: https://example.org/path/to/openapi.json
+  default:
+    specUrl: https://example.org/path/to/openapi.json
 ```
 
