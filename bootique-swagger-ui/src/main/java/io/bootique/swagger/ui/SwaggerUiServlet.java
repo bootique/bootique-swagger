@@ -17,46 +17,42 @@
  * under the License.
  */
 
-package io.bootique.swagger.ui.mustache;
+package io.bootique.swagger.ui;
 
 import com.github.mustachejava.Mustache;
+import io.bootique.swagger.ui.model.SwaggerUIServletModel;
+import io.bootique.swagger.ui.model.SwaggerUIServletTemplateModel;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.function.Function;
+import java.util.Map;
 
 /**
  * @since 2.0
  */
 public class SwaggerUiServlet extends HttpServlet {
 
-    private Function<HttpServletRequest, String> specUrlResolver;
     private Mustache template;
-
-    public SwaggerUiServlet(Mustache template, Function<HttpServletRequest, String> specUrlResolver) {
+    private Map<String, SwaggerUIServletModel> models;
+    
+    public SwaggerUiServlet(Mustache template, Map<String, SwaggerUIServletModel> models) {
         this.template = template;
-        this.specUrlResolver = specUrlResolver;
+        this.models = models;
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String url = specUrlResolver.apply(request);
-        Model swaggerUiModel = new Model(url);
-        template.execute(response.getWriter(), swaggerUiModel).flush();
-    }
 
-    private static class Model {
-
-        private String url;
-
-        public Model(String url) {
-            this.url = url;
+        String servletPath = request.getServletPath();
+        SwaggerUIServletModel model = models.get(servletPath);
+        if (model == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
         }
 
-        String getUrl() {
-            return url;
-        }
+        SwaggerUIServletTemplateModel templateModel = model.createTemplateModel(request);
+        template.execute(response.getWriter(), templateModel).flush();
     }
 }

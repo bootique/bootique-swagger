@@ -1,2 +1,3 @@
 swaggerui:
-  specPath: openapi.json
+  default:
+    specPath: openapi.json

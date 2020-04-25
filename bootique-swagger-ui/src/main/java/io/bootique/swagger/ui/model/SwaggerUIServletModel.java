@@ -16,36 +16,33 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package io.bootique.swagger.ui.model;
 
-package io.bootique.swagger.ui;
-
-import io.bootique.BQModuleProvider;
-import io.bootique.di.BQModule;
-import io.bootique.type.TypeRef;
-
-import java.lang.reflect.Type;
-import java.util.Collections;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.util.function.Function;
 
 /**
- * @since 1.0.RC1
+ * @since 2.0
  */
-public class SwaggerUiModuleProvider implements BQModuleProvider {
+public class SwaggerUIServletModel {
 
-    @Override
-    public BQModule module() {
-        return new SwaggerUiModule();
+    private Function<HttpServletRequest, String> specUrlResolver;
+    private String uiPath;
+
+    public SwaggerUIServletModel(Function<HttpServletRequest, String> specUrlResolver, String uiPath) {
+        this.specUrlResolver = specUrlResolver;
+        this.uiPath = uiPath;
     }
 
-    @Override
-    public Map<String, Type> configs() {
-
-        // TODO: config prefix is hardcoded. Refactor away from ConfigModule, and make provider
-        // generate config prefix, reusing it in metadata...
-
-        TypeRef<Map<String, SwaggerUIModelFactory>> type = new TypeRef<Map<String, SwaggerUIModelFactory>>() {
-        };
-        return Collections.singletonMap("swaggerui", type.getType());
+    public SwaggerUIServletTemplateModel createTemplateModel(HttpServletRequest request) {
+        return new SwaggerUIServletTemplateModel(getSpecUrl(request));
     }
 
+    public String getUiPath() {
+        return uiPath;
+    }
+
+    private String getSpecUrl(HttpServletRequest request) {
+        return specUrlResolver.apply(request);
+    }
 }

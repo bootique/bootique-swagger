@@ -35,6 +35,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("Multi-tenancy: mix of APIs, OpenAPI models and swagger-ui consoles")
 public class SwaggerUi_StaticModel_API_IT {
@@ -62,6 +63,7 @@ public class SwaggerUi_StaticModel_API_IT {
                 .autoLoadModules()
                 .module(b -> JerseyModule.extend(b).addResource(Api1.class).addResource(Api2.class))
                 .module(b -> JettyModule.extend(b).addStaticServlet("models", "/models/*"))
+                .module(b -> JettyModule.extend(b).addStaticServlet("doc", "/doc/*"))
                 .run();
     }
 
@@ -94,10 +96,27 @@ public class SwaggerUi_StaticModel_API_IT {
     }
 
     @Test
+    @DisplayName("Static docs available")
+    public void testStaticDocsAvailable() {
+        Response r = target.path("doc").request().get();
+        assertEquals(200, r.getStatus());
+        SwaggerUiBaseIT.assertEqualsToResourceContents(
+                "SwaggerUi_StaticModel_API_IT/doc/index.html",
+                r.readEntity(String.class));
+    }
+
+    @Test
     @DisplayName("Swagger UI")
     public void testMultipleSwaggerUIAvailable() {
         Response r1 = target.path("doc/api1").request().get();
         assertEquals(200, r1.getStatus());
+        String body1 = r1.readEntity(String.class);
+        assertTrue(body1.contains("url: \"http://127.0.0.1:8080/models/api1/model.yml\""));
+
+        Response r2 = target.path("doc/api2").request().get();
+        assertEquals(200, r2.getStatus());
+        String body2 = r2.readEntity(String.class);
+        assertTrue(body2.contains("url: \"http://127.0.0.1:8080/models/api2/model.yml\""));
     }
 
     @Path("api1")

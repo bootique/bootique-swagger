@@ -3,6 +3,7 @@
 * #16 Support for OpenAPI 3.0.x
 * #17 Configurable Swagger UI servlet mapping 
 * #18 Change default mapping for UI servlet from /swagger to /swagger-ui
+* #21 Swagger UI multitenancy
 
 ## 1.0
 

@@ -16,34 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package io.bootique.swagger.ui;
 
-import com.github.mustachejava.DefaultMustacheFactory;
-import com.github.mustachejava.Mustache;
 import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
-import io.bootique.jetty.MappedServlet;
-import io.bootique.swagger.ui.mustache.SwaggerUiServlet;
+import io.bootique.swagger.ui.model.SwaggerUIServletModel;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URL;
-import java.util.Collections;
-import java.util.Set;
 import java.util.function.Function;
 
 /**
- * @since 1.0.RC1
+ * @since 2.0
  */
-@BQConfig
-public class SwaggerUiFactory {
+@BQConfig("A Swagger UI 'console' pointing to a specific API model")
+public class SwaggerUIModelFactory {
 
     private String specUrl;
     private String specPath;
-    private String urlPattern;
+    private String uiPath;
 
     private static String getBaseUrl(HttpServletRequest request) {
 
@@ -61,31 +51,27 @@ public class SwaggerUiFactory {
         return scheme + "://" + host + portExp + contextPath;
     }
 
+    public SwaggerUIServletModel createModel() {
+        return new SwaggerUIServletModel(specUrlResolver(), uiPath());
+    }
+
     @BQConfigProperty("A full URL of the JSON/YAML descriptor resource")
     public void setSpecUrl(String specUrl) {
         this.specUrl = specUrl;
     }
 
-    /**
-     * @since 2.0
-     */
-    @BQConfigProperty
-    public void setUrlPattern(String urlPattern) {
-        this.urlPattern = urlPattern;
+    @BQConfigProperty("A servlet path without wildcards corresponding to the UI console for the specified model")
+    public void setUiPath(String uiPath) {
+        this.uiPath = uiPath;
     }
 
-    public MappedServlet<SwaggerUiServlet> createJerseyServlet() {
-        SwaggerUiServlet servlet = new SwaggerUiServlet(compileTemplate(), specUrlResolver());
-        return new MappedServlet<>(servlet, urlPatterns(), "swagger-ui");
+    @BQConfigProperty("A path of the JSON/YAML descriptor resource relative to this app context. Ignored if 'specUrl' is set.")
+    public void setSpecPath(String specPath) {
+        this.specPath = specPath;
     }
 
-    protected Mustache compileTemplate() {
-        URL templateUrl = getClass().getClassLoader().getResource("swagger-ui/index.mustache");
-        try (Reader reader = new InputStreamReader(templateUrl.openStream())) {
-            return new DefaultMustacheFactory().compile(reader, "index.mustache");
-        } catch (IOException e) {
-            throw new RuntimeException("Error reading Mustache template " + templateUrl, e);
-        }
+    private String uiPath() {
+        return uiPath != null ? uiPath : "/swagger-ui";
     }
 
     private Function<HttpServletRequest, String> specUrlResolver() {
@@ -96,11 +82,11 @@ public class SwaggerUiFactory {
         }
 
         // resolve relative to the current app context
-        String specPath = getSpecPath();
+        String specPath = resolveSpecPath();
         return r -> getBaseUrl(r) + specPath;
     }
 
-    private String getSpecPath() {
+    private String resolveSpecPath() {
         if (specPath == null) {
             return "/swagger.json";
         }
@@ -110,18 +96,5 @@ public class SwaggerUiFactory {
         }
 
         return "/" + specPath;
-    }
-
-    /**
-     * @since 2.0
-     */
-    @BQConfigProperty("A path of the JSON/YAML descriptor resource relative to this app context. Ignored if 'specUrl' is set.")
-    public void setSpecPath(String specPath) {
-        this.specPath = specPath;
-    }
-
-    private Set<String> urlPatterns() {
-        String pattern = this.urlPattern != null ? this.urlPattern : "/swagger-ui";
-        return Collections.singleton(pattern);
     }
 }

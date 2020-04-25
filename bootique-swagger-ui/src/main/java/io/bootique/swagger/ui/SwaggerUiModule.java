@@ -27,10 +27,11 @@ import io.bootique.di.Provides;
 import io.bootique.di.TypeLiteral;
 import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedServlet;
-import io.bootique.swagger.ui.mustache.SwaggerUiServlet;
+import io.bootique.type.TypeRef;
 
 import javax.inject.Singleton;
 import java.net.URL;
+import java.util.Map;
 
 /**
  * @since 1.0.RC1
@@ -60,6 +61,10 @@ public class SwaggerUiModule extends ConfigModule {
     @Provides
     @Singleton
     private MappedServlet<SwaggerUiServlet> provideJerseyServlet(ConfigurationFactory configFactory) {
-        return config(SwaggerUiFactory.class, configFactory).createJerseyServlet();
+
+        Map<String, SwaggerUIModelFactory> configs = config(new TypeRef<Map<String, SwaggerUIModelFactory>>() {
+        }, configFactory);
+
+        return new SwaggerUiServletFactory(configs).createServlet();
     }
 }

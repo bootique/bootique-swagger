@@ -5,7 +5,16 @@ jetty:
         # TODO: "classpath:" resourceBase
         resourceBase: "src/test/resources/SwaggerUi_StaticModel_API_IT/models/"
         pathInfoOnly: true
+    doc:
+      params:
+        # TODO: "classpath:" resourceBase
+        resourceBase: "src/test/resources/SwaggerUi_StaticModel_API_IT/doc/"
+        pathInfoOnly: true
 
 swaggerui:
-  urlPattern: "/doc/api1"
-  specPath: "/models/api1/model.yml"
+  api1:
+    uiPath: "/doc/api1"
+    specPath: "/models/api1/model.yml"
+  api2:
+    uiPath: "/doc/api2"
+    specPath: "/models/api2/model.yml"

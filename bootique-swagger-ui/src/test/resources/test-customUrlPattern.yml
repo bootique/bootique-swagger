@@ -14,4 +14,5 @@
 # limitations under the License.
 
 swaggerui:
-  urlPattern: "/swagger-uix"
+  default:
+    uiPath: "/swagger-uix"
