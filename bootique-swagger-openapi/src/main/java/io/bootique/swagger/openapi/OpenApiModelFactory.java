@@ -59,10 +59,14 @@ public class OpenApiModelFactory {
         URL spec = resolveSpec();
         URL overrideSpec = resolveOverrideSpec();
         boolean pretty = this.pretty;
-        String pathJson = this.pathJson;
-        String pathYaml = this.pathYaml;
+        String pathJson = normalizePath(this.pathJson);
+        String pathYaml = normalizePath(this.pathYaml);
 
         return Optional.of(new OpenApiModel(() -> createOpenApi(appProvider.get(), spec, overrideSpec), pathJson, pathYaml, pretty));
+    }
+
+    protected String normalizePath(String path) {
+        return path.startsWith("/") ? path.substring(1) : path;
     }
 
     protected OpenAPI createOpenApi(Application app, URL spec, URL overrideSpec) {
