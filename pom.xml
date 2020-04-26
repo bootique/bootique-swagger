@@ -153,6 +153,13 @@
                 <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-core</artifactId>
                 <version>${swagger.openapi.version}</version>
+                <exclusions>
+                    <!-- Jersey uses Jakarta Validation 2.x elsewhere, so exlcuding old 1.x -->
+                    <exclusion>
+                        <groupId>javax.validation</groupId>
+                        <artifactId>validation-api</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>io.swagger.core.v3</groupId>
