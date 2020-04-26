@@ -16,26 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package io.bootique.swagger.openapi;
 
 import io.bootique.jersey.JerseyModule;
+import io.bootique.swagger.openapi.config1.Test1Api;
 import io.bootique.test.junit.BQTestFactory;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 import static org.junit.Assert.assertEquals;
 
-public class SwaggerOpenapiModuleIT {
+public class Config1_YamlHeader_ScannedPackages_IT {
 
     @ClassRule
     public static final BQTestFactory TEST_FACTORY = new BQTestFactory();
@@ -43,41 +39,25 @@ public class SwaggerOpenapiModuleIT {
 
     @BeforeClass
     public static void beforeClass() {
-        TEST_FACTORY.app("-s")
-                .module(new SwaggerOpenapiModuleProvider())
-                .module(b -> JerseyModule.extend(b).addResource(TestApi.class))
+        TEST_FACTORY.app("-s", "-c", "classpath:config1/startup.yml")
+                .autoLoadModules()
+                .module(b -> JerseyModule.extend(b).addResource(Test1Api.class))
                 .run();
     }
 
     @Test
-    public void testApi_Yaml() {
+    public void testYaml() {
 
-        Response r = target.path("/openapi.yaml").request().get();
+        Response r = target.path("/s1/model.yaml").request().get();
         assertEquals(200, r.getStatus());
-        OpenApiAsserts.assertEqualsToResource(r.readEntity(String.class), "response1.yml", "response1_alt.yml");
+        OpenApiAsserts.assertEqualsToResource(r.readEntity(String.class), "config1/response.yml");
     }
 
     @Test
-    public void testApi_Json() {
+    public void testJson() {
 
-        Response r = target.path("/openapi.json").request().get();
+        Response r = target.path("/s1/model.json").request().get();
         assertEquals(200, r.getStatus());
-        OpenApiAsserts.assertEqualsToResource(r.readEntity(String.class), "response1.json", "response1_alt.json");
-    }
-
-    @OpenAPIDefinition
-    @Path("/")
-    public static class TestApi {
-
-        @GET
-        public String get() {
-            return "get_";
-        }
-
-        @GET
-        @Path("/sub/{id}")
-        public String subget(@PathParam("id") int id) {
-            return "get_" + id;
-        }
+        OpenApiAsserts.assertEqualsToResource(r.readEntity(String.class), "config1/response.json");
     }
 }

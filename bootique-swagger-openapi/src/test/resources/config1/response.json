@@ -1,0 +1,50 @@
+{
+  "openapi" : "3.0.3",
+  "info" : {
+    "title" : "This is config1/Test1Api",
+    "description" : "Test API 1 Description",
+    "version" : "0.1.2"
+  },
+  "servers" : [ {
+    "url" : "http://config1.example.com/v1",
+    "description" : "prod server"
+  }, {
+    "url" : "http://staging-config1.example.com",
+    "description" : "stage server"
+  } ],
+  "paths" : {
+    "/config1/test1" : {
+      "get" : {
+        "operationId" : "get",
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "*/*" : { }
+            }
+          }
+        }
+      },
+      "put" : {
+        "operationId" : "put",
+        "requestBody" : {
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "*/*" : { }
+            }
+          }
+        }
+      }
+    }
+  }
+}

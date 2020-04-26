@@ -38,7 +38,7 @@ import java.util.Set;
  * @since 2.0
  */
 // notice that this is not a BQConfig factory, and it is created manually,
-// as we'd like to avoid "consoles" property exposure in YAML
+// as we'd like to avoid "modelFactories" property exposure in YAML
 // TODO: some Jackson trick to derserialize this as a map?
 public class SwaggerUiServletFactory {
 

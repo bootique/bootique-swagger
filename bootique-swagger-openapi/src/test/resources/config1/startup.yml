@@ -1,0 +1,7 @@
+swaggeropenapi:
+  default:
+    pathJson: "s1/model.json"
+    pathYaml: "s1/model.yaml"
+    staticLocation: "classpath:config1/openapi-static.yml"
+    resourcePackages:
+      - "io.bootique.swagger.openapi.config1"

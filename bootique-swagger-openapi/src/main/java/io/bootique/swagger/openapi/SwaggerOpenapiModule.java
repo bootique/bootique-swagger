@@ -20,14 +20,36 @@
 package io.bootique.swagger.openapi;
 
 import io.bootique.ConfigModule;
+import io.bootique.config.ConfigurationFactory;
 import io.bootique.di.Binder;
+import io.bootique.di.Provides;
+import io.bootique.di.TypeLiteral;
 import io.bootique.jersey.JerseyModule;
-import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
+import io.bootique.jersey.MappedResource;
+import io.bootique.type.TypeRef;
+import org.glassfish.jersey.server.ResourceConfig;
+
+import javax.inject.Provider;
+import javax.inject.Singleton;
+import java.util.Map;
 
 public class SwaggerOpenapiModule extends ConfigModule {
 
     @Override
     public void configure(Binder binder) {
-        JerseyModule.extend(binder).addPackage(OpenApiResource.class);
+        JerseyModule.extend(binder).addMappedResource(new TypeLiteral<MappedResource<SwaggerOpenapiApi>>() {
+        });
+    }
+
+    @Provides
+    @Singleton
+    MappedResource<SwaggerOpenapiApi> provideOpenApiResource(
+            ConfigurationFactory configFactory,
+            Provider<ResourceConfig> appProvider) {
+
+        Map<String, OpenApiModelFactory> configs = config(new TypeRef<Map<String, OpenApiModelFactory>>() {
+        }, configFactory);
+
+        return new SwaggerOpenapiApiFactory(configs).createResource(appProvider);
     }
 }
