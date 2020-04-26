@@ -35,6 +35,10 @@ import java.util.Map;
 @Path("_this_is_a_placeholder_that_will_be_replaced_dynamically_")
 public class SwaggerOpenapiApi {
 
+    static final String MEDIA_TYPE_JSON = MediaType.APPLICATION_JSON;
+    static final String MEDIA_TYPE_YAML= "application/yaml";
+
+
     private Map<String, OpenApiModel> models;
 
     public SwaggerOpenapiApi(Map<String, OpenApiModel> models) {
@@ -42,48 +46,42 @@ public class SwaggerOpenapiApi {
     }
 
     @GET
-    @Produces({MediaType.APPLICATION_JSON, "application/yaml"})
+    @Produces({MEDIA_TYPE_JSON, MEDIA_TYPE_YAML})
     @Operation(hidden = true)
     public Response getOpenApi(@Context UriInfo uriInfo) {
 
         String path = uriInfo.getPath();
-        OpenApiModel oai = models.get(path);
-        if (oai == null) {
+        OpenApiModel model = models.get(path);
+        if (model == null) {
             return Response
                     .status(Response.Status.NOT_FOUND)
                     .type(MediaType.TEXT_PLAIN_TYPE)
                     .entity("No model at " + path).build();
         }
 
-        String type = responseType(path);
+        String type = model.getMediaType(path);
         switch (type) {
-            case "json":
-                return jsonResponse(oai);
-            case "yaml":
-                return yamlResponse(oai);
+            case MEDIA_TYPE_JSON:
+                return jsonResponse(model);
+            case MEDIA_TYPE_YAML:
+                return yamlResponse(model);
             default:
                 throw new RuntimeException("Should never get here");
         }
-    }
-
-    protected String responseType(String path) {
-        // TODO: we don't need to guess... Match this with "pathJson" and "pathYaml" from the factory.
-        //  Otherwise user's failure to use ".json" extension will prevent the resource from being accessible
-        return path.endsWith(".json") ? "json" : "yaml";
     }
 
     protected Response yamlResponse(OpenApiModel model) {
 
         return Response.status(Response.Status.OK)
                 .entity(printYaml(model))
-                .type("application/yaml")
+                .type(MEDIA_TYPE_YAML)
                 .build();
     }
 
     protected Response jsonResponse(OpenApiModel model) {
         return Response.status(Response.Status.OK)
                 .entity(printJson(model))
-                .type(MediaType.APPLICATION_JSON_TYPE)
+                .type(MEDIA_TYPE_JSON)
                 .build();
     }
 

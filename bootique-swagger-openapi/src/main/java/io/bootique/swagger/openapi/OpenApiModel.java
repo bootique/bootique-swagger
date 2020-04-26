@@ -20,7 +20,7 @@ package io.bootique.swagger.openapi;
 
 import io.swagger.v3.oas.models.OpenAPI;
 
-import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
@@ -30,11 +30,13 @@ public class OpenApiModel {
 
     private boolean pretty;
     private Supplier<OpenAPI> apiSupplier;
-    private List<String> specPaths;
+    private String pathJson;
+    private String pathYaml;
     private volatile OpenAPI api;
 
-    public OpenApiModel(Supplier<OpenAPI> apiSupplier, List<String> specPaths, boolean pretty) {
-        this.specPaths = specPaths;
+    public OpenApiModel(Supplier<OpenAPI> apiSupplier, String pathJson, String pathYaml, boolean pretty) {
+        this.pathJson = pathJson;
+        this.pathYaml = pathYaml;
         this.apiSupplier = apiSupplier;
         this.pretty = pretty;
     }
@@ -43,8 +45,16 @@ public class OpenApiModel {
         return pretty;
     }
 
-    public List<String> getSpecPaths() {
-        return specPaths;
+    public String getMediaType(String path) {
+        return Objects.equals(pathJson, path) ? SwaggerOpenapiApi.MEDIA_TYPE_JSON : SwaggerOpenapiApi.MEDIA_TYPE_YAML;
+    }
+
+    public String getPathJson() {
+        return pathJson;
+    }
+
+    public String getPathYaml() {
+        return pathYaml;
     }
 
     public OpenAPI getApi() {

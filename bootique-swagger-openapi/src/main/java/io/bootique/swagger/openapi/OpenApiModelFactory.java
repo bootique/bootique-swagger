@@ -28,7 +28,6 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Provider;
 import javax.ws.rs.core.Application;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -51,35 +50,19 @@ public class OpenApiModelFactory {
 
     public Optional<OpenApiModel> createModel(Provider<? extends Application> appProvider) {
 
-        List<String> specPaths = createSpecPaths();
-        if (specPaths.isEmpty()) {
+        if (pathJson == null && pathYaml == null) {
             LOGGER.info("Neither 'pathJson' not 'pathYaml' are set. Skipping OpenApiModel creation");
             return Optional.empty();
         }
 
-        // capture immutable configs for the lambda args
+        // capture values for the lambda args
         URL spec = resolveSpec();
         URL overrideSpec = resolveOverrideSpec();
         boolean pretty = this.pretty;
+        String pathJson = this.pathJson;
+        String pathYaml = this.pathYaml;
 
-        return Optional.of(new OpenApiModel(() -> createOpenApi(appProvider.get(), spec, overrideSpec), specPaths, pretty));
-    }
-
-    protected List<String> createSpecPaths() {
-        if (pathJson == null && pathYaml == null) {
-            return Collections.emptyList();
-        }
-
-        List<String> paths = new ArrayList<>(2);
-        if (pathJson != null) {
-            paths.add(pathJson);
-        }
-
-        if (pathYaml != null) {
-            paths.add(pathYaml);
-        }
-
-        return paths;
+        return Optional.of(new OpenApiModel(() -> createOpenApi(appProvider.get(), spec, overrideSpec), pathJson, pathYaml, pretty));
     }
 
     protected OpenAPI createOpenApi(Application app, URL spec, URL overrideSpec) {

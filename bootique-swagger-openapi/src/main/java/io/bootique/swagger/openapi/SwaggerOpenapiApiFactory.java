@@ -53,10 +53,20 @@ public class SwaggerOpenapiApiFactory {
                 // skip unmapped models
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .forEach(m -> m.getSpecPaths().forEach(p -> models.put(p, m)));
+                .forEach(m -> indexByPath(models, m));
 
         SwaggerOpenapiApi resource = new SwaggerOpenapiApi(models);
         return new MappedResource<>(resource, models.keySet());
+    }
+
+    private void indexByPath(Map<String, OpenApiModel> models, OpenApiModel model) {
+        if (model.getPathJson() != null) {
+            models.put(model.getPathJson(), model);
+        }
+
+        if (model.getPathYaml() != null) {
+            models.put(model.getPathYaml(), model);
+        }
     }
 
     protected OpenApiModelFactory defaultApiFactory() {
