@@ -2,6 +2,6 @@ swaggeropenapi:
   default:
     pathJson: "s1/model.json"
     pathYaml: "s1/model.yaml"
-    baseSpec: "classpath:config1/base-spec.yml"
+    overrideSpec: "classpath:config1/override-spec.yml"
     resourcePackages:
       - "io.bootique.swagger.openapi.config1"

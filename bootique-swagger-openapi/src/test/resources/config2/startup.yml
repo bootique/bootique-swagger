@@ -2,6 +2,6 @@ swaggeropenapi:
   default:
     pathJson: "s2/model.json"
     pathYaml: "s2/model.yaml"
-    baseSpec: "classpath:config2/base-spec.yml"
+    overrideSpec: "classpath:config2/override-spec.yml"
     spec: "classpath:config2/spec.yml"
 

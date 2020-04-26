@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
-  title: This must be ignored
-  description: This must be ignored
-  version: _ignored_
+  title: This is config1/Test1Api
+  description: Test API 1 Description
+  version: 0.1.2
 servers:
 - url: http://config1.example.com/v1
   description: prod server

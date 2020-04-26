@@ -43,7 +43,7 @@ public class OpenApiModelFactory {
 
     private String pathJson;
     private String pathYaml;
-    private ResourceFactory baseSpec;
+    private ResourceFactory overrideSpec;
     private ResourceFactory spec;
     private List<String> resourcePackages;
 
@@ -55,7 +55,10 @@ public class OpenApiModelFactory {
             return Optional.empty();
         }
 
-        return Optional.of(new OpenApiModel(() -> createOpenApi(appProvider.get()), specPaths));
+        URL spec = resolveSpec();
+        URL overrideSpec = resolveOverrideSpec();
+
+        return Optional.of(new OpenApiModel(() -> createOpenApi(appProvider.get(), spec, overrideSpec), specPaths));
     }
 
     protected List<String> createSpecPaths() {
@@ -75,15 +78,16 @@ public class OpenApiModelFactory {
         return paths;
     }
 
-    protected OpenAPI createOpenApi(Application app) {
+    protected OpenAPI createOpenApi(Application app, URL spec, URL overrideSpec) {
 
         // our own implementation. JaxrsOpenApiContextBuilder is too dirty and unpredictable, and not easy to
         // extend to do our own config merging
-        return new OpenApiLoader(app).load(resourcePackages, resolveBaseSpec(), resolveSpec());
+
+        return new OpenApiLoader(app).load(resourcePackages, spec, overrideSpec);
     }
 
-    protected URL resolveBaseSpec() {
-        return baseSpec != null ? baseSpec.getUrl() : null;
+    protected URL resolveOverrideSpec() {
+        return overrideSpec != null ? overrideSpec.getUrl() : null;
     }
 
     protected URL resolveSpec() {
@@ -106,8 +110,8 @@ public class OpenApiModelFactory {
     }
 
     @BQConfigProperty
-    public void setBaseSpec(ResourceFactory baseSpec) {
-        this.baseSpec = baseSpec;
+    public void setOverrideSpec(ResourceFactory overrideSpec) {
+        this.overrideSpec = overrideSpec;
     }
 
     @BQConfigProperty

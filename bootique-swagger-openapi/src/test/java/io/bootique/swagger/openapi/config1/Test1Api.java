@@ -25,12 +25,13 @@ import io.swagger.v3.oas.annotations.info.Info;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
 @OpenAPIDefinition(info = @Info(
-        title = "This is config1/Test1Api",
-        description = "Test API 1 Description",
-        version = "0.1.2"))
+        title = "This must be ignored",
+        description = "This must be ignored",
+        version = "_ignored_"))
 @Path("config1/test1")
 public class Test1Api {
 
@@ -44,5 +45,11 @@ public class Test1Api {
     @Operation(tags = {"b"})
     public Response put(String entity) {
         return Response.ok("test1").build();
+    }
+
+    @GET
+    @Path("/sub/{id}")
+    public String subget(@PathParam("id") int id) {
+        return "get_" + id;
     }
 }

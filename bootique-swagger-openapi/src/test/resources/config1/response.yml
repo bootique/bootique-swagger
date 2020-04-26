@@ -33,3 +33,20 @@ paths:
           description: default response
           content:
             '*/*': {}
+  /config1/test1/sub/{id}:
+    get:
+      operationId: subget
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        default:
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
