@@ -25,10 +25,12 @@ import io.swagger.v3.jaxrs2.Reader;
 import io.swagger.v3.jaxrs2.integration.JaxrsApplicationAndAnnotationScanner;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Paths;
 
 import javax.ws.rs.core.Application;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -56,7 +58,8 @@ public class OpenApiLoader {
         OpenAPI spec = specLocation != null ? loadSpec(specFromAnnotations, specLocation) : specFromAnnotations;
         OpenAPI specOverride = overrideSpecLocation != null ? loadSpec(spec, overrideSpecLocation) : spec;
 
-        return specOverride;
+        // sort paths for stable specs... OpenAPI loads them in different order depending on the JVM version
+        return sortPaths(specOverride);
     }
 
     protected OpenAPI loadSpecFromAnnotations(OpenAPI mergeInto, List<String> resourcePackages, List<String> resourceClasses) {
@@ -80,6 +83,26 @@ public class OpenApiLoader {
         reader.setConfiguration(config);
         reader.setApplication(application);
         return reader.read(scanner.classes(), scanner.resources());
+    }
+
+    protected OpenAPI sortPaths(OpenAPI api) {
+
+        Paths paths = api.getPaths();
+        if(paths == null) {
+            return api;
+        }
+
+        String[] keys = paths.keySet().toArray(new String[0]);
+        Arrays.sort(keys);
+
+        Paths sorted = new Paths();
+        for(String key : keys) {
+            sorted.put(key, paths.get(key));
+        }
+
+        api.setPaths(sorted);
+
+        return api;
     }
 
     protected OpenAPI loadSpec(OpenAPI mergeInto, URL location) {
