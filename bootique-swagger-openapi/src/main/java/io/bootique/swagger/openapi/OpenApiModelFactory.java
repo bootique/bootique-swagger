@@ -21,17 +21,15 @@ package io.bootique.swagger.openapi;
 import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
 import io.bootique.resource.ResourceFactory;
-import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
-import io.swagger.v3.oas.integration.OpenApiConfigurationException;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Provider;
 import javax.ws.rs.core.Application;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,7 +43,7 @@ public class OpenApiModelFactory {
 
     private String pathJson;
     private String pathYaml;
-    private ResourceFactory staticLocation;
+    private ResourceFactory baseSpec;
     private List<String> resourcePackages;
 
     public Optional<OpenApiModel> createModel(Provider<? extends Application> appProvider) {
@@ -76,45 +74,15 @@ public class OpenApiModelFactory {
         return paths;
     }
 
-    protected OpenAPI createOpenApi(Application application) {
+    protected OpenAPI createOpenApi(Application app) {
 
-        JaxrsOpenApiContextBuilder builder = new JaxrsOpenApiContextBuilder();
-
-        String staticLocation = createStaticLocation();
-        if (staticLocation != null) {
-            builder.configLocation(staticLocation);
-        }
-
-        if (resourcePackages != null) {
-            builder.setApplication(application);
-            builder.resourcePackages(new HashSet<>(resourcePackages));
-        }
-
-        try {
-            return builder
-                    // suppose ID is needed as the builder keeps contexts in the static cache and we want to avoid
-                    // context reuse between factories.
-                    // TODO: Ideally we should avoid caching all together, as it looks like an uneeded memory leak
-                    .ctxId(pseudoUniqueContextId())
-                    .buildContext(true)
-                    .read();
-        } catch (OpenApiConfigurationException e) {
-            throw new RuntimeException("Error loading OpenAPI config", e);
-        }
+        // our own implementation. JaxrsOpenApiContextBuilder is too dirty and unpredictable, and not easy to
+        // extend to do our own config merging
+        return OpenApiLoader.load(resolvebaseSpec(), resourcePackages, app);
     }
 
-    protected String pseudoUniqueContextId() {
-        return "io.bootique.swagger.openapi.OpenApiModelFactory_" + this.hashCode();
-    }
-
-    protected String createStaticLocation() {
-        if (staticLocation == null) {
-            return null;
-        }
-
-        // Since JaxrsOpenApiContextBuilder will resolve location on its own, strip "classpath:" prefix
-        String resourceId = staticLocation.getResourceId();
-        return resourceId.startsWith("classpath:") ? resourceId.substring("classpath:".length()) : resourceId;
+    protected URL resolvebaseSpec() {
+        return baseSpec != null ? baseSpec.getUrl() : null;
     }
 
     @BQConfigProperty
@@ -133,7 +101,7 @@ public class OpenApiModelFactory {
     }
 
     @BQConfigProperty
-    public void setStaticLocation(ResourceFactory staticLocation) {
-        this.staticLocation = staticLocation;
+    public void setBaseSpec(ResourceFactory baseSpec) {
+        this.baseSpec = baseSpec;
     }
 }

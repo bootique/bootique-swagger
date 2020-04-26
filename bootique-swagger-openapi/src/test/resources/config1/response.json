@@ -15,6 +15,7 @@
   "paths" : {
     "/config1/test1" : {
       "get" : {
+        "tags" : [ "a" ],
         "operationId" : "get",
         "responses" : {
           "default" : {
@@ -26,6 +27,7 @@
         }
       },
       "put" : {
+        "tags" : [ "b" ],
         "operationId" : "put",
         "requestBody" : {
           "content" : {

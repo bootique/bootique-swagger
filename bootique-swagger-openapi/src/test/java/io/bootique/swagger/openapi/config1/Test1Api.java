@@ -18,20 +18,27 @@
  */
 package io.bootique.swagger.openapi.config1;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.info.Info;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
+@OpenAPIDefinition(info = @Info(title = "This is config1/Test1Api", description = "Test API 1 Description", version = "0.1.2"))
 @Path("config1/test1")
 public class Test1Api {
 
     @GET
+    @Operation(tags = {"a"})
     public Response get() {
         return Response.ok("test1").build();
     }
 
     @PUT
+    @Operation(tags = {"b"})
     public Response put(String entity) {
         return Response.ok("test1").build();
     }

@@ -11,6 +11,8 @@ servers:
 paths:
   /config1/test1:
     get:
+      tags:
+      - a
       operationId: get
       responses:
         default:
@@ -18,6 +20,8 @@ paths:
           content:
             '*/*': {}
     put:
+      tags:
+      - b
       operationId: put
       requestBody:
         content:
