@@ -66,7 +66,7 @@ public class OpenApiModelFactory {
     }
 
     protected String normalizePath(String path) {
-        return path.startsWith("/") ? path.substring(1) : path;
+        return path != null && path.startsWith("/") ? path.substring(1) : path;
     }
 
     protected OpenAPI createOpenApi(Application app, URL spec, URL overrideSpec) {
