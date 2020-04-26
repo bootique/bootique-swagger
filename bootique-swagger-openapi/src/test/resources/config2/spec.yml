@@ -1,0 +1,15 @@
+paths:
+  /config2/test2:
+    get:
+      tags:
+        - a
+      operationId: get
+    put:
+      tags:
+        - b
+      operationId: put
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: string

@@ -1,0 +1,7 @@
+swaggeropenapi:
+  default:
+    pathJson: "s2/model.json"
+    pathYaml: "s2/model.yaml"
+    baseSpec: "classpath:config2/base-spec.yml"
+    spec: "classpath:config2/spec.yml"
+

@@ -27,7 +27,10 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
-@OpenAPIDefinition(info = @Info(title = "This is config1/Test1Api", description = "Test API 1 Description", version = "0.1.2"))
+@OpenAPIDefinition(info = @Info(
+        title = "This is config1/Test1Api",
+        description = "Test API 1 Description",
+        version = "0.1.2"))
 @Path("config1/test1")
 public class Test1Api {
 

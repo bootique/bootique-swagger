@@ -37,13 +37,20 @@ import java.util.List;
  */
 public class OpenApiLoader {
 
-    public static OpenAPI load(URL baseSpecLocation, List<String> resourcePackages, Application app) {
-        OpenAPI baseSpec = baseSpecLocation != null ? loadBaseSpec(baseSpecLocation) : new OpenAPI();
-        OpenAPI specWithResources = resourcePackages != null ? mergeAnnotationSpec(baseSpec, resourcePackages, app) : baseSpec;
+    private Application application;
+
+    public OpenApiLoader(Application application) {
+        this.application = application;
+    }
+
+    public OpenAPI load(List<String> resourcePackages, URL baseSpecLocation, URL specLocation) {
+        OpenAPI baseSpec = baseSpecLocation != null ? loadSpec(baseSpecLocation) : new OpenAPI();
+        OpenAPI spec = specLocation != null ? loadSpecAndMerge(baseSpec, specLocation) : baseSpec;
+        OpenAPI specWithResources = resourcePackages != null ? loadAnnotationSpecAndMerge(spec, resourcePackages) : spec;
         return specWithResources;
     }
 
-    protected static OpenAPI mergeAnnotationSpec(OpenAPI baseApi, List<String> resourcePackages, Application app) {
+    protected OpenAPI loadAnnotationSpecAndMerge(OpenAPI baseApi, List<String> resourcePackages) {
 
         SwaggerConfiguration config = new SwaggerConfiguration();
         config.setOpenAPI(baseApi);
@@ -51,24 +58,37 @@ public class OpenApiLoader {
 
         JaxrsApplicationAndAnnotationScanner scanner = new JaxrsApplicationAndAnnotationScanner();
         scanner.setConfiguration(config);
-        scanner.setApplication(app);
+        scanner.setApplication(application);
 
         Reader reader = new Reader();
         reader.setConfiguration(config);
-        reader.setApplication(app);
+        reader.setApplication(application);
         return reader.read(scanner.classes(), scanner.resources());
     }
 
-    protected static OpenAPI loadBaseSpec(URL specOverrideLocation) {
+    protected OpenAPI loadSpecAndMerge(OpenAPI baseSpec, URL location) {
 
-        ObjectMapper mapper = specOverrideLocation.getFile().toLowerCase().endsWith(".json")
+        ObjectMapper mapper = createMapper(location);
+        try {
+            return mapper.readerForUpdating(baseSpec).readValue(location);
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading configuration from " + location, e);
+        }
+    }
+
+    protected OpenAPI loadSpec(URL location) {
+
+        ObjectMapper mapper = createMapper(location);
+        try {
+            return mapper.readValue(location, OpenAPI.class);
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading configuration from " + location, e);
+        }
+    }
+
+    protected ObjectMapper createMapper(URL location) {
+        return location.getFile().toLowerCase().endsWith(".json")
                 ? Json.mapper()
                 : Yaml.mapper();
-
-        try {
-            return mapper.readValue(specOverrideLocation, OpenAPI.class);
-        } catch (IOException e) {
-            throw new RuntimeException("Error reading configuration from " + specOverrideLocation, e);
-        }
     }
 }

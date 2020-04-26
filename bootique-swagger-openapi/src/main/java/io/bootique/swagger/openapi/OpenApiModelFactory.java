@@ -44,6 +44,7 @@ public class OpenApiModelFactory {
     private String pathJson;
     private String pathYaml;
     private ResourceFactory baseSpec;
+    private ResourceFactory spec;
     private List<String> resourcePackages;
 
     public Optional<OpenApiModel> createModel(Provider<? extends Application> appProvider) {
@@ -78,11 +79,15 @@ public class OpenApiModelFactory {
 
         // our own implementation. JaxrsOpenApiContextBuilder is too dirty and unpredictable, and not easy to
         // extend to do our own config merging
-        return OpenApiLoader.load(resolvebaseSpec(), resourcePackages, app);
+        return new OpenApiLoader(app).load(resourcePackages, resolveBaseSpec(), resolveSpec());
     }
 
-    protected URL resolvebaseSpec() {
+    protected URL resolveBaseSpec() {
         return baseSpec != null ? baseSpec.getUrl() : null;
+    }
+
+    protected URL resolveSpec() {
+        return spec != null ? spec.getUrl() : null;
     }
 
     @BQConfigProperty
@@ -103,5 +108,10 @@ public class OpenApiModelFactory {
     @BQConfigProperty
     public void setBaseSpec(ResourceFactory baseSpec) {
         this.baseSpec = baseSpec;
+    }
+
+    @BQConfigProperty
+    public void setSpec(ResourceFactory spec) {
+        this.spec = spec;
     }
 }
