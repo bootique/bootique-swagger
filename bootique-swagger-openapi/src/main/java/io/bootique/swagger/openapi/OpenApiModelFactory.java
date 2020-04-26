@@ -46,6 +46,8 @@ public class OpenApiModelFactory {
     private ResourceFactory overrideSpec;
     private ResourceFactory spec;
     private List<String> resourcePackages;
+    private List<String> resourceClasses;
+    private boolean pretty = true;
 
     public Optional<OpenApiModel> createModel(Provider<? extends Application> appProvider) {
 
@@ -55,10 +57,12 @@ public class OpenApiModelFactory {
             return Optional.empty();
         }
 
+        // capture immutable configs for the lambda args
         URL spec = resolveSpec();
         URL overrideSpec = resolveOverrideSpec();
+        boolean pretty = this.pretty;
 
-        return Optional.of(new OpenApiModel(() -> createOpenApi(appProvider.get(), spec, overrideSpec), specPaths));
+        return Optional.of(new OpenApiModel(() -> createOpenApi(appProvider.get(), spec, overrideSpec), specPaths, pretty));
     }
 
     protected List<String> createSpecPaths() {
@@ -83,7 +87,10 @@ public class OpenApiModelFactory {
         // our own implementation. JaxrsOpenApiContextBuilder is too dirty and unpredictable, and not easy to
         // extend to do our own config merging
 
-        return new OpenApiLoader(app).load(resourcePackages, spec, overrideSpec);
+        List<String> resourcePackages = this.resourcePackages != null ? this.resourcePackages : Collections.emptyList();
+        List<String> resourceClasses = this.resourceClasses != null ? this.resourceClasses : Collections.emptyList();
+
+        return new OpenApiLoader(app).load(resourcePackages, resourceClasses, spec, overrideSpec);
     }
 
     protected URL resolveOverrideSpec() {
@@ -94,28 +101,38 @@ public class OpenApiModelFactory {
         return spec != null ? spec.getUrl() : null;
     }
 
-    @BQConfigProperty
+    @BQConfigProperty("An optional list of Java packages that contain annotated API endpoint classes")
     public void setResourcePackages(List<String> resourcePackages) {
         this.resourcePackages = resourcePackages;
     }
 
-    @BQConfigProperty
+    @BQConfigProperty("An optional list of Java classes for the annotated API endpoints")
+    public void setResourceClasses(List<String> resourceClasses) {
+        this.resourceClasses = resourceClasses;
+    }
+
+    @BQConfigProperty("Publishes an OpenAPI metadata endpoint as JSON at the specified path")
     public void setPathJson(String pathJson) {
         this.pathJson = pathJson;
     }
 
-    @BQConfigProperty
+    @BQConfigProperty("Publishes an OpenAPI metadata endpoint as YAML at the specified path")
     public void setPathYaml(String pathYaml) {
         this.pathYaml = pathYaml;
     }
 
-    @BQConfigProperty
+    @BQConfigProperty("Location of the OpenAPI spec file. Overrides 'spec', 'resourcePackages', 'resourceClasses' models")
     public void setOverrideSpec(ResourceFactory overrideSpec) {
         this.overrideSpec = overrideSpec;
     }
 
-    @BQConfigProperty
+    @BQConfigProperty("Location of the OpenAPI spec file. Overrides 'resourcePackages' and 'resourceClasses' model")
     public void setSpec(ResourceFactory spec) {
         this.spec = spec;
+    }
+
+    @BQConfigProperty("Whether to format YAML and JSON. 'True' by default")
+    public void setPretty(boolean pretty) {
+        this.pretty = pretty;
     }
 }

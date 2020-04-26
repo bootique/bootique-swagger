@@ -1,0 +1,10 @@
+
+info:
+  version: '1.0'
+  title: "Bootique OpenAPI 3.0 Demo"
+  description: "Demonstrates OpenAPI v3 API spec generation and presentation"
+  contact:
+    email: root@example.org
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html

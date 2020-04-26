@@ -38,18 +38,19 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ExtendWith(SeleniumExtension.class)
 public class SwaggerUi_SeleniumIT {
 
+    private static final WebTarget target = ClientBuilder.newClient().target("http://127.0.0.1:8080/");
+
+    @RegisterExtension
+    public static BQTestClassFactory TEST_FACTORY = new BQTestClassFactory();
+
     @Options
     ChromeOptions chromeOptions = new ChromeOptions();
+
     {
         chromeOptions.addArguments("--headless");
         chromeOptions.addArguments("--no-sandbox");
         chromeOptions.addArguments("--disable-dev-shm-usage");
     }
-
-    @RegisterExtension
-    public static BQTestClassFactory TEST_FACTORY = new BQTestClassFactory();
-
-    static WebTarget BASE_TARGET = ClientBuilder.newClient().target("http://127.0.0.1:8080/");
 
     @BeforeAll
     public static void beforeClass() {
@@ -60,15 +61,14 @@ public class SwaggerUi_SeleniumIT {
                 .module(binder -> BQCoreModule.extend(binder).addConfig("classpath:selenium/default.yml"))
                 .module(binder -> JerseyModule.extend(binder).addResource(TestApi.class))
                 .run();
-
     }
 
     @Test
     public void testApi_Console(ChromeDriver driver) {
 
-        Response r = BASE_TARGET.request().get();
+        Response r = target.request().get();
         assertEquals(200, r.getStatus());
-        driver.get(BASE_TARGET.getUri().toString());
+        driver.get(target.getUri().toString());
         assertEquals("TEST", driver.findElement(By.tagName("pre")).getText());
 
     }
@@ -76,10 +76,10 @@ public class SwaggerUi_SeleniumIT {
     @Test
     public void testSwaggerUIGet(ChromeDriver driver) {
 
-        Response r = BASE_TARGET.path("swagger-ui").request().get();
+        Response r = target.path("swagger-ui").request().get();
         assertEquals(200, r.getStatus());
 
-        driver.get(BASE_TARGET.path("swagger-ui").getUri().toString());
+        driver.get(target.path("swagger-ui").getUri().toString());
 
         WebElement webElement = new WebDriverWait(driver, Duration.ofSeconds(1).getSeconds())
                 .until(webDriver -> webDriver.findElement(By.cssSelector("div#operations-default-get.opblock.opblock-get")));
@@ -116,14 +116,14 @@ public class SwaggerUi_SeleniumIT {
 
     @Test
     public void testSwaggerUIStatic() {
-        Response r = BASE_TARGET.path("/swagger-ui/static/").request().get();
+        Response r = target.path("/swagger-ui/static/").request().get();
         assertEquals(200, r.getStatus());
     }
 
     @Test
     public void testOpenapiJson(ChromeDriver driver) {
 
-        driver.get(BASE_TARGET.path("openapi.json").getUri().toString());
+        driver.get(target.path("openapi.json").getUri().toString());
         String homeUrl = driver.findElement(By.tagName("pre")).getText();
         assertEqualsToResourceContents("selenium/openapi-test.json", homeUrl);
 
@@ -132,7 +132,7 @@ public class SwaggerUi_SeleniumIT {
     @Test
     public void testOpenapiYaml(ChromeDriver driver) {
 
-        driver.get(BASE_TARGET.path("swagger-ui").getUri().toString());
+        driver.get(target.path("swagger-ui").getUri().toString());
 
         WebElement webElement = new WebDriverWait(driver, Duration.ofSeconds(1).getSeconds())
                 .until(webDriver -> webDriver.findElement(By.tagName("input")));
@@ -146,13 +146,12 @@ public class SwaggerUi_SeleniumIT {
                 .until(webDriver -> webDriver.findElement(By.cssSelector("span.url")));
 
         assertEquals(webElement.getText(), "http://127.0.0.1:8080/openapi.yaml");
-
     }
 
     @Test
     public void testSwaggerUIPost(ChromeDriver driver) {
 
-        driver.get(BASE_TARGET.path("swagger-ui").getUri().toString());
+        driver.get(target.path("swagger-ui").getUri().toString());
 
         WebElement webElement = new WebDriverWait(driver, Duration.ofSeconds(1).getSeconds())
                 .until(webDriver -> webDriver.findElement(By.cssSelector("div#operations-default-post.opblock.opblock-post")));

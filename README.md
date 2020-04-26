@@ -57,50 +57,49 @@ Include ```bootique-bom```:
 </dependencyManagement>
 ```
 
-### "Code-First" - exposing annotated endpoints
+### Publishing API Specifications
 
-Swagger can generate application API specification dynamically based purely on the endpoint class/method signatures and JAX-RS
-annotations (such as `@Path`, `@GET`, etc.). And then you would "enrich" the basic specification via the following mechanisms:
-
-* [Swagger annotations](https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Annotations)
-* [Static API descriptors](https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Integration-and-Configuration#known-locations)
-
-To expose the final specification as JSON and YAML resources, add the following dependency:
+`bootique-swagger-openapi` can generate API specification by combining multiple YAML/JSON specifications as well as
+endpoint metadata (class/methods signatures, JAX-RS annotations such as `@Path`, `@GET`, etc. and
+[Swagger annotations](https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Annotations). To include one or
+more specification resources, add the following dependency:
 ```xml
 <dependency>
 	<groupId>io.bootique.swagger</groupId>
 	<artifactId>bootique-swagger-openapi</artifactId>
 </dependency>
 ```
+And then configure the layout and the sources of the specs:
+
+```yaml
+swaggeropenapi:
+  # arbitrary name of a spec endpoint... Multiple specs at different URLs are supported
+  default:
+
+    # desired URL paths of JSON and YAML resources. Resolved relative to Jersey root URL
+    pathJson: "model/openapi.json"
+    pathYaml: "model/openapi.yaml"
+
+    # where the spec sources are
+    spec: "classpath:main-openapi.yml"
+    overrideSpec: "classpath:extra-openapi.yml"
+    resourcePackages:
+      - "com.example.api"
+    resourceClasses:
+      - "com.example.Api"
+```
+You can use any combination of "spec", "overrideSpec", "resourcePackages" and "resourceClasses". "spec" is usually appropriate for
+"design-first" approach, "resourcePackages" and "resourceClasses" - for the "code-first". "overrideSpec" can be used with both to add
+extra information. The order of loading is:
+
+1. "resourcePackages" / "resourceClasses": This provides the metadata collected from endpoint Java classes and annotations.
+2. "spec": This is a YAML or JSON file. Combined with "1", overriding any common properties.
+3. "overrideSpec": This is a YAML or JSON file. Combined with "1" and "2", overriding any common properties in both.
+
 Now, when you run the app, you should be able to access the specs at the URLs similar to these:
 
-* http://127.0.0.1:8080/openapi.json
-* http://127.0.0.1:8080/openapi.yaml
-
-### "Spec-Code-Spec"
-
-A more complex workflow is when you have one or more API specifications, generate Java code from them (models, API
-endpoints), and then need to combine them together and/or extend them with extra app-specific fragments. So essentially
-going from specification(s) to code and then back to a single specification ("Spec-Code-Spec").
-
-Everything described in the "Code-First" section above is fully applicable to the last step of this workflow
-(i.e. going from code to spec), but the first step (going from spec(s) to code) is not handled by
-`bootique-swagger-openapi` and requires a third-party code generator.
-
-There are various code generators available (such as
-[openapi-generator](https://github.com/OpenAPITools/openapi-generator)), but as of this writing (March 2020), most do not
-support OpenAPI-compatible Swagger annotations (`io.swagger.core.v3:swagger-annotations` package). The only tool that
-we found to support it is unsurprisingly coming from Swagger itself. It is
-[swagger-codegen, v.3.0.x](https://github.com/swagger-api/swagger-codegen/tree/3.0.0). You can download
-[the jar file](https://search.maven.org/remotecontent?filepath=io/swagger/codegen/v3/swagger-codegen-cli/3.0.18/swagger-codegen-cli-3.0.18.jar)
-from Maven Central, and run the generator like this:
-
-```
-java -jar swagger-codegen-cli-3.0.18.jar generate -l jaxrs-jersey \
-    -o myproject
-    -i mymodel.yaml
-```
-There are also options to integrate this in Maven.
+* http://127.0.0.1:8080/model/openapi.json
+* http://127.0.0.1:8080/model/openapi.yaml
 
 ### Web UI
 
@@ -118,7 +117,7 @@ relative path of the model resource to the app configuration:
 ```yml
 swaggerui:
   default:
-    specPath: openapi.json
+    specPath: model/openapi.json
 ```
 When you start the application, the console will be available at `/<appcontext>/swagger-ui`. E.g.
 http://127.0.0.1:8080/swagger-ui/ .
@@ -135,6 +134,6 @@ To view a spec from another app, configure specification public URL like this:
 ```yml
 swaggerui:
   default:
-    specUrl: https://example.org/path/to/openapi.json
+    specUrl: https://example.org/model/openapi.json
 ```
 

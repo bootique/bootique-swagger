@@ -28,13 +28,19 @@ import java.util.function.Supplier;
  */
 public class OpenApiModel {
 
+    private boolean pretty;
     private Supplier<OpenAPI> apiSupplier;
     private List<String> specPaths;
     private volatile OpenAPI api;
 
-    public OpenApiModel(Supplier<OpenAPI> apiSupplier, List<String> specPaths) {
+    public OpenApiModel(Supplier<OpenAPI> apiSupplier, List<String> specPaths, boolean pretty) {
         this.specPaths = specPaths;
         this.apiSupplier = apiSupplier;
+        this.pretty = pretty;
+    }
+
+    public boolean isPretty() {
+        return pretty;
     }
 
     public List<String> getSpecPaths() {

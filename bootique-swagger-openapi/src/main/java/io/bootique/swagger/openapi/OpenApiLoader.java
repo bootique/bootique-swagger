@@ -43,7 +43,7 @@ public class OpenApiLoader {
         this.application = application;
     }
 
-    public OpenAPI load(List<String> resourcePackages, URL specLocation, URL overrideSpecLocation) {
+    public OpenAPI load(List<String> resourcePackages, List<String> resourceClasses, URL specLocation, URL overrideSpecLocation) {
 
         // override order
         // 1. class annotations
@@ -51,18 +51,26 @@ public class OpenApiLoader {
         // 3. override spec (overrides spec and annotations)
 
         OpenAPI empty = new OpenAPI();
-        OpenAPI specFromAnnotations = resourcePackages != null ? loadSpecFromAnnaotations(empty, resourcePackages) : empty;
+        OpenAPI specFromAnnotations = !resourcePackages.isEmpty() || !resourceClasses.isEmpty()
+                ? loadSpecFromAnnotations(empty, resourcePackages, resourceClasses) : empty;
         OpenAPI spec = specLocation != null ? loadSpec(specFromAnnotations, specLocation) : specFromAnnotations;
         OpenAPI specOverride = overrideSpecLocation != null ? loadSpec(spec, overrideSpecLocation) : spec;
 
         return specOverride;
     }
 
-    protected OpenAPI loadSpecFromAnnaotations(OpenAPI mergeInto, List<String> resourcePackages) {
+    protected OpenAPI loadSpecFromAnnotations(OpenAPI mergeInto, List<String> resourcePackages, List<String> resourceClasses) {
 
         SwaggerConfiguration config = new SwaggerConfiguration();
         config.setOpenAPI(mergeInto);
-        config.setResourcePackages(new HashSet<>(resourcePackages));
+
+        if(!resourcePackages.isEmpty()) {
+            config.setResourcePackages(new HashSet<>(resourcePackages));
+        }
+
+        if(!resourceClasses.isEmpty()) {
+            config.setResourceClasses(new HashSet<>(resourceClasses));
+        }
 
         JaxrsApplicationAndAnnotationScanner scanner = new JaxrsApplicationAndAnnotationScanner();
         scanner.setConfiguration(config);
