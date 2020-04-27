@@ -23,15 +23,12 @@
 # bootique-swagger
 
 Integrates [Swagger](http://swagger.io/) REST API documentation services with Bootique. Supports modern
-[OpenAPI 3 specification](https://swagger.io/docs/specification/about/), as well as the legacy Swagger 2 spec. Contains
-the following modules:
+[OpenAPI 3 specification](https://swagger.io/docs/specification/about/). Contains the following modules:
 
-* `bootique-swagger-openapi`: a REST service to dynamically generate OpenAPI specifications as either
+* `bootique-swagger`: a REST service to dynamically generate OpenAPI specifications as either
 JSON or YAML. Combines metadata from annotated API resources within the application with
 [static API descriptors](https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Integration-and-Configuration#known-locations)
 to produce application-specific API specs.
-
-* `bootique-swagger`: a legacy service generating Swagger 2 API descriptors.
 
 * `bootique-swagger-ui`: embeddable Swagger web UI to visualize and interact with API specifications. Supports both
 OpenAPI 3 and legacy Swagger 2 specifications.
@@ -59,20 +56,20 @@ Include ```bootique-bom```:
 
 ### Publishing API Specifications
 
-`bootique-swagger-openapi` can generate API specification by combining multiple YAML/JSON specifications as well as
+`bootique-swagger` can generate API specification by combining multiple YAML/JSON specifications as well as
 endpoint metadata (class/methods signatures, JAX-RS annotations such as `@Path`, `@GET`, etc. and
 [Swagger annotations](https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Annotations). To include one or
 more specification resources, add the following dependency:
 ```xml
 <dependency>
 	<groupId>io.bootique.swagger</groupId>
-	<artifactId>bootique-swagger-openapi</artifactId>
+	<artifactId>bootique-swagger</artifactId>
 </dependency>
 ```
 And then configure the layout and the sources of the specs:
 
 ```yaml
-swaggeropenapi:
+swagger:
   # arbitrary name of a spec endpoint... Multiple specs at different URLs are supported
   default:
 
