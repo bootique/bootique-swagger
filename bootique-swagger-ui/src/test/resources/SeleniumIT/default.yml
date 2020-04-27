@@ -3,9 +3,9 @@ swaggeropenapi:
     pretty: false
     pathJson: openapi.json
     pathYaml: openapi.yaml
-    overrideSpec: "classpath:selenium/config-override.yaml"
+    overrideSpec: "classpath:SeleniumIT/config-override.yaml"
     resourceClasses:
-      - io.bootique.swagger.ui.SwaggerUi_SeleniumIT$TestApi
+      - io.bootique.swagger.ui.SeleniumIT$TestApi
 
 swaggerui:
   default:

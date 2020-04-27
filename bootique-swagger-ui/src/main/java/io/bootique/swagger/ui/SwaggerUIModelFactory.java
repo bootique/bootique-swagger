@@ -23,6 +23,7 @@ import io.bootique.annotation.BQConfigProperty;
 import io.bootique.swagger.ui.model.SwaggerUIServletModel;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -76,10 +77,16 @@ public class SwaggerUIModelFactory {
 
     private Function<HttpServletRequest, String> specUrlResolver() {
 
-        // use full URL
-        if (specUrl != null) {
-            return r -> specUrl;
+        if (specPath == null && specUrl == null) {
+            throw new IllegalStateException("Both 'specUrl' and 'specPath' are missing");
         }
+
+        return specUrl != null ? r -> specUrl : specPathResolver();
+    }
+
+    private Function<HttpServletRequest, String> specPathResolver() {
+
+        Objects.requireNonNull(specPath);
 
         // resolve relative to the current app context
         String specPath = resolveSpecPath();
@@ -87,9 +94,6 @@ public class SwaggerUIModelFactory {
     }
 
     private String resolveSpecPath() {
-        if (specPath == null) {
-            return "/swagger.json";
-        }
 
         if (specPath.startsWith("/")) {
             return specPath;

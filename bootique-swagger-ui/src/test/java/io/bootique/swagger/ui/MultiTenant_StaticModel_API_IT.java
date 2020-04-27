@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("Multi-tenancy: mix of APIs, OpenAPI models and swagger-ui consoles")
-public class SwaggerUi_StaticModel_API_IT {
+public class MultiTenant_StaticModel_API_IT {
 
     @RegisterExtension
     public static BQTestClassFactory testFactory = new BQTestClassFactory();
@@ -59,7 +59,7 @@ public class SwaggerUi_StaticModel_API_IT {
         // "/doc/"                      - documentation root
         // "/doc/api*"                  - swagger-ui consoles
 
-        testFactory.app("-s", "-c", "classpath:SwaggerUi_StaticModel_API_IT/startup.yml")
+        testFactory.app("-s", "-c", "classpath:MultiTenant_StaticModel_API_IT/startup.yml")
                 .autoLoadModules()
                 .module(b -> JerseyModule.extend(b).addResource(Api1.class).addResource(Api2.class))
                 .module(b -> JettyModule.extend(b).addStaticServlet("models", "/models/*"))
@@ -84,14 +84,14 @@ public class SwaggerUi_StaticModel_API_IT {
     public void testStaticModelsAvailable() {
         Response r1 = target.path("models/api1/model.yml").request().get();
         assertEquals(200, r1.getStatus());
-        SwaggerUiBaseIT.assertEqualsToResourceContents(
-                "SwaggerUi_StaticModel_API_IT/models/api1/model.yml",
+        UIAsserts.assertEqualsToResource(
+                "MultiTenant_StaticModel_API_IT/models/api1/model.yml",
                 r1.readEntity(String.class));
 
         Response r2 = target.path("models/api2/model.yml").request().get();
         assertEquals(200, r2.getStatus());
-        SwaggerUiBaseIT.assertEqualsToResourceContents(
-                "SwaggerUi_StaticModel_API_IT/models/api2/model.yml",
+        UIAsserts.assertEqualsToResource(
+                "MultiTenant_StaticModel_API_IT/models/api2/model.yml",
                 r2.readEntity(String.class));
     }
 
@@ -100,8 +100,8 @@ public class SwaggerUi_StaticModel_API_IT {
     public void testStaticDocsAvailable() {
         Response r = target.path("doc").request().get();
         assertEquals(200, r.getStatus());
-        SwaggerUiBaseIT.assertEqualsToResourceContents(
-                "SwaggerUi_StaticModel_API_IT/doc/index.html",
+        UIAsserts.assertEqualsToResource(
+                "MultiTenant_StaticModel_API_IT/doc/index.html",
                 r.readEntity(String.class));
     }
 

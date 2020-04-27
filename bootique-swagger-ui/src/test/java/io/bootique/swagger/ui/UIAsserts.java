@@ -16,18 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package io.bootique.swagger.ui;
 
-import io.bootique.test.junit5.BQTestClassFactory;
-import io.swagger.annotations.Api;
-import org.junit.jupiter.api.extension.RegisterExtension;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,16 +25,11 @@ import java.io.InputStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class SwaggerUiBaseIT {
+public class UIAsserts {
 
-    @RegisterExtension
-    public static BQTestClassFactory TEST_FACTORY = new BQTestClassFactory();
+    public static void assertEqualsToResource(String expectedResource, String toTest) {
 
-    static WebTarget BASE_TARGET = ClientBuilder.newClient().target("http://127.0.0.1:8080/");
-
-    public static void assertEqualsToResourceContents(String expectedResource, String toTest) {
-
-        ClassLoader cl = SwaggerUiBaseIT.class.getClassLoader();
+        ClassLoader cl = UIAsserts.class.getClassLoader();
 
         try (InputStream in = cl.getResourceAsStream(expectedResource)) {
             assertNotNull(in);
@@ -61,22 +46,6 @@ public class SwaggerUiBaseIT {
             assertEquals(expectedString, toTest);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    @Api
-    @Path("/")
-    public static class TestApi {
-
-        @GET
-        public String get() {
-            return "get_";
-        }
-
-        @GET
-        @Path("/sub/{id}")
-        public String subget(@PathParam("id") int id) {
-            return "get_" + id;
         }
     }
 }

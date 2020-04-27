@@ -16,3 +16,4 @@
 swaggerui:
   default:
     uiPath: "/swagger-uix"
+    specUrl: http://example.com/test.json

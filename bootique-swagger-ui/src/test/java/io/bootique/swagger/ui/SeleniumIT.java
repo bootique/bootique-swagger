@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SeleniumExtension.class)
-public class SwaggerUi_SeleniumIT {
+public class SeleniumIT {
 
     private static final WebTarget target = ClientBuilder.newClient().target("http://127.0.0.1:8080/");
 
@@ -58,7 +58,7 @@ public class SwaggerUi_SeleniumIT {
         TEST_FACTORY.app("-s")
                 .module(new SwaggerOpenapiModuleProvider())
                 .module(new SwaggerUiModuleProvider())
-                .module(binder -> BQCoreModule.extend(binder).addConfig("classpath:selenium/default.yml"))
+                .module(binder -> BQCoreModule.extend(binder).addConfig("classpath:SeleniumIT/default.yml"))
                 .module(binder -> JerseyModule.extend(binder).addResource(TestApi.class))
                 .run();
     }
@@ -125,8 +125,7 @@ public class SwaggerUi_SeleniumIT {
 
         driver.get(target.path("openapi.json").getUri().toString());
         String homeUrl = driver.findElement(By.tagName("pre")).getText();
-        assertEqualsToResourceContents("selenium/openapi-test.json", homeUrl);
-
+        assertEqualsToResourceContents("SeleniumIT/response.json", homeUrl);
     }
 
     @Test
