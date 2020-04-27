@@ -1,13 +1,12 @@
 <!-- HTML for static distribution bundle build -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <title>Swagger UI</title>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="/swagger-uix/static/swagger-ui.css">
-    <link rel="icon" type="image/png" href="/swagger-uix/static/favicon-32x32.png" sizes="32x32"/>
-    <link rel="icon" type="image/png" href="/swagger-uix/static/favicon-16x16.png" sizes="16x16"/>
+    <link rel="stylesheet" type="text/css" href="/swagger-uix/static/swagger-ui.css" >
+    <link rel="icon" type="image/png" href="/swagger-uix/static/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/swagger-uix/static/favicon-16x16.png" sizes="16x16" />
     <style>
       html
       {
@@ -28,34 +27,34 @@
         margin:0;
         background: #fafafa;
       }
-
     </style>
-</head>
+  </head>
 
-<body>
-<div id="swagger-ui"></div>
-<script src="/swagger-uix/static/swagger-ui-bundle.js"></script>
-<script src="/swagger-uix/static/swagger-ui-standalone-preset.js"></script>
-<script>
-  window.onload = function() {
+  <body>
+    <div id="swagger-ui"></div>
 
-  // Build a system
-  const ui = SwaggerUIBundle({
-  url: "http://example.com/test.json",
-  dom_id: '#swagger-ui',
-  deepLinking: true,
-  presets: [
-  SwaggerUIBundle.presets.apis,
-  SwaggerUIStandalonePreset
-  ],
-  plugins: [
-  SwaggerUIBundle.plugins.DownloadUrl
-  ],
-  layout: "StandaloneLayout"
-  })
+    <script src="/swagger-uix/static/swagger-ui-bundle.js"> </script>
+    <script src="/swagger-uix/static/swagger-ui-standalone-preset.js"> </script>
+    <script>
+    window.onload = function() {
+      // Begin Swagger UI call region
+      const ui = SwaggerUIBundle({
+        url: "http://example.com/test.json",
+        dom_id: '#swagger-ui',
+        deepLinking: true,
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIStandalonePreset
+        ],
+        plugins: [
+          SwaggerUIBundle.plugins.DownloadUrl
+        ],
+        layout: "StandaloneLayout"
+      })
+      // End Swagger UI call region
 
-  window.ui = ui
-  }
-</script>
-</body>
+      window.ui = ui
+    }
+  </script>
+  </body>
 </html>

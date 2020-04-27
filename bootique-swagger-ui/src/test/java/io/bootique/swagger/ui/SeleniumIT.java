@@ -29,7 +29,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -67,7 +66,7 @@ public class SeleniumIT {
         Response r = target.request().get();
         assertEquals(200, r.getStatus());
         driver.get(target.getUri().toString());
-        assertEquals("TEST", driver.findElement(By.tagName("pre")).getText());
+        assertEquals("{\"message\":\"hello test\"}", driver.findElement(By.tagName("pre")).getText());
 
     }
 
@@ -100,16 +99,9 @@ public class SeleniumIT {
         String status = driver.findElement(By.cssSelector("tr.response > td.response-col_status")).getText();
         assertEquals(status, "200");
 
-        List<WebElement> spanList = driver.findElements(By.cssSelector("div.responses-inner > div > div > table > tbody > tr.response > td.col.response-col_description > div > div.highlight-code > pre.microlight > span"));
-        String response = "";
-        for (WebElement span : spanList) {
-            response += span.getText();
-        }
-        assertEquals(response,
-                "can't parse JSON.  Raw result:\n" +
-                        "\n" +
-                        "TEST");
-
+        String bodyMessage = driver.findElement(
+                By.cssSelector("div.highlight-code:nth-child(2) > pre:nth-child(2) > span:nth-child(6)")).getText();
+        assertEquals("\"hello test\"", bodyMessage);
     }
 
     @Test
@@ -161,8 +153,7 @@ public class SeleniumIT {
         webElement = driver.findElement(By.cssSelector("textarea.body-param__text"));
         webElement.clear();
 
-        String stringTest = "\"TEST\"";
-        webElement.sendKeys(stringTest);
+        webElement.sendKeys("{\"message\":\"hello test\"}");
 
         driver.findElement(By.cssSelector("button.btn.execute.opblock-control__btn")).click();
 
@@ -170,7 +161,7 @@ public class SeleniumIT {
                 .until(webDriver -> webDriver.findElement(By.cssSelector("textarea.curl")));
 
         String curl = webElement.getText();
-        assertEquals(curl, "curl -X POST \"http://127.0.0.1:8080/\" -H \"accept: application/json\" -H \"Content-Type: */*\" -d \"\\\"TEST\\\"\"");
+        assertEquals("curl -X POST \"http://127.0.0.1:8080/\" -H \"accept: application/json\" -H \"Content-Type: */*\" -d \"{\\\"message\\\":\\\"hello test\\\"}\"", curl);
 
         String url = driver.findElement(By.cssSelector("div.request-url > pre")).getText();
         assertEquals(url, "http://127.0.0.1:8080/");
@@ -178,9 +169,9 @@ public class SeleniumIT {
         String status = driver.findElement(By.cssSelector("div.responses-inner > div > div > table.responses-table > tbody > tr.response > td.response-col_status")).getText();
         assertEquals(status, "200");
 
-        webElement = driver.findElement(By.cssSelector("div.responses-inner > div > div > table.responses-table > tbody > tr.response > td.col.response-col_description > div > div.highlight-code > pre.microlight > span"));
-        assertEquals(webElement.getText(), stringTest);
-
+        webElement = driver.findElement(
+                By.cssSelector("div.highlight-code:nth-child(2) > pre:nth-child(2) > span:nth-child(6)"));
+        assertEquals("\"hello test\"", webElement.getText());
     }
 
     void assertEqualsToResourceContents(String expectedResource, String toTest) {
@@ -213,7 +204,7 @@ public class SeleniumIT {
         @Produces(MediaType.APPLICATION_JSON)
         @Operation(description = "Returns hello message")
         public String get() {
-            return "TEST";
+            return "{\"message\":\"hello test\"}";
         }
 
         @POST

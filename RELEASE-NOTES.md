@@ -7,6 +7,7 @@
 * #22 Controllable mapping for "swagger-ui-static"
 * #23 "bootique-swagger" - allow to map spec URL via config
 * #24 Remove support for Swagger 2.0 spec
+* #25 Upgrade UI to swagger-ui 3.25.1
 
 ## 1.0
 
