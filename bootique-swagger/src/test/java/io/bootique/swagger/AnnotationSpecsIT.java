@@ -32,7 +32,7 @@ import javax.ws.rs.core.Response;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AnnotationBasedSpecsIT {
+public class AnnotationSpecsIT {
 
     private static final WebTarget target = ClientBuilder.newClient().target("http://127.0.0.1:8080/");
 

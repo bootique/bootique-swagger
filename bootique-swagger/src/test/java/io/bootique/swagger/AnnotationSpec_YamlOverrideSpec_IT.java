@@ -18,6 +18,8 @@
  */
 package io.bootique.swagger;
 
+import io.bootique.jersey.JerseyModule;
+import io.bootique.swagger.config1.Test1Api;
 import io.bootique.test.junit5.BQTestClassFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -29,32 +31,33 @@ import javax.ws.rs.core.Response;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Config2_YamlBaseSpec_YamlSpec_IT {
+public class AnnotationSpec_YamlOverrideSpec_IT {
 
     @RegisterExtension
-    public static final BQTestClassFactory TEST_FACTORY = new BQTestClassFactory();
+    public static final BQTestClassFactory testFactory = new BQTestClassFactory();
     private static final WebTarget target = ClientBuilder.newClient().target("http://127.0.0.1:8080/");
 
     @BeforeAll
     public static void beforeClass() {
-        TEST_FACTORY.app("-s", "-c", "classpath:config2/startup.yml")
+        testFactory.app("-s", "-c", "classpath:config1/startup.yml")
                 .autoLoadModules()
+                .module(b -> JerseyModule.extend(b).addResource(Test1Api.class))
                 .run();
     }
 
     @Test
     public void testYaml() {
 
-        Response r = target.path("/s2/model.yaml").request().get();
+        Response r = target.path("/s1/model.yaml").request().get();
         assertEquals(200, r.getStatus());
-        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "config2/response.yml");
+        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "config1/response.yml");
     }
 
     @Test
     public void testJson() {
 
-        Response r = target.path("/s2/model.json").request().get();
+        Response r = target.path("/s1/model.json").request().get();
         assertEquals(200, r.getStatus());
-        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "config2/response.json");
+        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "config1/response.json");
     }
 }

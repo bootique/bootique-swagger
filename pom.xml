@@ -35,8 +35,7 @@
 
     <properties>
         <bootique.version>${project.version}</bootique.version>
-        <!-- TODO: since version 2.0.7, Swagger generates "/application.wadl" sections. What are those for?  -->
-        <swagger.version>2.0.6</swagger.version>
+        <swagger.version>2.1.2</swagger.version>
         <mustache.version>0.9.6</mustache.version>
         <selenium.version>4.0.0-alpha-1</selenium.version>
         <selenium-jupiter.version>3.3.4</selenium-jupiter.version>
