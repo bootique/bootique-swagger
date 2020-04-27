@@ -40,6 +40,27 @@ public class ConfigOptionsIT {
     public final BQTestFactory testFactory = new BQTestFactory();
 
     @Test
+    @DisplayName("no config")
+    public void testConfig() {
+        // must start, but serve nothing
+        testFactory.app("-s").autoLoadModules().run();
+
+        Response r = target.path("/swagger-ui").request().get();
+        assertEquals(404, r.getStatus());
+    }
+
+    @Test
+    @DisplayName("no 'specPath' or 'specUrl' in config")
+    public void testNoSpecUrlNoSpecPath() {
+        // must start, but serve nothing
+        testFactory.app("-s", "-c", "classpath:ConfigOptionsIT/nospecs.yml").autoLoadModules().run();
+
+        Response r = target.path("/swagger-ui-nospecs").request().get();
+        assertEquals(200, r.getStatus());
+        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "ConfigOptionsIT/response0.html");
+    }
+
+    @Test
     @DisplayName("'specPath' in config")
     public void testSpecPath() {
         testFactory.app("-s", "-c", "classpath:ConfigOptionsIT/specpath.yml").autoLoadModules().run();

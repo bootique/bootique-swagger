@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -45,14 +44,7 @@ public class SwaggerUiServletFactory {
     private Map<String, SwaggerUIModelFactory> modelFactories;
 
     public SwaggerUiServletFactory(Map<String, SwaggerUIModelFactory> modelFactories) {
-        // if nothing is mapped, still generate a servlet with default configuration
-        this.modelFactories = modelFactories == null || modelFactories.isEmpty()
-                ? Collections.singletonMap("default", defaultModelFactory())
-                : modelFactories;
-    }
-
-    protected SwaggerUIModelFactory defaultModelFactory() {
-        return new SwaggerUIModelFactory();
+        this.modelFactories = modelFactories;
     }
 
     public MappedServlet<SwaggerUiServlet> createServlet() {
