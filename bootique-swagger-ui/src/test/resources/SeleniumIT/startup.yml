@@ -1,7 +1,7 @@
 swagger:
+  pretty: false
   specs:
     default:
-      pretty: false
       pathJson: openapi.json
       pathYaml: openapi.yaml
       overrideSpec: "classpath:SeleniumIT/config-override.yaml"

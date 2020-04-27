@@ -1,0 +1,11 @@
+
+swagger:
+  overrideSpec: "classpath:config4/common-override-spec.yml"
+  specs:
+    c1:
+      pathJson: "c1/model.json"
+      spec: "classpath:config4/spec.yml"
+    c2:
+      pathJson: "c2/model.json"
+      overrideSpec: "classpath:config4/override-spec.yml"
+      spec: "classpath:config4/spec.yml"

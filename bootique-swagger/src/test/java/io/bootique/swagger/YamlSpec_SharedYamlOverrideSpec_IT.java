@@ -29,30 +29,27 @@ import javax.ws.rs.core.Response;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class YamlSpec_YamlOverrideSpec_IT {
+public class YamlSpec_SharedYamlOverrideSpec_IT {
 
     @RegisterExtension
-    public static final BQTestClassFactory TEST_FACTORY = new BQTestClassFactory();
+    public static final BQTestClassFactory testFactory = new BQTestClassFactory();
     private static final WebTarget target = ClientBuilder.newClient().target("http://127.0.0.1:8080/");
 
     @BeforeAll
     public static void beforeClass() {
-        TEST_FACTORY.app("-s", "-c", "classpath:config2/startup.yml")
+        testFactory.app("-s", "-c", "classpath:config4/startup.yml")
                 .autoLoadModules()
                 .run();
     }
 
     @Test
-    public void testYaml() {
-        Response r = target.path("/s2/model.yaml").request().get();
-        assertEquals(200, r.getStatus());
-        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "config2/response.yml");
-    }
-
-    @Test
     public void testJson() {
-        Response r = target.path("/s2/model.json").request().get();
-        assertEquals(200, r.getStatus());
-        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "config2/response.json");
+        Response r1 = target.path("/c1/model.json").request().get();
+        assertEquals(200, r1.getStatus());
+        SwaggerAsserts.assertEqualsToResource(r1.readEntity(String.class), "config4/response1.json");
+
+        Response r2 = target.path("/c2/model.json").request().get();
+        assertEquals(200, r2.getStatus());
+        SwaggerAsserts.assertEqualsToResource(r2.readEntity(String.class), "config4/response2.json");
     }
 }

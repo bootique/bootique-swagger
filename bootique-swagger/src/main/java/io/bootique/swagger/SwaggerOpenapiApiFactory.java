@@ -21,6 +21,7 @@ package io.bootique.swagger;
 import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
 import io.bootique.jersey.MappedResource;
+import io.bootique.resource.ResourceFactory;
 
 import javax.inject.Provider;
 import javax.ws.rs.core.Application;
@@ -35,11 +36,24 @@ import java.util.Optional;
 @BQConfig
 public class SwaggerOpenapiApiFactory {
 
+    private ResourceFactory overrideSpec;
     private Map<String, OpenApiModelFactory> specs;
+    private boolean pretty = true;
 
     @BQConfigProperty("Zero or more API specifications provided by the application")
     public void setSpecs(Map<String, OpenApiModelFactory> specs) {
         this.specs = specs;
+    }
+
+    @BQConfigProperty("Location of the OpenAPI spec file, that overrides 'spec', 'resourcePackages', 'resourceClasses' models. " +
+            "This setting is shared by all child specs, unless they define an explicit 'overrideSpec' of their own")
+    public void setOverrideSpec(ResourceFactory overrideSpec) {
+        this.overrideSpec = overrideSpec;
+    }
+
+    @BQConfigProperty("Whether to format YAML and JSON. 'True' by default. This setting is shared by all child specs.")
+    public void setPretty(boolean pretty) {
+        this.pretty = pretty;
     }
 
     public MappedResource<SwaggerOpenapiApi> createResource(Provider<? extends Application> appProvider) {
@@ -47,7 +61,7 @@ public class SwaggerOpenapiApiFactory {
         Map<String, OpenApiModel> models = new HashMap<>();
         resolveSpecs().values()
                 .stream()
-                .map(f -> f.createModel(appProvider))
+                .map(f -> f.createModel(appProvider, overrideSpec, pretty))
                 // skip unmapped models
                 .filter(Optional::isPresent)
                 .map(Optional::get)

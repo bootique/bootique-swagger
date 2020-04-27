@@ -46,9 +46,11 @@ public class OpenApiModelFactory {
     private ResourceFactory spec;
     private List<String> resourcePackages;
     private List<String> resourceClasses;
-    private boolean pretty = true;
 
-    public Optional<OpenApiModel> createModel(Provider<? extends Application> appProvider) {
+    public Optional<OpenApiModel> createModel(
+            Provider<? extends Application> appProvider,
+            ResourceFactory sharedOverrideSpec,
+            boolean prettyPrint) {
 
         if (pathJson == null && pathYaml == null) {
             LOGGER.info("Neither 'pathJson' not 'pathYaml' are set. Skipping OpenApiModel creation");
@@ -57,12 +59,11 @@ public class OpenApiModelFactory {
 
         // capture values for the lambda args
         URL spec = resolveSpec();
-        URL overrideSpec = resolveOverrideSpec();
-        boolean pretty = this.pretty;
+        URL overrideSpec = resolveOverrideSpec(sharedOverrideSpec);
         String pathJson = normalizePath(this.pathJson);
         String pathYaml = normalizePath(this.pathYaml);
 
-        return Optional.of(new OpenApiModel(() -> createOpenApi(appProvider.get(), spec, overrideSpec), pathJson, pathYaml, pretty));
+        return Optional.of(new OpenApiModel(() -> createOpenApi(appProvider.get(), spec, overrideSpec), pathJson, pathYaml, prettyPrint));
     }
 
     protected String normalizePath(String path) {
@@ -80,8 +81,9 @@ public class OpenApiModelFactory {
         return new OpenApiLoader(app).load(resourcePackages, resourceClasses, spec, overrideSpec);
     }
 
-    protected URL resolveOverrideSpec() {
-        return overrideSpec != null ? overrideSpec.getUrl() : null;
+    protected URL resolveOverrideSpec(ResourceFactory sharedOverrideSpec) {
+        ResourceFactory spec = this.overrideSpec != null ? this.overrideSpec : sharedOverrideSpec;
+        return spec != null ? spec.getUrl() : null;
     }
 
     protected URL resolveSpec() {
@@ -118,8 +120,4 @@ public class OpenApiModelFactory {
         this.spec = spec;
     }
 
-    @BQConfigProperty("Whether to format YAML and JSON. 'True' by default")
-    public void setPretty(boolean pretty) {
-        this.pretty = pretty;
-    }
 }

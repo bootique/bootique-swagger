@@ -1,0 +1,19 @@
+info:
+  title: This should be ignored
+  description: This should be ignored
+  version: _ignored_
+paths:
+  /config2/test2:
+    get:
+      tags:
+        - a
+      operationId: get
+    put:
+      tags:
+        - b
+      operationId: put
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: string
