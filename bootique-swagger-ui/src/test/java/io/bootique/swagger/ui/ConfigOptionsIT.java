@@ -46,7 +46,7 @@ public class ConfigOptionsIT {
 
         Response r = target.path("/swagger-ui").request().get();
         assertEquals(200, r.getStatus());
-        SwaggerAsserts.assertEqualsToResource("ConfigOptionsIT/response1.html", r.readEntity(String.class));
+        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "ConfigOptionsIT/response1.html");
     }
 
     @Test
@@ -56,7 +56,7 @@ public class ConfigOptionsIT {
 
         Response r = target.path("/swagger-ui").request().get();
         assertEquals(200, r.getStatus());
-        SwaggerAsserts.assertEqualsToResource("ConfigOptionsIT/response2.html", r.readEntity(String.class));
+        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "ConfigOptionsIT/response2.html");
     }
 
     @Test
@@ -66,6 +66,6 @@ public class ConfigOptionsIT {
 
         Response r = target.path("/swagger-uix").request().get();
         assertEquals(200, r.getStatus());
-        SwaggerAsserts.assertEqualsToResource("ConfigOptionsIT/response3.html", r.readEntity(String.class));
+        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "ConfigOptionsIT/response3.html");
     }
 }

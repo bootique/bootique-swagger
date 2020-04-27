@@ -18,24 +18,24 @@
  */
 package io.bootique.swagger;
 
-import io.bootique.test.junit.BQTestFactory;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
+import io.bootique.test.junit5.BQTestClassFactory;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Config2_YamlBaseSpec_YamlSpec_IT {
 
-    @ClassRule
-    public static final BQTestFactory TEST_FACTORY = new BQTestFactory();
+    @RegisterExtension
+    public static final BQTestClassFactory TEST_FACTORY = new BQTestClassFactory();
     private static final WebTarget target = ClientBuilder.newClient().target("http://127.0.0.1:8080/");
 
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass() {
         TEST_FACTORY.app("-s", "-c", "classpath:config2/startup.yml")
                 .autoLoadModules()

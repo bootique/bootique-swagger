@@ -85,15 +85,11 @@ public class MultiTenant_StaticModel_API_IT {
     public void testStaticModelsAvailable() {
         Response r1 = target.path("models/api1/model.yml").request().get();
         assertEquals(200, r1.getStatus());
-        SwaggerAsserts.assertEqualsToResource(
-                "MultiTenant_StaticModel_API_IT/models/api1/model.yml",
-                r1.readEntity(String.class));
+        SwaggerAsserts.assertEqualsToResource(r1.readEntity(String.class), "MultiTenant_StaticModel_API_IT/models/api1/model.yml");
 
         Response r2 = target.path("models/api2/model.yml").request().get();
         assertEquals(200, r2.getStatus());
-        SwaggerAsserts.assertEqualsToResource(
-                "MultiTenant_StaticModel_API_IT/models/api2/model.yml",
-                r2.readEntity(String.class));
+        SwaggerAsserts.assertEqualsToResource(r2.readEntity(String.class), "MultiTenant_StaticModel_API_IT/models/api2/model.yml");
     }
 
     @Test
@@ -101,9 +97,7 @@ public class MultiTenant_StaticModel_API_IT {
     public void testStaticDocsAvailable() {
         Response r = target.path("doc").request().get();
         assertEquals(200, r.getStatus());
-        SwaggerAsserts.assertEqualsToResource(
-                "MultiTenant_StaticModel_API_IT/doc/index.html",
-                r.readEntity(String.class));
+        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "MultiTenant_StaticModel_API_IT/doc/index.html");
     }
 
     @Test

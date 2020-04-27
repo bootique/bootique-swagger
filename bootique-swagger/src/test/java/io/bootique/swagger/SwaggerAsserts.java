@@ -22,8 +22,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SwaggerAsserts {
 
@@ -32,7 +32,7 @@ public class SwaggerAsserts {
         ClassLoader cl = SwaggerAsserts.class.getClassLoader();
 
         try (InputStream in = cl.getResourceAsStream(expected)) {
-            assertNotNull("Expected resource " + expected + " not found", in);
+            assertNotNull(in, "Expected resource " + expected + " not found");
 
             // read as bytes to preserve line breaks
             ByteArrayOutputStream out = new ByteArrayOutputStream();
