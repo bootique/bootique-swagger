@@ -18,6 +18,8 @@
  */
 package io.bootique.swagger;
 
+import io.bootique.annotation.BQConfig;
+import io.bootique.annotation.BQConfigProperty;
 import io.bootique.jersey.MappedResource;
 
 import javax.inject.Provider;
@@ -30,24 +32,20 @@ import java.util.Optional;
 /**
  * @since 2.0
  */
-// notice that this is not a BQConfig factory, and it is created manually,
-// as we'd like to avoid "consoles" property exposure in YAML.
-// TODO: some Jackson trick to derserialize this as a map?
+@BQConfig
 public class SwaggerOpenapiApiFactory {
 
-    private Map<String, OpenApiModelFactory> modelFactories;
+    private Map<String, OpenApiModelFactory> specs;
 
-    public SwaggerOpenapiApiFactory(Map<String, OpenApiModelFactory> modelFactories) {
-        // if nothing is mapped, still generate OpenAPI with default configuration
-        this.modelFactories = modelFactories == null || modelFactories.isEmpty()
-                ? Collections.singletonMap("default", defaultApiFactory())
-                : modelFactories;
+    @BQConfigProperty("Zero or more API specifications provided by the application")
+    public void setSpecs(Map<String, OpenApiModelFactory> specs) {
+        this.specs = specs;
     }
 
     public MappedResource<SwaggerOpenapiApi> createResource(Provider<? extends Application> appProvider) {
 
         Map<String, OpenApiModel> models = new HashMap<>();
-        modelFactories.values()
+        resolveSpecs().values()
                 .stream()
                 .map(f -> f.createModel(appProvider))
                 // skip unmapped models
@@ -67,6 +65,10 @@ public class SwaggerOpenapiApiFactory {
         if (model.getPathYaml() != null) {
             models.put(model.getPathYaml(), model);
         }
+    }
+
+    protected Map<String, OpenApiModelFactory> resolveSpecs() {
+        return this.specs != null ? this.specs : Collections.singletonMap("default", defaultApiFactory());
     }
 
     protected OpenApiModelFactory defaultApiFactory() {

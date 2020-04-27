@@ -56,7 +56,7 @@ public class SeleniumIT {
 
         TEST_FACTORY.app("-s")
                 .autoLoadModules()
-                .module(binder -> BQCoreModule.extend(binder).addConfig("classpath:SeleniumIT/default.yml"))
+                .module(binder -> BQCoreModule.extend(binder).addConfig("classpath:SeleniumIT/startup.yml"))
                 .module(binder -> JerseyModule.extend(binder).addResource(TestApi.class))
                 .run();
     }

@@ -22,7 +22,6 @@ package io.bootique.swagger;
 import io.bootique.BQModuleProvider;
 import io.bootique.di.BQModule;
 import io.bootique.jersey.JerseyModuleProvider;
-import io.bootique.type.TypeRef;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -41,10 +40,7 @@ public class SwaggerModuleProvider implements BQModuleProvider {
 
         // TODO: config prefix is hardcoded. Refactor away from ConfigModule, and make provider
         // generate config prefix, reusing it in metadata...
-
-        TypeRef<Map<String, OpenApiModelFactory>> type = new TypeRef<Map<String, OpenApiModelFactory>>() {
-        };
-        return Collections.singletonMap("swaggeropenapi", type.getType());
+        return Collections.singletonMap("swagger", SwaggerOpenapiApiFactory.class);
     }
 
     @Override

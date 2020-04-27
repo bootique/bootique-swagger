@@ -26,12 +26,10 @@ import io.bootique.di.Provides;
 import io.bootique.di.TypeLiteral;
 import io.bootique.jersey.JerseyModule;
 import io.bootique.jersey.MappedResource;
-import io.bootique.type.TypeRef;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import javax.inject.Provider;
 import javax.inject.Singleton;
-import java.util.Map;
 
 public class SwaggerModule extends ConfigModule {
 
@@ -46,10 +44,6 @@ public class SwaggerModule extends ConfigModule {
     MappedResource<SwaggerOpenapiApi> provideOpenApiResource(
             ConfigurationFactory configFactory,
             Provider<ResourceConfig> appProvider) {
-
-        Map<String, OpenApiModelFactory> configs = config(new TypeRef<Map<String, OpenApiModelFactory>>() {
-        }, configFactory);
-
-        return new SwaggerOpenapiApiFactory(configs).createResource(appProvider);
+        return config(SwaggerOpenapiApiFactory.class, configFactory).createResource(appProvider);
     }
 }

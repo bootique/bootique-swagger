@@ -1,6 +1,7 @@
 swagger:
-  default:
-    pathJson: "s2/model.json"
-    pathYaml: "s2/model.yaml"
-    overrideSpec: "classpath:config2/override-spec.yml"
-    spec: "classpath:config2/spec.yml"
+  specs:
+    default:
+      pathJson: "s2/model.json"
+      pathYaml: "s2/model.yaml"
+      overrideSpec: "classpath:config2/override-spec.yml"
+      spec: "classpath:config2/spec.yml"

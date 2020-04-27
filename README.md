@@ -70,20 +70,21 @@ And then configure the layout and the sources of the specs:
 
 ```yaml
 swagger:
-  # arbitrary name of a spec endpoint... Multiple specs at different URLs are supported
-  default:
+  specs:
+    # arbitrary name of a spec endpoint... Multiple specs at different URLs are supported
+    default:
 
-    # desired URL paths of JSON and YAML resources. Resolved relative to Jersey root URL
-    pathJson: "model/openapi.json"
-    pathYaml: "model/openapi.yaml"
+      # desired URL paths of JSON and YAML resources. Resolved relative to Jersey root URL
+      pathJson: "model/openapi.json"
+      pathYaml: "model/openapi.yaml"
 
-    # where the spec sources are
-    spec: "classpath:main-openapi.yml"
-    overrideSpec: "classpath:extra-openapi.yml"
-    resourcePackages:
-      - "com.example.api"
-    resourceClasses:
-      - "com.example.Api"
+      # where the spec sources are
+      spec: "classpath:main-openapi.yml"
+      overrideSpec: "classpath:extra-openapi.yml"
+      resourcePackages:
+        - "com.example.api"
+      resourceClasses:
+        - "com.example.Api"
 ```
 You can use any combination of "spec", "overrideSpec", "resourcePackages" and "resourceClasses". "spec" is usually appropriate for
 "design-first" approach, "resourcePackages" and "resourceClasses" - for the "code-first". "overrideSpec" can be used with both to add
