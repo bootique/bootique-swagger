@@ -16,23 +16,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.bootique.swagger.ui;
+package io.bootique.swagger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-public class UIAsserts {
+public class SwaggerAsserts {
 
-    public static void assertEqualsToResource(String expectedResource, String toTest) {
+    public static void assertEqualsToResource(String toTest, String expected) {
 
-        ClassLoader cl = UIAsserts.class.getClassLoader();
+        ClassLoader cl = SwaggerAsserts.class.getClassLoader();
 
-        try (InputStream in = cl.getResourceAsStream(expectedResource)) {
-            assertNotNull(in);
+        try (InputStream in = cl.getResourceAsStream(expected)) {
+            assertNotNull("Expected resource " + expected + " not found", in);
 
             // read as bytes to preserve line breaks
             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -44,6 +44,7 @@ public class UIAsserts {
 
             String expectedString = new String(out.toByteArray(), "UTF-8");
             assertEquals(expectedString, toTest);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

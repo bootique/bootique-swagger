@@ -47,7 +47,7 @@ public class Config2_YamlBaseSpec_YamlSpec_IT {
 
         Response r = target.path("/s2/model.yaml").request().get();
         assertEquals(200, r.getStatus());
-        OpenApiAsserts.assertEqualsToResource(r.readEntity(String.class), "config2/response.yml");
+        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "config2/response.yml");
     }
 
     @Test
@@ -55,6 +55,6 @@ public class Config2_YamlBaseSpec_YamlSpec_IT {
 
         Response r = target.path("/s2/model.json").request().get();
         assertEquals(200, r.getStatus());
-        OpenApiAsserts.assertEqualsToResource(r.readEntity(String.class), "config2/response.json");
+        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "config2/response.json");
     }
 }

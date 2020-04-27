@@ -20,6 +20,7 @@ package io.bootique.swagger.ui;
 
 import io.bootique.jersey.JerseyModule;
 import io.bootique.jetty.JettyModule;
+import io.bootique.swagger.SwaggerAsserts;
 import io.bootique.test.junit5.BQTestClassFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -84,13 +85,13 @@ public class MultiTenant_StaticModel_API_IT {
     public void testStaticModelsAvailable() {
         Response r1 = target.path("models/api1/model.yml").request().get();
         assertEquals(200, r1.getStatus());
-        UIAsserts.assertEqualsToResource(
+        SwaggerAsserts.assertEqualsToResource(
                 "MultiTenant_StaticModel_API_IT/models/api1/model.yml",
                 r1.readEntity(String.class));
 
         Response r2 = target.path("models/api2/model.yml").request().get();
         assertEquals(200, r2.getStatus());
-        UIAsserts.assertEqualsToResource(
+        SwaggerAsserts.assertEqualsToResource(
                 "MultiTenant_StaticModel_API_IT/models/api2/model.yml",
                 r2.readEntity(String.class));
     }
@@ -100,7 +101,7 @@ public class MultiTenant_StaticModel_API_IT {
     public void testStaticDocsAvailable() {
         Response r = target.path("doc").request().get();
         assertEquals(200, r.getStatus());
-        UIAsserts.assertEqualsToResource(
+        SwaggerAsserts.assertEqualsToResource(
                 "MultiTenant_StaticModel_API_IT/doc/index.html",
                 r.readEntity(String.class));
     }

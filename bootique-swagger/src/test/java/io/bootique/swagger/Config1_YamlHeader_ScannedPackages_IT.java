@@ -50,7 +50,7 @@ public class Config1_YamlHeader_ScannedPackages_IT {
 
         Response r = target.path("/s1/model.yaml").request().get();
         assertEquals(200, r.getStatus());
-        OpenApiAsserts.assertEqualsToResource(r.readEntity(String.class), "config1/response.yml");
+        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "config1/response.yml");
     }
 
     @Test
@@ -58,6 +58,6 @@ public class Config1_YamlHeader_ScannedPackages_IT {
 
         Response r = target.path("/s1/model.json").request().get();
         assertEquals(200, r.getStatus());
-        OpenApiAsserts.assertEqualsToResource(r.readEntity(String.class), "config1/response.json");
+        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "config1/response.json");
     }
 }

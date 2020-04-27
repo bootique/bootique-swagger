@@ -19,6 +19,7 @@
 
 package io.bootique.swagger.ui;
 
+import io.bootique.swagger.SwaggerAsserts;
 import io.bootique.test.junit5.BQTestFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,7 +46,7 @@ public class ConfigOptionsIT {
 
         Response r = target.path("/swagger-ui").request().get();
         assertEquals(200, r.getStatus());
-        UIAsserts.assertEqualsToResource("ConfigOptionsIT/response1.html", r.readEntity(String.class));
+        SwaggerAsserts.assertEqualsToResource("ConfigOptionsIT/response1.html", r.readEntity(String.class));
     }
 
     @Test
@@ -55,7 +56,7 @@ public class ConfigOptionsIT {
 
         Response r = target.path("/swagger-ui").request().get();
         assertEquals(200, r.getStatus());
-        UIAsserts.assertEqualsToResource("ConfigOptionsIT/response2.html", r.readEntity(String.class));
+        SwaggerAsserts.assertEqualsToResource("ConfigOptionsIT/response2.html", r.readEntity(String.class));
     }
 
     @Test
@@ -65,6 +66,6 @@ public class ConfigOptionsIT {
 
         Response r = target.path("/swagger-uix").request().get();
         assertEquals(200, r.getStatus());
-        UIAsserts.assertEqualsToResource("ConfigOptionsIT/response3.html", r.readEntity(String.class));
+        SwaggerAsserts.assertEqualsToResource("ConfigOptionsIT/response3.html", r.readEntity(String.class));
     }
 }
