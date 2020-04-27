@@ -1,4 +1,4 @@
-swaggeropenapi:
+swagger:
   default:
     pretty: false
     pathJson: openapi.json

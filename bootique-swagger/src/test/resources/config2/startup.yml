@@ -1,4 +1,4 @@
-swaggeropenapi:
+swagger:
   default:
     pathJson: "s2/model.json"
     pathYaml: "s2/model.yaml"

@@ -1,1 +1,1 @@
-io.bootique.swagger.openapi.SwaggerOpenapiModuleProvider
+io.bootique.swagger.SwaggerModuleProvider

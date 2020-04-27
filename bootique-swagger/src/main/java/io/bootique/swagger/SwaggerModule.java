@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package io.bootique.swagger.openapi;
+package io.bootique.swagger;
 
 import io.bootique.ConfigModule;
 import io.bootique.config.ConfigurationFactory;
@@ -33,7 +33,7 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 import java.util.Map;
 
-public class SwaggerOpenapiModule extends ConfigModule {
+public class SwaggerModule extends ConfigModule {
 
     @Override
     public void configure(Binder binder) {

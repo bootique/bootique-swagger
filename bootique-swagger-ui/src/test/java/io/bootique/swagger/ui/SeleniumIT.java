@@ -2,7 +2,6 @@ package io.bootique.swagger.ui;
 
 import io.bootique.BQCoreModule;
 import io.bootique.jersey.JerseyModule;
-import io.bootique.swagger.openapi.SwaggerOpenapiModuleProvider;
 import io.bootique.test.junit5.BQTestClassFactory;
 import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.SeleniumExtension;
@@ -56,8 +55,7 @@ public class SeleniumIT {
     public static void beforeClass() {
 
         TEST_FACTORY.app("-s")
-                .module(new SwaggerOpenapiModuleProvider())
-                .module(new SwaggerUiModuleProvider())
+                .autoLoadModules()
                 .module(binder -> BQCoreModule.extend(binder).addConfig("classpath:SeleniumIT/default.yml"))
                 .module(binder -> JerseyModule.extend(binder).addResource(TestApi.class))
                 .run();

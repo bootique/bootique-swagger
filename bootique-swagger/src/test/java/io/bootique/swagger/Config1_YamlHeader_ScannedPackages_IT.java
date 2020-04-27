@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.bootique.swagger.openapi;
+package io.bootique.swagger;
 
 import io.bootique.jersey.JerseyModule;
-import io.bootique.swagger.openapi.config1.Test1Api;
+import io.bootique.swagger.config1.Test1Api;
 import io.bootique.test.junit.BQTestFactory;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.bootique.swagger.openapi;
+package io.bootique.swagger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.util.Json;

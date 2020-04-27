@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.bootique.swagger.openapi;
+package io.bootique.swagger;
 
 import io.swagger.v3.oas.models.OpenAPI;
 
