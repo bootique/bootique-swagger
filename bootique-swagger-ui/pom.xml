@@ -73,7 +73,7 @@
         </dependency>
         <dependency>
             <groupId>io.bootique.swagger</groupId>
-            <artifactId>bootique-swagger-openapi</artifactId>
+            <artifactId>bootique-swagger</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>

@@ -36,15 +36,15 @@
     <properties>
         <bootique.version>${project.version}</bootique.version>
         <!-- TODO: since version 2.0.7, Swagger generates "/application.wadl" sections. What are those for?  -->
-        <swagger.openapi.version>2.0.6</swagger.openapi.version>
+        <swagger.version>2.0.6</swagger.version>
         <mustache.version>0.9.6</mustache.version>
         <selenium.version>4.0.0-alpha-1</selenium.version>
         <selenium-jupiter.version>3.3.4</selenium-jupiter.version>
     </properties>
 
     <modules>
+        <module>bootique-swagger</module>
         <module>bootique-swagger-ui</module>
-        <module>bootique-swagger-openapi</module>
     </modules>
 
     <scm>
@@ -96,7 +96,7 @@
             <dependency>
                 <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-core</artifactId>
-                <version>${swagger.openapi.version}</version>
+                <version>${swagger.version}</version>
                 <exclusions>
                     <!-- Jersey uses Jakarta Validation 2.x elsewhere, so exlcuding old 1.x -->
                     <exclusion>
@@ -108,12 +108,12 @@
             <dependency>
                 <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-jaxrs2</artifactId>
-                <version>${swagger.openapi.version}</version>
+                <version>${swagger.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-jaxrs2-servlet-initializer</artifactId>
-                <version>${swagger.openapi.version}</version>
+                <version>${swagger.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.seleniumhq.selenium</groupId>

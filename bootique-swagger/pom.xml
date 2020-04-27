@@ -26,10 +26,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bootique-swagger-openapi</artifactId>
+    <artifactId>bootique-swagger</artifactId>
     <packaging>jar</packaging>
 
-    <name>bootique-swagger-openapi: Swagger-based OpenAPI Integration with Bootique and Jersey</name>
+    <name>bootique-swagger: Swagger-based OpenAPI Integration with Bootique and Jersey</name>
     <description>Provides Swagger-based OpenAPI integration with Bootique and Jersey</description>
 
     <dependencies>
