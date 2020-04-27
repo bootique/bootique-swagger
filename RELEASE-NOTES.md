@@ -5,7 +5,7 @@
 * #18 Change default mapping for UI servlet from /swagger to /swagger-ui
 * #21 Swagger UI multitenancy
 * #22 Controllable mapping for "swagger-ui-static"
-* #23 "bootique-swagger-openapi" - allow to map spec URL via config
+* #23 "bootique-swagger" - allow to map spec URL via config
 * #24 Remove support for Swagger 2.0 spec
 
 ## 1.0
