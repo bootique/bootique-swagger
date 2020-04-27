@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.jaxrs2.Reader;
-import io.swagger.v3.jaxrs2.integration.JaxrsApplicationAndAnnotationScanner;
+import io.swagger.v3.jaxrs2.integration.JaxrsAnnotationScanner;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Paths;
@@ -75,7 +75,7 @@ public class OpenApiLoader {
             config.setResourceClasses(new HashSet<>(resourceClasses));
         }
 
-        JaxrsApplicationAndAnnotationScanner scanner = new JaxrsApplicationAndAnnotationScanner();
+        JaxrsAnnotationScanner scanner = new JaxrsAnnotationScanner();
         scanner.setConfiguration(config);
         scanner.setApplication(application);
 
