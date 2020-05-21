@@ -37,7 +37,7 @@ public class SwaggerUiModuleProviderIT {
 
     @Test
     public void testModuleDeclaresDependencies() {
-        final BQRuntime bqRuntime = testFactory.app().module(new SwaggerUiModuleProvider()).createRuntime();
+        final BQRuntime bqRuntime = testFactory.app().moduleProvider(new SwaggerUiModuleProvider()).createRuntime();
         BQRuntimeChecker.testModulesLoaded(bqRuntime,
                 SwaggerUiModule.class
         );
