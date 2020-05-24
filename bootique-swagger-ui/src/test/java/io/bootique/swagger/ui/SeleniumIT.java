@@ -2,7 +2,7 @@ package io.bootique.swagger.ui;
 
 import io.bootique.BQCoreModule;
 import io.bootique.jersey.JerseyModule;
-import io.bootique.test.junit5.BQTestClassFactory;
+import io.bootique.junit5.BQTestClassFactory;
 import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;

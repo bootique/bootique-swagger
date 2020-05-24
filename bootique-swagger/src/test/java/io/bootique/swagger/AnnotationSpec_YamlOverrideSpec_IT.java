@@ -20,7 +20,7 @@ package io.bootique.swagger;
 
 import io.bootique.jersey.JerseyModule;
 import io.bootique.swagger.config1.Test1Api;
-import io.bootique.test.junit5.BQTestClassFactory;
+import io.bootique.junit5.BQTestClassFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;

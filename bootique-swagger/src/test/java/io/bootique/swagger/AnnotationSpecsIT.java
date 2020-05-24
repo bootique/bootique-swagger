@@ -21,7 +21,7 @@ package io.bootique.swagger;
 import io.bootique.jersey.JerseyModule;
 import io.bootique.swagger.config3.Api31;
 import io.bootique.swagger.config3a.Api3a;
-import io.bootique.test.junit5.BQTestFactory;
+import io.bootique.junit5.BQTestFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;

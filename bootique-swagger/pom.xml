@@ -53,7 +53,7 @@
         <!-- Unit test dependencies -->
         <dependency>
             <groupId>io.bootique</groupId>
-            <artifactId>bootique-test-junit5</artifactId>
+            <artifactId>bootique-junit5</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

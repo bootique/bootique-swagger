@@ -21,7 +21,7 @@ package io.bootique.swagger.ui;
 import io.bootique.jersey.JerseyModule;
 import io.bootique.jetty.JettyModule;
 import io.bootique.swagger.SwaggerAsserts;
-import io.bootique.test.junit5.BQTestClassFactory;
+import io.bootique.junit5.BQTestClassFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

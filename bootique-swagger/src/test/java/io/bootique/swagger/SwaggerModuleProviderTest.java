@@ -21,9 +21,9 @@ package io.bootique.swagger;
 
 import io.bootique.BQRuntime;
 import io.bootique.jersey.JerseyModule;
-import io.bootique.test.junit5.BQModuleProviderChecker;
-import io.bootique.test.junit5.BQRuntimeChecker;
-import io.bootique.test.junit5.BQTestFactory;
+import io.bootique.junit5.BQModuleProviderChecker;
+import io.bootique.junit5.BQRuntimeChecker;
+import io.bootique.junit5.BQTestFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
