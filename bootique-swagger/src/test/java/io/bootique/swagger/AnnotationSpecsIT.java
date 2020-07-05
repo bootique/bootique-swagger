@@ -19,9 +19,11 @@
 package io.bootique.swagger;
 
 import io.bootique.jersey.JerseyModule;
+import io.bootique.jetty.junit5.JettyTester;
+import io.bootique.junit5.BQTestFactory;
+import io.bootique.resource.ResourceFactory;
 import io.bootique.swagger.config3.Api31;
 import io.bootique.swagger.config3a.Api3a;
-import io.bootique.junit5.BQTestFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -49,8 +51,8 @@ public class AnnotationSpecsIT {
                 .run();
 
         Response r = target.path("/c3/model.yaml").request().get();
-        assertEquals(200, r.getStatus());
-        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "config3/response1.yml");
+        JettyTester.assertOk(r)
+                .assertContent(new ResourceFactory("classpath:config3/response1.yml"));
     }
 
     @Test
@@ -63,7 +65,7 @@ public class AnnotationSpecsIT {
                 .run();
 
         Response r = target.path("/c3/model.yaml").request().get();
-        assertEquals(200, r.getStatus());
-        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "config3/response2.yml");
+        JettyTester.assertOk(r)
+                .assertContent(new ResourceFactory("classpath:config3/response2.yml"));
     }
 }

@@ -18,110 +18,104 @@
  */
 package io.bootique.swagger.ui;
 
+import io.bootique.BQRuntime;
+import io.bootique.Bootique;
 import io.bootique.jersey.JerseyModule;
 import io.bootique.jetty.JettyModule;
-import io.bootique.swagger.SwaggerAsserts;
-import io.bootique.junit5.BQTestClassFactory;
-import org.junit.jupiter.api.BeforeAll;
+import io.bootique.jetty.junit5.JettyTester;
+import io.bootique.junit5.BQApp;
+import io.bootique.junit5.BQTest;
+import io.bootique.resource.ResourceFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 @DisplayName("Multi-tenancy: mix of APIs, OpenAPI models and swagger-ui consoles")
+@BQTest
 public class MultiTenant_StaticModel_API_IT {
 
-    @RegisterExtension
-    public static BQTestClassFactory testFactory = new BQTestClassFactory();
+    static final JettyTester jetty = JettyTester.create();
 
-    private static WebTarget target = ClientBuilder.newClient().target("http://127.0.0.1:8080/");
+    // URL layout:
 
-    @BeforeAll
-    public static void startServer() {
+    // "/"                          - Jersey root
+    // "/api*"                      - API endpoints handled by Jersey
 
-        // URL layout:
+    // "/models"                    - Servlet serving OpenAPI specs
+    // "/models/api*./model.yml"    - OpenAPI specs
 
-        // "/"                          - Jersey root
-        // "/api*"                      - API endpoints handled by Jersey
+    // "/doc/"                      - documentation root
+    // "/doc/api*"                  - swagger-ui consoles
 
-        // "/models"                    - Servlet serving OpenAPI specs
-        // "/models/api*./model.yml"    - OpenAPI specs
+    @BQApp
+    static final BQRuntime app = Bootique
+            .app("-s", "-c", "classpath:MultiTenant_StaticModel_API_IT/startup.yml")
+            .autoLoadModules()
+            .module(jetty.moduleReplacingConnectors())
+            .module(b -> JerseyModule.extend(b).addResource(Api1.class).addResource(Api2.class))
+            .module(b -> JettyModule.extend(b).addStaticServlet("models", "/models/*"))
+            .module(b -> JettyModule.extend(b).addStaticServlet("doc", "/doc/*"))
+            .createRuntime();
 
-        // "/doc/"                      - documentation root
-        // "/doc/api*"                  - swagger-ui consoles
-
-        testFactory.app("-s", "-c", "classpath:MultiTenant_StaticModel_API_IT/startup.yml")
-                .autoLoadModules()
-                .module(b -> JerseyModule.extend(b).addResource(Api1.class).addResource(Api2.class))
-                .module(b -> JettyModule.extend(b).addStaticServlet("models", "/models/*"))
-                .module(b -> JettyModule.extend(b).addStaticServlet("doc", "/doc/*"))
-                .run();
-    }
 
     @Test
     @DisplayName("APIs available")
     public void testApisAvailable() {
-        Response r1 = target.path("api1").request().get();
-        assertEquals(200, r1.getStatus());
-        assertEquals("I am API1", r1.readEntity(String.class));
+        Response r1 = jetty.getTarget().path("api1").request().get();
+        JettyTester.assertOk(r1).assertContent("I am API1");
 
-        Response r2 = target.path("api2").request().get();
-        assertEquals(200, r2.getStatus());
-        assertEquals("I am API2", r2.readEntity(String.class));
+        Response r2 = jetty.getTarget().path("api2").request().get();
+        JettyTester.assertOk(r2).assertContent("I am API2");
     }
 
     @Test
     @DisplayName("Static models available")
     public void testStaticModelsAvailable() {
-        Response r1 = target.path("models/api1/model.yml").request().get();
-        assertEquals(200, r1.getStatus());
-        SwaggerAsserts.assertEqualsToResource(r1.readEntity(String.class), "MultiTenant_StaticModel_API_IT/models/api1/model.yml");
+        Response r1 = jetty.getTarget().path("models/api1/model.yml").request().get();
+        JettyTester.assertOk(r1)
+                .assertContent(new ResourceFactory("classpath:MultiTenant_StaticModel_API_IT/models/api1/model.yml"));
 
-        Response r2 = target.path("models/api2/model.yml").request().get();
-        assertEquals(200, r2.getStatus());
-        SwaggerAsserts.assertEqualsToResource(r2.readEntity(String.class), "MultiTenant_StaticModel_API_IT/models/api2/model.yml");
+        Response r2 = jetty.getTarget().path("models/api2/model.yml").request().get();
+        JettyTester.assertOk(r2)
+                .assertContent(new ResourceFactory("classpath:MultiTenant_StaticModel_API_IT/models/api2/model.yml"));
     }
 
     @Test
     @DisplayName("Static docs available")
     public void testStaticDocsAvailable() {
-        Response r = target.path("doc").request().get();
-        assertEquals(200, r.getStatus());
-        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "MultiTenant_StaticModel_API_IT/doc/index.html");
+        Response r = jetty.getTarget().path("doc").request().get();
+        JettyTester.assertOk(r)
+                .assertContent(new ResourceFactory("classpath:MultiTenant_StaticModel_API_IT/doc/index.html"));
     }
 
     @Test
     @DisplayName("Swagger UI")
     public void testMultipleSwaggerUIAvailable() {
-        Response r1 = target.path("doc/api1").request().get();
-        assertEquals(200, r1.getStatus());
-        String body1 = r1.readEntity(String.class);
-        assertTrue(body1.contains("url: \"http://127.0.0.1:8080/models/api1/model.yml\""));
 
-        Response r2 = target.path("doc/api2").request().get();
-        assertEquals(200, r2.getStatus());
-        String body2 = r2.readEntity(String.class);
-        assertTrue(body2.contains("url: \"http://127.0.0.1:8080/models/api2/model.yml\""));
+        String baseUrl = jetty.getUrl();
+
+        Response r1 = jetty.getTarget().path("doc/api1").request().get();
+        JettyTester.assertOk(r1)
+                .assertContent(s -> s.contains("url: \"" + baseUrl + "/models/api1/model.yml\""));
+
+        Response r2 = jetty.getTarget().path("doc/api2").request().get();
+        JettyTester.assertOk(r2)
+                .assertContent(s -> s.contains("url: \"" + baseUrl + "/models/api2/model.yml\""));
     }
 
     @Test
     @DisplayName("Swagger UI Resources")
     public void testMultipleSwaggerUIResourcesAvailable() {
-        Response r1 = target.path("doc/api1/static/swagger-ui.css").request().get();
-        assertEquals(200, r1.getStatus());
+        Response r1 = jetty.getTarget().path("doc/api1/static/swagger-ui.css").request().get();
+        JettyTester.assertOk(r1);
 
-        Response r2 = target.path("doc/api2/static/swagger-ui.css").request().get();
-        assertEquals(200, r2.getStatus());
+        Response r2 = jetty.getTarget().path("doc/api2/static/swagger-ui.css").request().get();
+        JettyTester.assertOk(r2);
     }
 
     @Path("api1")

@@ -18,38 +18,38 @@
  */
 package io.bootique.swagger;
 
-import io.bootique.junit5.BQTestClassFactory;
-import org.junit.jupiter.api.BeforeAll;
+import io.bootique.BQRuntime;
+import io.bootique.Bootique;
+import io.bootique.jetty.junit5.JettyTester;
+import io.bootique.junit5.BQApp;
+import io.bootique.junit5.BQTest;
+import io.bootique.resource.ResourceFactory;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@BQTest
 public class YamlSpec_SharedYamlOverrideSpec_IT {
 
-    @RegisterExtension
-    public static final BQTestClassFactory testFactory = new BQTestClassFactory();
-    private static final WebTarget target = ClientBuilder.newClient().target("http://127.0.0.1:8080/");
+    static final JettyTester jetty = JettyTester.create();
 
-    @BeforeAll
-    public static void beforeClass() {
-        testFactory.app("-s", "-c", "classpath:config4/startup.yml")
-                .autoLoadModules()
-                .run();
-    }
+    @BQApp
+    static final BQRuntime app = Bootique
+            .app("-s", "-c", "classpath:config4/startup.yml")
+            .autoLoadModules()
+            .module(jetty.moduleReplacingConnectors())
+            .createRuntime();
 
     @Test
     public void testJson() {
-        Response r1 = target.path("/c1/model.json").request().get();
-        assertEquals(200, r1.getStatus());
-        SwaggerAsserts.assertEqualsToResource(r1.readEntity(String.class), "config4/response1.json");
+        Response r1 = jetty.getTarget().path("/c1/model.json").request().get();
+        JettyTester.assertOk(r1)
+                .assertContent(new ResourceFactory("classpath:config4/response1.json"));
 
-        Response r2 = target.path("/c2/model.json").request().get();
-        assertEquals(200, r2.getStatus());
-        SwaggerAsserts.assertEqualsToResource(r2.readEntity(String.class), "config4/response2.json");
+        Response r2 = jetty.getTarget().path("/c2/model.json").request().get();
+        JettyTester.assertOk(r2)
+                .assertContent(new ResourceFactory("classpath:config4/response2.json"));
     }
 }

@@ -18,46 +18,44 @@
  */
 package io.bootique.swagger;
 
+import io.bootique.BQRuntime;
+import io.bootique.Bootique;
 import io.bootique.jersey.JerseyModule;
+import io.bootique.jetty.junit5.JettyTester;
+import io.bootique.junit5.BQApp;
+import io.bootique.junit5.BQTest;
+import io.bootique.resource.ResourceFactory;
 import io.bootique.swagger.config1.Test1Api;
-import io.bootique.junit5.BQTestClassFactory;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@BQTest
 public class AnnotationSpec_YamlOverrideSpec_IT {
 
-    @RegisterExtension
-    public static final BQTestClassFactory testFactory = new BQTestClassFactory();
-    private static final WebTarget target = ClientBuilder.newClient().target("http://127.0.0.1:8080/");
+    static final JettyTester jetty = JettyTester.create();
 
-    @BeforeAll
-    public static void beforeClass() {
-        testFactory.app("-s", "-c", "classpath:config1/startup.yml")
-                .autoLoadModules()
-                .module(b -> JerseyModule.extend(b).addResource(Test1Api.class))
-                .run();
-    }
+    @BQApp
+    static final BQRuntime app = Bootique
+            .app("-s", "-c", "classpath:config1/startup.yml")
+            .autoLoadModules()
+            .module(jetty.moduleReplacingConnectors())
+            .module(b -> JerseyModule.extend(b).addResource(Test1Api.class))
+            .createRuntime();
 
     @Test
     public void testYaml() {
-
-        Response r = target.path("/s1/model.yaml").request().get();
-        assertEquals(200, r.getStatus());
-        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "config1/response.yml");
+        Response r = jetty.getTarget().path("/s1/model.yaml").request().get();
+        JettyTester.assertOk(r)
+                .assertContent(new ResourceFactory("classpath:config1/response.yml"));
     }
 
     @Test
     public void testJson() {
-
-        Response r = target.path("/s1/model.json").request().get();
-        assertEquals(200, r.getStatus());
-        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "config1/response.json");
+        Response r = jetty.getTarget().path("/s1/model.json").request().get();
+        JettyTester.assertOk(r)
+                .assertContent(new ResourceFactory("classpath:config1/response.json"));
     }
 }

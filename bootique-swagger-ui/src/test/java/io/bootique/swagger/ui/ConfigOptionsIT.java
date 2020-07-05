@@ -19,8 +19,9 @@
 
 package io.bootique.swagger.ui;
 
-import io.bootique.swagger.SwaggerAsserts;
+import io.bootique.jetty.junit5.JettyTester;
 import io.bootique.junit5.BQTestFactory;
+import io.bootique.resource.ResourceFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -56,8 +57,8 @@ public class ConfigOptionsIT {
         testFactory.app("-s", "-c", "classpath:ConfigOptionsIT/nospecs.yml").autoLoadModules().run();
 
         Response r = target.path("/swagger-ui-nospecs").request().get();
-        assertEquals(200, r.getStatus());
-        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "ConfigOptionsIT/response0.html");
+        JettyTester.assertOk(r)
+                .assertContent(new ResourceFactory("classpath:ConfigOptionsIT/response0.html"));
     }
 
     @Test
@@ -66,8 +67,8 @@ public class ConfigOptionsIT {
         testFactory.app("-s", "-c", "classpath:ConfigOptionsIT/specpath.yml").autoLoadModules().run();
 
         Response r = target.path("/swagger-ui").request().get();
-        assertEquals(200, r.getStatus());
-        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "ConfigOptionsIT/response1.html");
+        JettyTester.assertOk(r)
+                .assertContent(new ResourceFactory("classpath:ConfigOptionsIT/response1.html"));
     }
 
     @Test
@@ -76,8 +77,8 @@ public class ConfigOptionsIT {
         testFactory.app("-s", "-c", "classpath:ConfigOptionsIT/specurl.yml").autoLoadModules().run();
 
         Response r = target.path("/swagger-ui").request().get();
-        assertEquals(200, r.getStatus());
-        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "ConfigOptionsIT/response2.html");
+        JettyTester.assertOk(r)
+                .assertContent(new ResourceFactory("classpath:ConfigOptionsIT/response2.html"));
     }
 
     @Test
@@ -86,7 +87,7 @@ public class ConfigOptionsIT {
         testFactory.app("-s", "-c", "classpath:ConfigOptionsIT/uipath.yml").autoLoadModules().run();
 
         Response r = target.path("/swagger-uix").request().get();
-        assertEquals(200, r.getStatus());
-        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "ConfigOptionsIT/response3.html");
+        JettyTester.assertOk(r)
+                .assertContent(new ResourceFactory("classpath:ConfigOptionsIT/response3.html"));
     }
 }

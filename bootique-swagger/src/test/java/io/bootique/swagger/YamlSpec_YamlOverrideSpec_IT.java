@@ -18,41 +18,41 @@
  */
 package io.bootique.swagger;
 
-import io.bootique.junit5.BQTestClassFactory;
-import org.junit.jupiter.api.BeforeAll;
+import io.bootique.BQRuntime;
+import io.bootique.Bootique;
+import io.bootique.jetty.junit5.JettyTester;
+import io.bootique.junit5.BQApp;
+import io.bootique.junit5.BQTest;
+import io.bootique.resource.ResourceFactory;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@BQTest
 public class YamlSpec_YamlOverrideSpec_IT {
 
-    @RegisterExtension
-    public static final BQTestClassFactory TEST_FACTORY = new BQTestClassFactory();
-    private static final WebTarget target = ClientBuilder.newClient().target("http://127.0.0.1:8080/");
+    static final JettyTester jetty = JettyTester.create();
 
-    @BeforeAll
-    public static void beforeClass() {
-        TEST_FACTORY.app("-s", "-c", "classpath:config2/startup.yml")
-                .autoLoadModules()
-                .run();
-    }
+    @BQApp
+    static final BQRuntime app = Bootique
+            .app("-s", "-c", "classpath:config2/startup.yml")
+            .autoLoadModules()
+            .module(jetty.moduleReplacingConnectors())
+            .createRuntime();
 
     @Test
     public void testYaml() {
-        Response r = target.path("/s2/model.yaml").request().get();
-        assertEquals(200, r.getStatus());
-        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "config2/response.yml");
+        Response r = jetty.getTarget().path("/s2/model.yaml").request().get();
+        JettyTester.assertOk(r)
+                .assertContent(new ResourceFactory("classpath:config2/response.yml"));
     }
 
     @Test
     public void testJson() {
-        Response r = target.path("/s2/model.json").request().get();
-        assertEquals(200, r.getStatus());
-        SwaggerAsserts.assertEqualsToResource(r.readEntity(String.class), "config2/response.json");
+        Response r = jetty.getTarget().path("/s2/model.json").request().get();
+        JettyTester.assertOk(r)
+                .assertContent(new ResourceFactory("classpath:config2/response.json"));
     }
 }

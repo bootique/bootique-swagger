@@ -67,8 +67,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>io.bootique.jersey</groupId>
-            <artifactId>bootique-jersey-client</artifactId>
+            <groupId>io.bootique.jetty</groupId>
+            <artifactId>bootique-jetty-junit5</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -76,13 +76,6 @@
             <artifactId>bootique-swagger</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.bootique.swagger</groupId>
-            <artifactId>bootique-swagger</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-            <type>test-jar</type>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>

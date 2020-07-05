@@ -78,13 +78,13 @@
                 <version>${bootique.version}</version>
             </dependency>
             <dependency>
-                <groupId>io.bootique.jersey</groupId>
-                <artifactId>bootique-jersey</artifactId>
+                <groupId>io.bootique.jetty</groupId>
+                <artifactId>bootique-jetty-junit5</artifactId>
                 <version>${bootique.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.bootique.jersey</groupId>
-                <artifactId>bootique-jersey-client</artifactId>
+                <artifactId>bootique-jersey</artifactId>
                 <version>${bootique.version}</version>
             </dependency>
             <dependency>

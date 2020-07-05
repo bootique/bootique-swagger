@@ -1,16 +1,18 @@
 package io.bootique.swagger.ui;
 
 import io.bootique.BQCoreModule;
+import io.bootique.BQRuntime;
+import io.bootique.Bootique;
 import io.bootique.jersey.JerseyModule;
-import io.bootique.junit5.BQTestClassFactory;
+import io.bootique.jetty.junit5.JettyTester;
+import io.bootique.junit5.BQApp;
+import io.bootique.junit5.BQTest;
 import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -21,8 +23,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
@@ -33,50 +33,37 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@BQTest
 @ExtendWith(SeleniumExtension.class)
 public class SeleniumIT {
 
-    private static final WebTarget target = ClientBuilder.newClient().target("http://127.0.0.1:8080/");
+    static final JettyTester jetty = JettyTester.create();
 
-    @RegisterExtension
-    public static BQTestClassFactory TEST_FACTORY = new BQTestClassFactory();
+    @BQApp
+    static final BQRuntime app = Bootique
+            .app("-s")
+            .autoLoadModules()
+            .module(jetty.moduleReplacingConnectors())
+            .module(binder -> BQCoreModule.extend(binder).addConfig("classpath:SeleniumIT/startup.yml"))
+            .module(binder -> JerseyModule.extend(binder).addResource(TestApi.class))
+            .createRuntime();
 
     @Options
-    ChromeOptions chromeOptions = new ChromeOptions();
-
-    {
-        chromeOptions.addArguments("--headless");
-        chromeOptions.addArguments("--no-sandbox");
-        chromeOptions.addArguments("--disable-dev-shm-usage");
-    }
-
-    @BeforeAll
-    public static void beforeClass() {
-
-        TEST_FACTORY.app("-s")
-                .autoLoadModules()
-                .module(binder -> BQCoreModule.extend(binder).addConfig("classpath:SeleniumIT/startup.yml"))
-                .module(binder -> JerseyModule.extend(binder).addResource(TestApi.class))
-                .run();
-    }
+    ChromeOptions chromeOptions = new ChromeOptions()
+            .addArguments("--headless")
+            .addArguments("--no-sandbox")
+            .addArguments("--disable-dev-shm-usage");
 
     @Test
     public void testApi_Console(ChromeDriver driver) {
-
-        Response r = target.request().get();
-        assertEquals(200, r.getStatus());
-        driver.get(target.getUri().toString());
+        driver.get(jetty.getUrl());
         assertEquals("{\"message\":\"hello test\"}", driver.findElement(By.tagName("pre")).getText());
-
     }
 
     @Test
     public void testSwaggerUIGet(ChromeDriver driver) {
 
-        Response r = target.path("swagger-ui").request().get();
-        assertEquals(200, r.getStatus());
-
-        driver.get(target.path("swagger-ui").getUri().toString());
+        driver.get(jetty.getTarget().path("swagger-ui").getUri().toString());
 
         WebElement webElement = new WebDriverWait(driver, Duration.ofSeconds(1).getSeconds())
                 .until(webDriver -> webDriver.findElement(By.cssSelector("div#operations-default-get.opblock.opblock-get")));
@@ -91,10 +78,10 @@ public class SeleniumIT {
         webElement.click();
 
         String curl = driver.findElement(By.cssSelector("textarea.curl")).getText();
-        assertEquals(curl, "curl -X GET \"http://127.0.0.1:8080/\" -H \"accept: application/json\"");
+        assertEquals(curl, "curl -X GET \"" + jetty.getUrl() + "/\" -H \"accept: application/json\"");
 
         String url = driver.findElement(By.cssSelector("div.request-url > pre")).getText();
-        assertEquals(url, "http://127.0.0.1:8080/");
+        assertEquals(jetty.getUrl() + "/", url);
 
         String status = driver.findElement(By.cssSelector("tr.response > td.response-col_status")).getText();
         assertEquals(status, "200");
@@ -106,14 +93,13 @@ public class SeleniumIT {
 
     @Test
     public void testSwaggerUIStatic() {
-        Response r = target.path("/swagger-ui/static/").request().get();
-        assertEquals(200, r.getStatus());
+        Response r = jetty.getTarget().path("/swagger-ui/static/").request().get();
+        JettyTester.assertOk(r);
     }
 
     @Test
     public void testOpenapiJson(ChromeDriver driver) {
-
-        driver.get(target.path("openapi.json").getUri().toString());
+        driver.get(jetty.getTarget().path("openapi.json").getUri().toString());
         String homeUrl = driver.findElement(By.tagName("pre")).getText();
         assertEqualsToResourceContents("SeleniumIT/response.json", homeUrl);
     }
@@ -121,26 +107,26 @@ public class SeleniumIT {
     @Test
     public void testOpenapiYaml(ChromeDriver driver) {
 
-        driver.get(target.path("swagger-ui").getUri().toString());
+        driver.get(jetty.getTarget().path("swagger-ui").getUri().toString());
 
         WebElement webElement = new WebDriverWait(driver, Duration.ofSeconds(1).getSeconds())
                 .until(webDriver -> webDriver.findElement(By.tagName("input")));
 
         webElement.clear();
-        webElement.sendKeys("http://127.0.0.1:8080/openapi.yaml");
+        webElement.sendKeys(jetty.getUrl() + "/openapi.yaml");
 
         driver.findElement(By.cssSelector("button.download-url-button.button")).click();
 
         webElement = new WebDriverWait(driver, Duration.ofSeconds(1).getSeconds())
                 .until(webDriver -> webDriver.findElement(By.cssSelector("span.url")));
 
-        assertEquals(webElement.getText(), "http://127.0.0.1:8080/openapi.yaml");
+        assertEquals(jetty.getUrl() + "/openapi.yaml", webElement.getText());
     }
 
     @Test
     public void testSwaggerUIPost(ChromeDriver driver) {
 
-        driver.get(target.path("swagger-ui").getUri().toString());
+        driver.get(jetty.getTarget().path("swagger-ui").getUri().toString());
 
         WebElement webElement = new WebDriverWait(driver, Duration.ofSeconds(1).getSeconds())
                 .until(webDriver -> webDriver.findElement(By.cssSelector("div#operations-default-post.opblock.opblock-post")));
@@ -161,10 +147,11 @@ public class SeleniumIT {
                 .until(webDriver -> webDriver.findElement(By.cssSelector("textarea.curl")));
 
         String curl = webElement.getText();
-        assertEquals("curl -X POST \"http://127.0.0.1:8080/\" -H \"accept: application/json\" -H \"Content-Type: */*\" -d \"{\\\"message\\\":\\\"hello test\\\"}\"", curl);
+        assertEquals("curl -X POST \"" + jetty.getUrl() + "/\" -H \"accept: application/json\" " +
+                "-H \"Content-Type: */*\" -d \"{\\\"message\\\":\\\"hello test\\\"}\"", curl);
 
         String url = driver.findElement(By.cssSelector("div.request-url > pre")).getText();
-        assertEquals(url, "http://127.0.0.1:8080/");
+        assertEquals(jetty.getUrl() + "/", url);
 
         String status = driver.findElement(By.cssSelector("div.responses-inner > div > div > table.responses-table > tbody > tr.response > td.response-col_status")).getText();
         assertEquals(status, "200");
