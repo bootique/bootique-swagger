@@ -20,26 +20,26 @@ package io.bootique.swagger;
 
 import io.bootique.jersey.JerseyModule;
 import io.bootique.jetty.junit5.JettyTester;
+import io.bootique.junit5.BQTest;
 import io.bootique.junit5.BQTestFactory;
+import io.bootique.junit5.BQTestTool;
 import io.bootique.resource.ResourceFactory;
 import io.bootique.swagger.config3.Api31;
 import io.bootique.swagger.config3a.Api3a;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+@BQTest
 public class AnnotationSpecsIT {
 
     private static final WebTarget target = ClientBuilder.newClient().target("http://127.0.0.1:8080/");
 
-    @RegisterExtension
-    public final BQTestFactory testFactory = new BQTestFactory().autoLoadModules();
+    @BQTestTool
+    final BQTestFactory testFactory = new BQTestFactory().autoLoadModules();
 
     @Test
     @DisplayName("API classes can be picked individually")

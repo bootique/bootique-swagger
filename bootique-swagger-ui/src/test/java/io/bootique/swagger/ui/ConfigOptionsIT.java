@@ -20,11 +20,12 @@
 package io.bootique.swagger.ui;
 
 import io.bootique.jetty.junit5.JettyTester;
+import io.bootique.junit5.BQTest;
 import io.bootique.junit5.BQTestFactory;
+import io.bootique.junit5.BQTestTool;
 import io.bootique.resource.ResourceFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -32,13 +33,14 @@ import javax.ws.rs.core.Response;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@BQTest
 @DisplayName("'swaggerui' config options")
 public class ConfigOptionsIT {
 
     private static final WebTarget target = ClientBuilder.newClient().target("http://127.0.0.1:8080/");
 
-    @RegisterExtension
-    public final BQTestFactory testFactory = new BQTestFactory();
+    @BQTestTool
+    final BQTestFactory testFactory = new BQTestFactory();
 
     @Test
     @DisplayName("no config")
