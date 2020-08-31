@@ -1,4 +1,4 @@
-## 2.0
+## 2.0.M1
 
 * #16 Support for OpenAPI 3.0.x
 * #17 Configurable Swagger UI servlet mapping 
