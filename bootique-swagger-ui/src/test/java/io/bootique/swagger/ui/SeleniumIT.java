@@ -11,6 +11,7 @@ import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
@@ -60,6 +61,7 @@ public class SeleniumIT {
         assertEquals("{\"message\":\"hello test\"}", driver.findElement(By.tagName("pre")).getText());
     }
 
+    @Disabled("Temporary disabled as unstable")
     @Test
     public void testSwaggerUIGet(ChromeDriver driver) {
 
@@ -123,6 +125,7 @@ public class SeleniumIT {
         assertEquals(jetty.getUrl() + "/openapi.yaml", webElement.getText());
     }
 
+    @Disabled("Temporary disabled as unstable")
     @Test
     public void testSwaggerUIPost(ChromeDriver driver) {
 
