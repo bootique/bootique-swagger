@@ -1,3 +1,7 @@
+## 2.0.B1
+
+* #26 Upgrade to Swagger 2.1.5
+
 ## 2.0.M1
 
 * #16 Support for OpenAPI 3.0.x
