@@ -55,7 +55,7 @@ public class ModelConverterIT {
                 .assertContent(new ResourceFactory("classpath:config5/response.json"));
     }
 
-    public static final class XConverter extends BaseModuleConverter {
+    public static final class XConverter extends BaseModelConverter {
 
         @Override
         protected boolean willResolve(AnnotatedType type, ModelConverterContext context, TypeWrapper wrapped) {

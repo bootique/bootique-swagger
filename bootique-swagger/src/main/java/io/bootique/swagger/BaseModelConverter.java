@@ -31,7 +31,7 @@ import java.util.Iterator;
  *
  * @since 2.0.B1
  */
-public abstract class BaseModuleConverter implements ModelConverter {
+public abstract class BaseModelConverter implements ModelConverter {
 
     @Override
     public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
