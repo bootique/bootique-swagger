@@ -18,7 +18,6 @@
  */
 package io.bootique.swagger;
 
-import com.fasterxml.jackson.databind.type.SimpleType;
 import io.bootique.BQRuntime;
 import io.bootique.Bootique;
 import io.bootique.jetty.junit5.JettyTester;
@@ -56,15 +55,16 @@ public class ModelConverterIT {
                 .assertContent(new ResourceFactory("classpath:config5/response.json"));
     }
 
-    public static final class XConverter implements ModelConverter {
+    public static final class XConverter extends BaseModuleConverter {
 
         @Override
-        public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
-            if (((SimpleType) type.getType()).getRawClass().equals(X.class)) {
-                return new StringSchema().description("I am an X");
-            } else {
-                return chain.hasNext() ? chain.next().resolve(type, context, chain) : null;
-            }
+        protected boolean willResolve(AnnotatedType type, ModelConverterContext context, TypeWrapper wrapped) {
+            return wrapped.getRawClass().equals(X.class);
+        }
+
+        @Override
+        protected Schema doResolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain, TypeWrapper wrapped) {
+            return new StringSchema().description("I am an X");
         }
     }
 }
