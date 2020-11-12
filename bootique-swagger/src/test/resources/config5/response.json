@@ -1,0 +1,23 @@
+{
+  "openapi" : "3.0.1",
+  "paths" : {
+    "/api5" : {
+      "get" : {
+        "operationId" : "get",
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string",
+                  "description" : "I am an X"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

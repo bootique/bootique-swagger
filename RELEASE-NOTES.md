@@ -1,6 +1,7 @@
 ## 2.0.B1
 
 * #26 Upgrade to Swagger 2.1.5
+* #27 Support for custom Swagger ModelConverters
 
 ## 2.0.M1
 

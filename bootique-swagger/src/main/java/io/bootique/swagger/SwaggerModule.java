@@ -26,24 +26,51 @@ import io.bootique.di.Provides;
 import io.bootique.di.TypeLiteral;
 import io.bootique.jersey.JerseyModule;
 import io.bootique.jersey.MappedResource;
+import io.swagger.v3.core.converter.ModelConverter;
+import io.swagger.v3.core.converter.ModelConverters;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import java.util.Set;
 
 public class SwaggerModule extends ConfigModule {
+
+    /**
+     * @since 2.0.B1
+     */
+    public static SwaggerModuleExtender extend(Binder binder) {
+        return new SwaggerModuleExtender(binder);
+    }
 
     @Override
     public void configure(Binder binder) {
         JerseyModule.extend(binder).addMappedResource(new TypeLiteral<MappedResource<SwaggerOpenapiApi>>() {
         });
+
+        SwaggerModule.extend(binder).initAllExtensions();
     }
 
     @Provides
     @Singleton
     MappedResource<SwaggerOpenapiApi> provideOpenApiResource(
             ConfigurationFactory configFactory,
-            Provider<ResourceConfig> appProvider) {
+            Provider<ResourceConfig> appProvider,
+            Set<ModelConverter> converters) {
+
+        // side effect - installing converters
+        // TODO: suggest Swagger to tie converters to contexts instead of using static ModelConverters
+        converters.forEach(SwaggerModule::installConverter);
+
         return config(SwaggerOpenapiApiFactory.class, configFactory).createResource(appProvider);
     }
+
+    private static void installConverter(ModelConverter converter) {
+        // since ModelConverters is a static singleton, let's at least make an attempt
+        // to prevent multiple registrations of the same converter
+        if (!ModelConverters.getInstance().getConverters().contains(converter)) {
+            ModelConverters.getInstance().addConverter(converter);
+        }
+    }
+
 }
