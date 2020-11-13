@@ -56,7 +56,6 @@ public abstract class BaseModelConverter implements ModelConverter {
     }
 
     protected Schema onSchemaResolved(AnnotatedType type, ModelConverterContext context, Schema resolved) {
-        context.defineModel(resolved.getName(), resolved);
         return type.isResolveAsRef()
                 ? new Schema().$ref(RefUtils.constructRef(resolved.getName()))
                 : resolved;
