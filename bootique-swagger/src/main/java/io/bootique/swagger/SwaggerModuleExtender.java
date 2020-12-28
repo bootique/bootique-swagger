@@ -46,7 +46,7 @@ public class SwaggerModuleExtender extends ModuleExtender<SwaggerModuleExtender>
     }
 
     public SwaggerModuleExtender addModelConverter(ModelConverter converter) {
-        contributeConverters().add(converter);
+        contributeConverters().addInstance(converter);
         return this;
     }
 
