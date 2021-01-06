@@ -2,6 +2,7 @@
 
 * #26 Upgrade to Swagger 2.1.5
 * #27 Support for custom Swagger ModelConverters
+* #28 Overlapping redundant activation and Jackson dependencies
 
 ## 2.0.M1
 

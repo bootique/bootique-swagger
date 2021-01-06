@@ -49,6 +49,12 @@
             <artifactId>swagger-jaxrs2</artifactId>
             <scope>compile</scope>
         </dependency>
+        <!-- Override the wrong version of "jackson-datatype-jsr310" in swagger-core -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <scope>compile</scope>
+        </dependency>
 
         <!-- Unit test dependencies -->
         <dependency>
