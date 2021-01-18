@@ -53,11 +53,6 @@ paths:
               schema:
                 type: string
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
   schemas:
     Test1Data:
       type: object
@@ -67,3 +62,8 @@ components:
           format: int32
         name:
           type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

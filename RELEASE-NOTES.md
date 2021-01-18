@@ -3,6 +3,7 @@
 * #26 Upgrade to Swagger 2.1.5
 * #27 Support for custom Swagger ModelConverters
 * #28 Overlapping redundant activation and Jackson dependencies
+* #29 Overrides remove existing components from OpenAPI
 
 ## 2.0.M1
 
