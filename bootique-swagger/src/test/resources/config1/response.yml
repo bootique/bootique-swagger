@@ -18,7 +18,9 @@ paths:
         default:
           description: default response
           content:
-            '*/*': {}
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Test1Data'
     put:
       tags:
       - b
@@ -27,7 +29,7 @@ paths:
         content:
           '*/*':
             schema:
-              type: string
+              $ref: '#/components/schemas/Test1Data'
       responses:
         default:
           description: default response
@@ -50,3 +52,18 @@ paths:
             '*/*':
               schema:
                 type: string
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Test1Data:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string

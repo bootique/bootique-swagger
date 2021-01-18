@@ -18,38 +18,16 @@
  */
 package io.bootique.swagger.config1;
 
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.info.Info;
+public class Test1Data {
 
-import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Response;
+    private int id;
+    private String name;
 
-@OpenAPIDefinition(info = @Info(
-        title = "This must be ignored",
-        description = "This must be ignored",
-        version = "_ignored_"))
-@Path("config1/test1")
-public class Test1Api {
-
-    @GET
-    @Operation(tags = {"a"})
-    public Test1Data get() {
-        return new Test1Data();
+    public String getName() {
+        return name;
     }
 
-    @PUT
-    @Operation(tags = {"b"})
-    public Response put(Test1Data entity) {
-        return Response.ok("test1").build();
-    }
-
-    @GET
-    @Path("/sub/{id}")
-    public String subget(@PathParam("id") int id) {
-        return "get_" + id;
+    public int getId() {
+        return id;
     }
 }

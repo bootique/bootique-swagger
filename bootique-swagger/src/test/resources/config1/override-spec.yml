@@ -8,3 +8,9 @@ servers:
   description: prod server
 - url: http://staging-config1.example.com
   description: stage server
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
