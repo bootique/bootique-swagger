@@ -17,7 +17,7 @@
   under the License.
   -->
 
-[![Build Status](https://travis-ci.org/bootique/bootique-swagger.svg)](https://travis-ci.org/bootique/bootique-swagger)
+[![build test deploy 1.x](https://github.com/bootique/bootique-swagger/actions/workflows/maven-1x.yml/badge.svg)](https://github.com/bootique/bootique-swagger/actions/workflows/maven-1x.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/io.bootique.swagger/bootique-swagger.svg?colorB=brightgreen)](https://search.maven.org/artifact/io.bootique.swagger/bootique-swagger/)
 
 # bootique-swagger
