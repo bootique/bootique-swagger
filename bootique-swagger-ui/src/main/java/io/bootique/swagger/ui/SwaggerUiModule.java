@@ -31,9 +31,7 @@ import io.bootique.type.TypeRef;
 import javax.inject.Singleton;
 import java.util.Map;
 
-/**
- * @since 1.0.RC1
- */
+
 public class SwaggerUiModule extends ConfigModule {
 
     @Override
