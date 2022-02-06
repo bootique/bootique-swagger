@@ -34,7 +34,7 @@
 
     <properties>
         <bootique.version>${project.version}</bootique.version>
-        <swagger.version>2.1.5</swagger.version>
+        <swagger.version>2.1.12</swagger.version>
         <mustache.version>0.9.6</mustache.version>
         <selenium.version>4.0.0-alpha-1</selenium.version>
         <selenium-jupiter.version>3.3.4</selenium-jupiter.version>

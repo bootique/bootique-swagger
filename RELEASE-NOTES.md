@@ -1,3 +1,7 @@
+## 3.0.M1
+
+* #30 Upgrade to Swagger 2.1.12
+
 ## 2.0.B1
 
 * #26 Upgrade to Swagger 2.1.5
