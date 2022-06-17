@@ -8,7 +8,7 @@ import io.bootique.jetty.junit5.JettyTester;
 import io.bootique.junit5.BQApp;
 import io.bootique.junit5.BQTest;
 import io.github.bonigarcia.seljup.Options;
-import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import org.junit.jupiter.api.Disabled;
@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @BQTest
-@ExtendWith(SeleniumExtension.class)
+@ExtendWith(SeleniumJupiter.class)
 public class SeleniumIT {
 
     static final JettyTester jetty = JettyTester.create();
@@ -67,15 +67,15 @@ public class SeleniumIT {
 
         driver.get(jetty.getTarget().path("swagger-ui").getUri().toString());
 
-        WebElement webElement = new WebDriverWait(driver, Duration.ofSeconds(1).getSeconds())
+        WebElement webElement = new WebDriverWait(driver, Duration.ofSeconds(1))
                 .until(webDriver -> webDriver.findElement(By.cssSelector("div#operations-default-get.opblock.opblock-get")));
         webElement.click();
 
-        webElement = new WebDriverWait(driver, Duration.ofSeconds(1).getSeconds())
+        webElement = new WebDriverWait(driver, Duration.ofSeconds(1))
                 .until(webDriver -> webDriver.findElement(By.cssSelector("button.btn.try-out__btn")));
         webElement.click();
 
-        webElement = new WebDriverWait(driver, Duration.ofSeconds(1).getSeconds())
+        webElement = new WebDriverWait(driver, Duration.ofSeconds(1))
                 .until(webDriver -> webDriver.findElement(By.cssSelector("button.btn.execute.opblock-control__btn")));
         webElement.click();
 
@@ -111,7 +111,7 @@ public class SeleniumIT {
 
         driver.get(jetty.getTarget().path("swagger-ui").getUri().toString());
 
-        WebElement webElement = new WebDriverWait(driver, Duration.ofSeconds(1).getSeconds())
+        WebElement webElement = new WebDriverWait(driver, Duration.ofSeconds(1))
                 .until(webDriver -> webDriver.findElement(By.tagName("input")));
 
         webElement.clear();
@@ -119,7 +119,7 @@ public class SeleniumIT {
 
         driver.findElement(By.cssSelector("button.download-url-button.button")).click();
 
-        webElement = new WebDriverWait(driver, Duration.ofSeconds(1).getSeconds())
+        webElement = new WebDriverWait(driver, Duration.ofSeconds(1))
                 .until(webDriver -> webDriver.findElement(By.cssSelector("span.url")));
 
         assertEquals(jetty.getUrl() + "/openapi.yaml", webElement.getText());
@@ -131,11 +131,11 @@ public class SeleniumIT {
 
         driver.get(jetty.getTarget().path("swagger-ui").getUri().toString());
 
-        WebElement webElement = new WebDriverWait(driver, Duration.ofSeconds(1).getSeconds())
+        WebElement webElement = new WebDriverWait(driver, Duration.ofSeconds(1))
                 .until(webDriver -> webDriver.findElement(By.cssSelector("div#operations-default-post.opblock.opblock-post")));
         webElement.click();
 
-        webElement = new WebDriverWait(driver, Duration.ofSeconds(3).getSeconds())
+        webElement = new WebDriverWait(driver, Duration.ofSeconds(3))
                 .until(webDriver -> webDriver.findElement(By.cssSelector("button.btn.try-out__btn")));
         webElement.click();
 
@@ -146,7 +146,7 @@ public class SeleniumIT {
 
         driver.findElement(By.cssSelector("button.btn.execute.opblock-control__btn")).click();
 
-        webElement = new WebDriverWait(driver, Duration.ofSeconds(1).getSeconds())
+        webElement = new WebDriverWait(driver, Duration.ofSeconds(1))
                 .until(webDriver -> webDriver.findElement(By.cssSelector("textarea.curl")));
 
         String curl = webElement.getText();
