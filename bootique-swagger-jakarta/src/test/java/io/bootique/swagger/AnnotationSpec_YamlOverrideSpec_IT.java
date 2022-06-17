@@ -16,37 +16,43 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.bootique.swagger.jakarta;
+package io.bootique.swagger;
 
 import io.bootique.BQRuntime;
 import io.bootique.Bootique;
+import io.bootique.jersey.JerseyModule;
 import io.bootique.jetty.junit5.JettyTester;
 import io.bootique.junit5.BQApp;
 import io.bootique.junit5.BQTest;
 import io.bootique.resource.ResourceFactory;
+import io.bootique.swagger.config1.Test1Api;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
 
 @BQTest
-public class YamlSpec_SharedYamlOverrideSpec_IT {
+public class AnnotationSpec_YamlOverrideSpec_IT {
 
     static final JettyTester jetty = JettyTester.create();
 
     @BQApp
     static final BQRuntime app = Bootique
-            .app("-s", "-c", "classpath:config4/startup.yml")
+            .app("-s", "-c", "classpath:config1/startup.yml")
             .autoLoadModules()
             .module(jetty.moduleReplacingConnectors())
+            .module(b -> JerseyModule.extend(b).addResource(Test1Api.class))
             .createRuntime();
 
     @Test
-    public void testJson() {
-        Response r1 = jetty.getTarget().path("/c1/model.json").request().get();
-        JettyTester.assertOk(r1)
-                .assertContent(new ResourceFactory("classpath:config4/response1.json"));
+    public void testYaml() {
+        Response r = jetty.getTarget().path("/s1/model.yaml").request().get();
+        JettyTester.assertOk(r)
+                .assertContent(new ResourceFactory("classpath:config1/response.yml"));
+    }
 
-        Response r2 = jetty.getTarget().path("/c2/model.json").request().get();
-        JettyTester.assertOk(r2)
-                .assertContent(new ResourceFactory("classpath:config4/response2.json"));
+    @Test
+    public void testJson() {
+        Response r = jetty.getTarget().path("/s1/model.json").request().get();
+        JettyTester.assertOk(r)
+                .assertContent(new ResourceFactory("classpath:config1/response.json"));
     }
 }

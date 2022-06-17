@@ -16,17 +16,39 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.bootique.swagger.jakarta.config5;
+package io.bootique.swagger.config1;
 
-
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.info.Info;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.core.Response;
 
-@Path("api5")
-public class Api5 {
+@OpenAPIDefinition(info = @Info(
+        title = "This must be ignored",
+        description = "This must be ignored",
+        version = "_ignored_"))
+@Path("config1/test1")
+public class Test1Api {
 
     @GET
-    public X get() {
-        throw new UnsupportedOperationException("Method body is irrelevant");
+    @Operation(tags = {"a"})
+    public Test1Data get() {
+        return new Test1Data();
+    }
+
+    @PUT
+    @Operation(tags = {"b"})
+    public Response put(Test1Data entity) {
+        return Response.ok("test1").build();
+    }
+
+    @GET
+    @Path("/sub/{id}")
+    public String subget(@PathParam("id") int id) {
+        return "get_" + id;
     }
 }

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package io.bootique.swagger.jakarta;
+package io.bootique.swagger;
 
 import io.bootique.ConfigModule;
 import io.bootique.config.ConfigurationFactory;

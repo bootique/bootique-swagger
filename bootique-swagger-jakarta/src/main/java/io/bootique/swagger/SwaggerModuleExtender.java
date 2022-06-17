@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.bootique.swagger.jakarta;
+package io.bootique.swagger;
 
 import io.bootique.ModuleExtender;
 import io.bootique.di.Binder;

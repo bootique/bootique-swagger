@@ -16,16 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.bootique.swagger.jakarta.config3a;
+package io.bootique.swagger.config1;
 
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
+public class Test1Data {
 
-@Path("api3a")
-public class Api3a {
+    private int id;
+    private String name;
 
-    @GET
-    public String get() {
-        return "3a";
+    public String getName() {
+        return name;
+    }
+
+    public int getId() {
+        return id;
     }
 }

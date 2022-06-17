@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.bootique.swagger.jakarta.config3;
+package io.bootique.swagger.config3;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

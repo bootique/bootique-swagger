@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.bootique.swagger.jakarta;
+package io.bootique.swagger;
 
 import io.bootique.BQRuntime;
 import io.bootique.Bootique;
@@ -27,30 +27,26 @@ import io.bootique.resource.ResourceFactory;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
 
-
 @BQTest
-public class YamlSpec_YamlOverrideSpec_IT {
+public class YamlSpec_SharedYamlOverrideSpec_IT {
 
     static final JettyTester jetty = JettyTester.create();
 
     @BQApp
     static final BQRuntime app = Bootique
-            .app("-s", "-c", "classpath:config2/startup.yml")
+            .app("-s", "-c", "classpath:config4/startup.yml")
             .autoLoadModules()
             .module(jetty.moduleReplacingConnectors())
             .createRuntime();
 
     @Test
-    public void testYaml() {
-        Response r = jetty.getTarget().path("/s2/model.yaml").request().get();
-        JettyTester.assertOk(r)
-                .assertContent(new ResourceFactory("classpath:config2/response.yml"));
-    }
-
-    @Test
     public void testJson() {
-        Response r = jetty.getTarget().path("/s2/model.json").request().get();
-        JettyTester.assertOk(r)
-                .assertContent(new ResourceFactory("classpath:config2/response.json"));
+        Response r1 = jetty.getTarget().path("/c1/model.json").request().get();
+        JettyTester.assertOk(r1)
+                .assertContent(new ResourceFactory("classpath:config4/response1.json"));
+
+        Response r2 = jetty.getTarget().path("/c2/model.json").request().get();
+        JettyTester.assertOk(r2)
+                .assertContent(new ResourceFactory("classpath:config4/response2.json"));
     }
 }

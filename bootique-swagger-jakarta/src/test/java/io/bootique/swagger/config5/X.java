@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.bootique.swagger.jakarta.config5;
+package io.bootique.swagger.config5;
 
 public class X {
 

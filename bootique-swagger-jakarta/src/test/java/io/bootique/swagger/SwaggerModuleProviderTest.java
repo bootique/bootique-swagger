@@ -16,16 +16,31 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.bootique.swagger.jakarta.config3;
 
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
+package io.bootique.swagger;
 
-@Path("api32")
-public class Api32 {
+import io.bootique.BQRuntime;
+import io.bootique.jersey.JerseyModule;
+import io.bootique.junit5.*;
+import org.junit.jupiter.api.Test;
 
-    @GET
-    public String get() {
-        return "32";
+@BQTest
+public class SwaggerModuleProviderTest {
+
+    @BQTestTool
+    final BQTestFactory testFactory = new BQTestFactory();
+
+    @Test
+    public void testAutoLoadable() {
+        BQModuleProviderChecker.testAutoLoadable(SwaggerModuleProvider.class);
+    }
+
+    @Test
+    public void testModuleDeclaresDependencies() {
+        final BQRuntime bqRuntime = testFactory.app().moduleProvider(new SwaggerModuleProvider()).createRuntime();
+        BQRuntimeChecker.testModulesLoaded(bqRuntime,
+                JerseyModule.class,
+                SwaggerModule.class
+        );
     }
 }

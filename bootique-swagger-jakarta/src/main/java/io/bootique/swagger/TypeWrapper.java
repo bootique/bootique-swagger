@@ -1,4 +1,4 @@
-package io.bootique.swagger.jakarta;
+package io.bootique.swagger;
 
 import com.fasterxml.jackson.databind.JavaType;
 

@@ -16,31 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package io.bootique.swagger.config5;
 
-package io.bootique.swagger.jakarta;
 
-import io.bootique.BQRuntime;
-import io.bootique.jersey.JerseyModule;
-import io.bootique.junit5.*;
-import org.junit.jupiter.api.Test;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
 
-@BQTest
-public class SwaggerModuleProviderTest {
+@Path("api5")
+public class Api5 {
 
-    @BQTestTool
-    final BQTestFactory testFactory = new BQTestFactory();
-
-    @Test
-    public void testAutoLoadable() {
-        BQModuleProviderChecker.testAutoLoadable(SwaggerModuleProvider.class);
-    }
-
-    @Test
-    public void testModuleDeclaresDependencies() {
-        final BQRuntime bqRuntime = testFactory.app().moduleProvider(new SwaggerModuleProvider()).createRuntime();
-        BQRuntimeChecker.testModulesLoaded(bqRuntime,
-                JerseyModule.class,
-                SwaggerModule.class
-        );
+    @GET
+    public X get() {
+        throw new UnsupportedOperationException("Method body is irrelevant");
     }
 }

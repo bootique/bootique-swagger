@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.bootique.swagger.jakarta;
+package io.bootique.swagger;
 
 import io.bootique.jersey.JerseyModule;
 import io.bootique.jetty.junit5.JettyTester;
@@ -24,8 +24,8 @@ import io.bootique.junit5.BQTest;
 import io.bootique.junit5.BQTestFactory;
 import io.bootique.junit5.BQTestTool;
 import io.bootique.resource.ResourceFactory;
-import io.bootique.swagger.jakarta.config3.Api31;
-import io.bootique.swagger.jakarta.config3a.Api3a;
+import io.bootique.swagger.config3.Api31;
+import io.bootique.swagger.config3a.Api3a;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.Response;

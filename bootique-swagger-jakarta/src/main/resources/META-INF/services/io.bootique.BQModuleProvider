@@ -1,1 +1,1 @@
-io.bootique.swagger.jakarta.SwaggerModuleProvider
+io.bootique.swagger.SwaggerModuleProvider
