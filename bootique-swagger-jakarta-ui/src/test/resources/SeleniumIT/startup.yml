@@ -6,7 +6,7 @@ swagger:
       pathYaml: openapi.yaml
       overrideSpec: "classpath:SeleniumIT/config-override.yaml"
       resourceClasses:
-        - io.bootique.swagger.jakarta.ui.SeleniumIT$TestApi
+        - io.bootique.swagger.ui.SeleniumIT$TestApi
 
 swaggerui:
   default:

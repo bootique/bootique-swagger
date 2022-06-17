@@ -3,4 +3,4 @@ swagger:
     default:
       pathJson: "model.json"
       resourcePackages:
-        - "io.bootique.swagger.jakarta.config5"
+        - "io.bootique.swagger.config5"

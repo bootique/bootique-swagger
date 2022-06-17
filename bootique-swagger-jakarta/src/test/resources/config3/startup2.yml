@@ -3,4 +3,4 @@ swagger:
     default:
       pathYaml: "c3/model.yaml"
       resourcePackages:
-        - io.bootique.swagger.jakarta.config3
+        - io.bootique.swagger.config3

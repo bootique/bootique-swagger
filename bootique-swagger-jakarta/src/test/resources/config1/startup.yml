@@ -5,4 +5,4 @@ swagger:
       pathYaml: "s1/model.yaml"
       overrideSpec: "classpath:config1/override-spec.yml"
       resourcePackages:
-        - "io.bootique.swagger.jakarta.config1"
+        - "io.bootique.swagger.config1"
