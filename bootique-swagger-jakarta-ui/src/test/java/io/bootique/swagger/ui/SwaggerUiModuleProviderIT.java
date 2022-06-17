@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package io.bootique.swagger.jakarta.ui;
+package io.bootique.swagger.ui;
 
 import io.bootique.BQRuntime;
 import io.bootique.junit5.*;
-import io.bootique.swagger.jakarta.ui.SwaggerUiModule;
-import io.bootique.swagger.jakarta.ui.SwaggerUiModuleProvider;
+import io.bootique.swagger.ui.SwaggerUiModule;
+import io.bootique.swagger.ui.SwaggerUiModuleProvider;
 import org.junit.jupiter.api.Test;
 
 @BQTest

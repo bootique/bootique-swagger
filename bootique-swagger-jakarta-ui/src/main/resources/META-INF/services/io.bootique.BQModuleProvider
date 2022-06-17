@@ -17,4 +17,4 @@
 # under the License.
 #
 
-io.bootique.swagger.jakarta.ui.SwaggerUiModuleProvider
+io.bootique.swagger.ui.SwaggerUiModuleProvider

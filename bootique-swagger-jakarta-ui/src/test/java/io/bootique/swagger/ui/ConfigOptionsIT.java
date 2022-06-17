@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package io.bootique.swagger.jakarta.ui;
+package io.bootique.swagger.ui;
 
 import io.bootique.jetty.junit5.JettyTester;
 import io.bootique.junit5.BQTest;

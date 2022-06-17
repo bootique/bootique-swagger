@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.bootique.swagger.jakarta.ui.model;
+package io.bootique.swagger.ui.model;
 
 import jakarta.servlet.http.HttpServletRequest;
 

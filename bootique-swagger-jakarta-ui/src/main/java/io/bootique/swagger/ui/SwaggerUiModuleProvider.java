@@ -16,26 +16,34 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.bootique.swagger.jakarta.ui.model;
 
-/**
- * @since 2.0
- */
-public class SwaggerUIServletTemplateModel {
+package io.bootique.swagger.ui;
 
-    private String apiUrl;
-    private String resourcePath;
+import io.bootique.BQModuleProvider;
+import io.bootique.di.BQModule;
+import io.bootique.type.TypeRef;
 
-    public SwaggerUIServletTemplateModel(String apiUrl, String resourcePath) {
-        this.apiUrl = apiUrl;
-        this.resourcePath = resourcePath;
+import java.lang.reflect.Type;
+import java.util.Collections;
+import java.util.Map;
+
+
+public class SwaggerUiModuleProvider implements BQModuleProvider {
+
+    @Override
+    public BQModule module() {
+        return new SwaggerUiModule();
     }
 
-    public String getApiUrl() {
-        return apiUrl;
+    @Override
+    public Map<String, Type> configs() {
+
+        // TODO: config prefix is hardcoded. Refactor away from ConfigModule, and make provider
+        // generate config prefix, reusing it in metadata...
+
+        TypeRef<Map<String, SwaggerUIModelFactory>> type = new TypeRef<Map<String, SwaggerUIModelFactory>>() {
+        };
+        return Collections.singletonMap("swaggerui", type.getType());
     }
 
-    public String getResourcePath() {
-        return resourcePath;
-    }
 }

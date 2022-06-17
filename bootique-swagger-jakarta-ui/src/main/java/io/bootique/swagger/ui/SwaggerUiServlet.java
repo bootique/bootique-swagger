@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package io.bootique.swagger.jakarta.ui;
+package io.bootique.swagger.ui;
 
 import com.github.mustachejava.Mustache;
 import io.bootique.jetty.servlet.StaticServlet;
-import io.bootique.swagger.jakarta.ui.model.SwaggerUIServletModel;
-import io.bootique.swagger.jakarta.ui.model.SwaggerUIServletTemplateModel;
+import io.bootique.swagger.ui.model.SwaggerUIServletModel;
+import io.bootique.swagger.ui.model.SwaggerUIServletTemplateModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

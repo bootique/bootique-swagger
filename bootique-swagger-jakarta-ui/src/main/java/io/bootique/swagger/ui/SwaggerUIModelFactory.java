@@ -16,11 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.bootique.swagger.jakarta.ui;
+package io.bootique.swagger.ui;
 
 import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
-import io.bootique.swagger.jakarta.ui.model.SwaggerUIServletModel;
+import io.bootique.swagger.ui.model.SwaggerUIServletModel;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.function.Function;
