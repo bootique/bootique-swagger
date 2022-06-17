@@ -58,14 +58,14 @@ public class SwaggerUiServletFactory {
         Set<String> urlPatterns = new HashSet<>();
         models.values().stream().map(SwaggerUIServletModel::getUrlPattern).forEach(urlPatterns::add);
 
-        URL resourceBase = getClass().getClassLoader().getResource("io/bootique/swagger/jakarta/ui/docroot/");
+        URL resourceBase = getClass().getClassLoader().getResource("io/bootique/swagger/ui/docroot/");
 
         SwaggerUiServlet servlet = new SwaggerUiServlet(resourceBase.toString(), compileTemplate(), models);
         return new MappedServlet<>(servlet, urlPatterns, "swagger-ui");
     }
 
     protected Mustache compileTemplate() {
-        URL templateUrl = getClass().getClassLoader().getResource("io/bootique/swagger/jakarta/ui/mustache/index.mustache");
+        URL templateUrl = getClass().getClassLoader().getResource("io/bootique/swagger/ui/mustache/index.mustache");
         try (Reader reader = new InputStreamReader(templateUrl.openStream())) {
             return new DefaultMustacheFactory().compile(reader, "index.mustache");
         } catch (IOException e) {
