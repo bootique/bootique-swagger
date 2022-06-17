@@ -43,6 +43,8 @@
     <modules>
         <module>bootique-swagger</module>
         <module>bootique-swagger-ui</module>
+
+        <module>bootique-swagger-jakarta</module>
     </modules>
 
     <scm>
@@ -54,66 +56,6 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>io.bootique</groupId>
-                <artifactId>bootique</artifactId>
-                <version>${bootique.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.bootique</groupId>
-                <artifactId>bootique-test</artifactId>
-                <version>${bootique.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.bootique</groupId>
-                <artifactId>bootique-junit5</artifactId>
-                <version>${bootique.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.bootique.jetty</groupId>
-                <artifactId>bootique-jetty-junit5</artifactId>
-                <version>${bootique.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.bootique.jersey</groupId>
-                <artifactId>bootique-jersey</artifactId>
-                <version>${bootique.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.bootique.jetty</groupId>
-                <artifactId>bootique-jetty</artifactId>
-                <version>${bootique.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.swagger.core.v3</groupId>
-                <artifactId>swagger-jaxrs2</artifactId>
-                <version>${swagger.version}</version>
-                <exclusions>
-                    <!-- Most of these are dependencies of "swagger-core". Relying on recursive exclusion -->
-                    <!-- Jersey uses Jakarta Validation 2.x elsewhere, so excluding old 1.x -->
-                    <exclusion>
-                        <groupId>javax.validation</groupId>
-                        <artifactId>validation-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>jakarta.xml.bind</groupId>
-                        <artifactId>jakarta.xml.bind-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.fasterxml.jackson.datatype</groupId>
-                        <artifactId>jackson-datatype-jsr310</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>jakarta.activation</groupId>
-                        <artifactId>jakarta.activation-api</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>io.swagger.core.v3</groupId>
-                <artifactId>swagger-jaxrs2-servlet-initializer</artifactId>
-                <version>${swagger.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.seleniumhq.selenium</groupId>
                 <artifactId>selenium-java</artifactId>
                 <version>${selenium.version}</version>
@@ -122,16 +64,6 @@
                 <groupId>io.github.bonigarcia</groupId>
                 <artifactId>selenium-jupiter</artifactId>
                 <version>${selenium-jupiter.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.spullara.mustache.java</groupId>
-                <artifactId>compiler</artifactId>
-                <version>${mustache.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.glassfish.jersey.media</groupId>
-                <artifactId>jersey-media-multipart</artifactId>
-                <version>${jersey2.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.datatype</groupId>

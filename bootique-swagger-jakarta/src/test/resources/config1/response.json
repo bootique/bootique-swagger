@@ -1,0 +1,105 @@
+{
+  "openapi" : "3.0.3",
+  "info" : {
+    "title" : "This is config1/Test1Api",
+    "description" : "Test API 1 Description",
+    "version" : "0.1.2"
+  },
+  "servers" : [ {
+    "url" : "http://config1.example.com/v1",
+    "description" : "prod server"
+  }, {
+    "url" : "http://staging-config1.example.com",
+    "description" : "stage server"
+  } ],
+  "paths" : {
+    "/config1/test1" : {
+      "get" : {
+        "tags" : [ "a" ],
+        "operationId" : "get",
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Test1Data"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "b" ],
+        "operationId" : "put",
+        "requestBody" : {
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Test1Data"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "*/*" : { }
+            }
+          }
+        }
+      }
+    },
+    "/config1/test1/sub/{id}" : {
+      "get" : {
+        "operationId" : "subget",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Test1Data" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "bearerAuth" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
+      }
+    }
+  }
+}

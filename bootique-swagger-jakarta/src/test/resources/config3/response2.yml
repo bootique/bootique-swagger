@@ -1,0 +1,22 @@
+openapi: 3.0.1
+paths:
+  /api31:
+    get:
+      operationId: get
+      responses:
+        default:
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api32:
+    get:
+      operationId: get_1
+      responses:
+        default:
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
