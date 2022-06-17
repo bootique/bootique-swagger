@@ -20,7 +20,7 @@ package io.bootique.swagger.jakarta;
 
 import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
-import io.bootique.jersey.jakarta.MappedResource;
+import io.bootique.jersey.MappedResource;
 import io.bootique.resource.ResourceFactory;
 import jakarta.ws.rs.core.Application;
 

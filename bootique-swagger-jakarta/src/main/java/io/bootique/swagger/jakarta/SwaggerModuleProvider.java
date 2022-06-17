@@ -21,7 +21,7 @@ package io.bootique.swagger.jakarta;
 
 import io.bootique.BQModuleProvider;
 import io.bootique.di.BQModule;
-import io.bootique.jersey.jakarta.JerseyModuleProvider;
+import io.bootique.jersey.JerseyModuleProvider;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
