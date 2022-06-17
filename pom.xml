@@ -45,6 +45,7 @@
         <module>bootique-swagger-ui</module>
 
         <module>bootique-swagger-jakarta</module>
+        <module>bootique-swagger-jakarta-ui</module>
     </modules>
 
     <scm>
@@ -52,26 +53,6 @@
         <url>https://github.com/bootique/bootique-swagger</url>
         <tag>HEAD</tag>
     </scm>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.seleniumhq.selenium</groupId>
-                <artifactId>selenium-java</artifactId>
-                <version>${selenium.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.github.bonigarcia</groupId>
-                <artifactId>selenium-jupiter</artifactId>
-                <version>${selenium-jupiter.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.datatype</groupId>
-                <artifactId>jackson-datatype-jsr310</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <build>
         <pluginManagement>

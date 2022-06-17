@@ -55,6 +55,16 @@
                 <artifactId>compiler</artifactId>
                 <version>${mustache.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium-java</artifactId>
+                <version>${selenium.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.bonigarcia</groupId>
+                <artifactId>selenium-jupiter</artifactId>
+                <version>${selenium-jupiter.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

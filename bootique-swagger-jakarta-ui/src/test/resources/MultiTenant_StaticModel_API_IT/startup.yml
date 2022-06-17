@@ -1,0 +1,18 @@
+jetty:
+  servlets:
+    models:
+      params:
+        resourceBase: "classpath:MultiTenant_StaticModel_API_IT/models/"
+        pathInfoOnly: true
+    doc:
+      params:
+        resourceBase: "classpath:MultiTenant_StaticModel_API_IT/doc/"
+        pathInfoOnly: true
+
+swaggerui:
+  api1:
+    uiPath: "/doc/api1"
+    specPath: "/models/api1/model.yml"
+  api2:
+    uiPath: "/doc/api2"
+    specPath: "/models/api2/model.yml"
