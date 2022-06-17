@@ -20,7 +20,7 @@
 package io.bootique.swagger.jakarta.ui;
 
 import com.github.mustachejava.Mustache;
-import io.bootique.jetty.jakarta.servlet.StaticServlet;
+import io.bootique.jetty.servlet.StaticServlet;
 import io.bootique.swagger.jakarta.ui.model.SwaggerUIServletModel;
 import io.bootique.swagger.jakarta.ui.model.SwaggerUIServletTemplateModel;
 import jakarta.servlet.ServletException;

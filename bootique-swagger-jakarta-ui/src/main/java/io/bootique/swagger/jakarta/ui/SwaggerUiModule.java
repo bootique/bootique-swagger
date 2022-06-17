@@ -24,8 +24,8 @@ import io.bootique.config.ConfigurationFactory;
 import io.bootique.di.Binder;
 import io.bootique.di.Provides;
 import io.bootique.di.TypeLiteral;
-import io.bootique.jetty.jakarta.JettyModule;
-import io.bootique.jetty.jakarta.MappedServlet;
+import io.bootique.jetty.JettyModule;
+import io.bootique.jetty.MappedServlet;
 import io.bootique.type.TypeRef;
 
 import javax.inject.Singleton;
