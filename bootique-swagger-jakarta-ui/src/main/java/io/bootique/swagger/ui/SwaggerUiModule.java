@@ -44,7 +44,7 @@ public class SwaggerUiModule extends ConfigModule {
     @Singleton
     private MappedServlet<SwaggerUiServlet> provideJerseyServlet(ConfigurationFactory configFactory) {
 
-        Map<String, SwaggerUIModelFactory> configs = config(new TypeRef<Map<String, SwaggerUIModelFactory>>() {
+        Map<String, SwaggerUIModelFactory> configs = config(new TypeRef<>() {
         }, configFactory);
 
         return new SwaggerUiServletFactory(configs).createServlet();

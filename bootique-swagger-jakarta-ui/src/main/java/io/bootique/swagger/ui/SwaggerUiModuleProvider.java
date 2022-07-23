@@ -41,7 +41,7 @@ public class SwaggerUiModuleProvider implements BQModuleProvider {
         // TODO: config prefix is hardcoded. Refactor away from ConfigModule, and make provider
         // generate config prefix, reusing it in metadata...
 
-        TypeRef<Map<String, SwaggerUIModelFactory>> type = new TypeRef<Map<String, SwaggerUIModelFactory>>() {
+        TypeRef<Map<String, SwaggerUIModelFactory>> type = new TypeRef<>() {
         };
         return Collections.singletonMap("swaggerui", type.getType());
     }
