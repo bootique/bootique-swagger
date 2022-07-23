@@ -65,6 +65,11 @@
                 <artifactId>selenium-jupiter</artifactId>
                 <version>${selenium-jupiter.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>swagger-ui</artifactId>
+                <version>${swagger.ui.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -77,6 +82,10 @@
         <dependency>
             <groupId>com.github.spullara.mustache.java</groupId>
             <artifactId>compiler</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>swagger-ui</artifactId>
         </dependency>
 
         <!-- Unit test dependencies -->
@@ -129,7 +138,6 @@
                         <configuration>
                             <excludes>
                                 <exclude>src/main/resources/swagger/index.mustache</exclude>
-                                <exclude>src/main/resources/swagger/static/**</exclude>
                                 <exclude>src/test/resources/swagger-response1.html</exclude>
                                 <exclude>src/test/resources/swagger-response2.html</exclude>
                             </excludes>

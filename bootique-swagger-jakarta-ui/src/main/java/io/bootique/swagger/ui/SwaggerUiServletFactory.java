@@ -28,10 +28,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @since 2.0
@@ -58,10 +55,43 @@ public class SwaggerUiServletFactory {
         Set<String> urlPatterns = new HashSet<>();
         models.values().stream().map(SwaggerUIServletModel::getUrlPattern).forEach(urlPatterns::add);
 
-        URL resourceBase = getClass().getClassLoader().getResource("io/bootique/swagger/ui/docroot/");
+        String swaggerUiVersion = readSwaggerUiVersion();
+        String resourceBase = swaggerUiResourceBase(swaggerUiVersion);
 
-        SwaggerUiServlet servlet = new SwaggerUiServlet(resourceBase.toString(), compileTemplate(), models);
+        SwaggerUiServlet servlet = new SwaggerUiServlet(resourceBase, compileTemplate(), models);
         return new MappedServlet<>(servlet, urlPatterns, "swagger-ui");
+    }
+
+    protected String swaggerUiResourceBase(String swaggerUiVersion) {
+        String path = "META-INF/resources/webjars/swagger-ui/" + swaggerUiVersion;
+        URL url = getClass().getClassLoader().getResource(path);
+        if (url == null) {
+            throw new RuntimeException("Swagger UI properties resource location does not exist: '" + path + "'");
+        }
+
+        return url.toString();
+    }
+
+    protected String readSwaggerUiVersion() {
+        String propsPath = "META-INF/maven/org.webjars/swagger-ui/pom.properties";
+        URL swaggerUIProps = getClass().getClassLoader().getResource(propsPath);
+        if (swaggerUIProps == null) {
+            throw new RuntimeException("Swagger UI properties file is not found at '" + propsPath + "'");
+        }
+
+        Properties props = new Properties();
+        try (Reader in = new InputStreamReader(swaggerUIProps.openStream())) {
+            props.load(in);
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading Swagger UI properties file at '" + propsPath + "'", e);
+        }
+
+        String version = props.getProperty("version");
+        if (version == null) {
+            throw new RuntimeException("Error reading Swagger UI properties file at '" + propsPath + "': no 'version' property present");
+        }
+
+        return version;
     }
 
     protected Mustache compileTemplate() {

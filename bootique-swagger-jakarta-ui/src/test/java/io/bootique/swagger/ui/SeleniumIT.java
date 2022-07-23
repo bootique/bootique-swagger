@@ -95,7 +95,7 @@ public class SeleniumIT {
 
     @Test
     public void testSwaggerUIStatic() {
-        Response r = jetty.getTarget().path("/swagger-ui/static/").request().get();
+        Response r = jetty.getTarget().path("/swagger-ui/index.css").request().get();
         JettyTester.assertOk(r);
     }
 

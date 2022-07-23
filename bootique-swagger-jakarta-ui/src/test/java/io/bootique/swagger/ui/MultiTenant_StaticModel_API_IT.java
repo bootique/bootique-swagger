@@ -111,10 +111,10 @@ public class MultiTenant_StaticModel_API_IT {
     @Test
     @DisplayName("Swagger UI Resources")
     public void testMultipleSwaggerUIResourcesAvailable() {
-        Response r1 = jetty.getTarget().path("doc/api1/static/swagger-ui.css").request().get();
+        Response r1 = jetty.getTarget().path("doc/api1/swagger-ui.css").request().get();
         JettyTester.assertOk(r1);
 
-        Response r2 = jetty.getTarget().path("doc/api2/static/swagger-ui.css").request().get();
+        Response r2 = jetty.getTarget().path("doc/api2/swagger-ui.css").request().get();
         JettyTester.assertOk(r2);
     }
 
