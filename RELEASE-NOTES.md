@@ -3,6 +3,7 @@
 * #30 Upgrade to Swagger 2.1.12
 * #31 Jakarta flavor of bootique-swagger
 * #32 Upgrade to Swagger 2.2.2
+* #33 Switch to org.webjars:swagger-ui dependency, upgrade to v 4.11.1
 
 ## 2.0.B1
 
