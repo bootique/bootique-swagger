@@ -26,8 +26,8 @@ import java.util.function.Function;
  */
 public class SwaggerUIServletModel {
 
-    private Function<HttpServletRequest, String> specUrlResolver;
-    private String uiPath;
+    private final Function<HttpServletRequest, String> specUrlResolver;
+    private final String uiPath;
 
     public SwaggerUIServletModel(Function<HttpServletRequest, String> specUrlResolver, String uiPath) {
         this.specUrlResolver = specUrlResolver;
@@ -54,6 +54,6 @@ public class SwaggerUIServletModel {
 
     private String getResourcePath(HttpServletRequest request) {
         String context = request.getContextPath();
-        return context + uiPath + "/static";
+        return context + uiPath;
     }
 }

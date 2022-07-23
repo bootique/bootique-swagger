@@ -33,7 +33,6 @@ import java.util.Map;
 /**
  * @since 2.0
  */
-// TODO: delegate to the StaticServlet instead of inheriting from it?
 public class SwaggerUiServlet extends StaticServlet {
 
     static final String PATH_INFO_ONLY_PARAMETER = "pathInfoOnly";
@@ -68,12 +67,15 @@ public class SwaggerUiServlet extends StaticServlet {
     }
 
     protected void doGetConsole(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
         String servletPath = request.getServletPath();
         SwaggerUIServletModel model = models.get(servletPath);
         if (model == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
+
+        response.setContentType("text/html");
 
         SwaggerUIServletTemplateModel templateModel = model.createTemplateModel(request);
         template.execute(response.getWriter(), templateModel).flush();

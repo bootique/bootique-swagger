@@ -18,11 +18,10 @@
   -->
 # Internal Notes for "bootique-swagger" Developers 
 
-## On "swagger-ui" Integration
+"bootique-swagger-ui" integrates HTML/CSS/JS from [swagger-ui](https://github.com/swagger-api/swagger-ui) packaged
+as a ["web jar"](https://github.com/webjars/swagger-ui). When upgrading to a new version, check the `index.html` 
+file inside the "web jar", and update our own "index.mustache" to match the structure of this file. Our customizations 
+include:
 
-"bootique-swagger-ui" integrates some HTML/CSS/JS from the official [swagger-ui](https://github.com/swagger-api/swagger-ui)
-project. The process is to go to GitHub releases, grab the release we need, and copy over the contents of the "dist" 
-folder. "index.html" is merged into our "index.mustache", and the rest of the files go to the "docroot/static" folder.
-
-We have no consistent way to track "swagger-ui" version. One way to go about it is to check 
-`bootique-swagger/RELEASE-NOTES.md` where all upgrades are recorded.
+* Dynamic path generation for Swagger resources
+* `window.onload` function to [load our own app Swagger model](https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/installation.md)

@@ -23,8 +23,8 @@ package io.bootique.swagger.ui.model;
  */
 public class SwaggerUIServletTemplateModel {
 
-    private String apiUrl;
-    private String resourcePath;
+    private final String apiUrl;
+    private final String resourcePath;
 
     public SwaggerUIServletTemplateModel(String apiUrl, String resourcePath) {
         this.apiUrl = apiUrl;
