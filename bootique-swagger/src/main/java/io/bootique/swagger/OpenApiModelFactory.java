@@ -53,7 +53,7 @@ public class OpenApiModelFactory {
             boolean prettyPrint) {
 
         if (pathJson == null && pathYaml == null) {
-            LOGGER.info("Neither 'pathJson' not 'pathYaml' are set. Skipping OpenApiModel creation");
+            LOGGER.info("Neither 'pathJson' nor 'pathYaml' are set. Skipping OpenApiModel creation");
             return Optional.empty();
         }
 

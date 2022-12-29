@@ -35,14 +35,16 @@ import java.util.Map;
 @Path("_this_is_a_placeholder_that_will_be_replaced_dynamically_")
 public class SwaggerOpenapiApi {
 
-    static final String MEDIA_TYPE_JSON = MediaType.APPLICATION_JSON;
-    static final String MEDIA_TYPE_YAML= "application/yaml";
-
-
+    public static final String MEDIA_TYPE_JSON = MediaType.APPLICATION_JSON;
+    public static final String MEDIA_TYPE_YAML= "application/yaml";
     private Map<String, OpenApiModel> models;
 
     public SwaggerOpenapiApi(Map<String, OpenApiModel> models) {
         this.models = models;
+    }
+
+    public Map<String, OpenApiModel> getModels() {
+        return models;
     }
 
     @GET
@@ -85,7 +87,7 @@ public class SwaggerOpenapiApi {
                 .build();
     }
 
-    protected String printYaml(OpenApiModel model) {
+    public static String printYaml(OpenApiModel model) {
         try {
             return model.isPretty() ? Yaml.pretty(model.getApi()) : Yaml.mapper().writeValueAsString(model.getApi());
         } catch (JsonProcessingException e) {
@@ -93,7 +95,7 @@ public class SwaggerOpenapiApi {
         }
     }
 
-    protected String printJson(OpenApiModel model) {
+    public static String printJson(OpenApiModel model) {
         try {
             return model.isPretty() ? Json.pretty(model.getApi()) : Json.mapper().writeValueAsString(model.getApi());
         } catch (JsonProcessingException e) {

@@ -18,6 +18,9 @@
  */
 package io.bootique.swagger;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import io.swagger.v3.core.util.Json;
+import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.oas.models.OpenAPI;
 
 import java.util.Objects;
@@ -27,11 +30,10 @@ import java.util.function.Supplier;
  * @since 2.0
  */
 public class OpenApiModel {
-
-    private boolean pretty;
-    private Supplier<OpenAPI> apiSupplier;
-    private String pathJson;
-    private String pathYaml;
+    private final boolean pretty;
+    private final Supplier<OpenAPI> apiSupplier;
+    private final String pathJson;
+    private final String pathYaml;
     private volatile OpenAPI api;
 
     public OpenApiModel(Supplier<OpenAPI> apiSupplier, String pathJson, String pathYaml, boolean pretty) {
@@ -68,5 +70,31 @@ public class OpenApiModel {
             }
         }
         return api;
+    }
+    public boolean hasJsonPath() {
+        return pathJson != null;
+    }
+    public boolean hasYamlPath() {
+        return pathYaml != null;
+    }
+
+    public String render(String path) {
+        return Objects.equals(pathJson, path) ? printJson() : printYaml();
+    }
+
+    private String printJson() {
+        try {
+            return this.isPretty() ? Json.pretty(this.getApi()) : Json.mapper().writeValueAsString(this.getApi());
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error converting model to JSON", e);
+        }
+    }
+
+    private String printYaml() {
+        try {
+            return this.isPretty() ? Yaml.pretty(this.getApi()) : Yaml.mapper().writeValueAsString(this.getApi());
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error converting model to JSON", e);
+        }
     }
 }

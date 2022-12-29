@@ -19,6 +19,7 @@
 
 package io.bootique.swagger;
 
+import io.bootique.BQCoreModule;
 import io.bootique.ConfigModule;
 import io.bootique.config.ConfigurationFactory;
 import io.bootique.di.Binder;
@@ -26,6 +27,11 @@ import io.bootique.di.Provides;
 import io.bootique.di.TypeLiteral;
 import io.bootique.jersey.JerseyModule;
 import io.bootique.jersey.MappedResource;
+import io.bootique.log.BootLogger;
+import io.bootique.swagger.command.GenerateSpecCommand;
+import io.bootique.swagger.service.SwaggerConfig;
+import io.bootique.swagger.service.SwaggerService;
+import io.bootique.swagger.web.SwaggerApi;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -45,24 +51,36 @@ public class SwaggerModule extends ConfigModule {
 
     @Override
     public void configure(Binder binder) {
-        JerseyModule.extend(binder).addMappedResource(new TypeLiteral<MappedResource<SwaggerOpenapiApi>>() {
+        JerseyModule.extend(binder).addMappedResource(new TypeLiteral<MappedResource<SwaggerApi>>() {
         });
 
         SwaggerModule.extend(binder).initAllExtensions();
+        BQCoreModule.extend(binder).addCommand(GenerateSpecCommand.class);
     }
 
     @Provides
     @Singleton
-    MappedResource<SwaggerOpenapiApi> provideOpenApiResource(
-            ConfigurationFactory configFactory,
-            Provider<ResourceConfig> appProvider,
-            Set<ModelConverter> converters) {
+    GenerateSpecCommand provideGenerateSpecCommand(BootLogger bootLogger, Provider<SwaggerService> service) {
+        return new GenerateSpecCommand(bootLogger, service);
+    }
 
+    @Provides
+    @Singleton
+    MappedResource<SwaggerApi> provideOpenApiResource(SwaggerService service) {
+        var swaggerApi = new SwaggerApi(service);
+        return new MappedResource<>(swaggerApi, service.getUrlPatterns());
+    }
+
+    @Provides
+    @Singleton
+    SwaggerService provideSwaggerService(ConfigurationFactory configFactory,
+                                         Provider<ResourceConfig> appProvider,
+                                         Set<ModelConverter> converters) {
         // side effect - installing converters
         // TODO: suggest Swagger to tie converters to contexts instead of using static ModelConverters
         converters.forEach(SwaggerModule::installConverter);
-
-        return config(SwaggerOpenapiApiFactory.class, configFactory).createResource(appProvider);
+        var config = config(SwaggerConfig.class, configFactory);
+        return new SwaggerService(appProvider, config);
     }
 
     private static void installConverter(ModelConverter converter) {

@@ -39,7 +39,7 @@ import java.util.List;
  */
 public class OpenApiLoader {
 
-    private Application application;
+    private final Application application;
 
     public OpenApiLoader(Application application) {
         this.application = application;
