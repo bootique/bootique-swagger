@@ -72,7 +72,8 @@ public class GenerateSpecCommand extends CommandWithMetadata {
 
     private static CommandMetadata createMetadata() {
         return CommandMetadata.builder(GenerateSpecCommand.class)
-                .description("Generates openapi spec.")
+                .description("Generates openapi spec. By default prints spec contents to std out. " +
+                        "Use -d option to specify target directory.")
                 .build();
     }
 }
