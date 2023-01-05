@@ -12,37 +12,40 @@ import org.junit.jupiter.api.Test;
 @BQTest
 public class GenerateSpecCommand_IT {
 
-  @BQTestTool
-  final BQTestFactory testFactory = new BQTestFactory();
+    @BQTestTool
+    final BQTestFactory testFactory = new BQTestFactory();
 
-  @Test
-  void test() {
-    var result = testFactory.app("--generate-spec"
-            , "--config=classpath:config3/startup1.yml"
-        )
-        .autoLoadModules()
-        .module(b -> JerseyModule.extend(b).addPackage(Api31.class));
+    private final String destDir = "/Users/max/dev/os/bootique-swagger/bootique-swagger/src/test/resources/tmp";
 
-    var swaggerService = result.createRuntime().getInstance(SwaggerService.class);
-  }
 
-  @Test
-  void runCommand() {
-    var result = testFactory.app("--generate-spec"
-            , "--config=classpath:config3/startup1.yml"
-        )
-        .autoLoadModules()
-        .module(b -> JerseyModule.extend(b).addPackage(Api31.class))
-        .run();
-  }
+    @Test
+    void test() {
+        var result = testFactory.app("--generate-spec"
+                        , "--config=classpath:config3/startup1.yml"
+                )
+                .autoLoadModules()
+                .module(b -> JerseyModule.extend(b).addPackage(Api31.class));
 
-  @Test
-  void runCommandWithManyPaths() {
-    var result = testFactory.app("--generate-spec"
-            , "--config=classpath:config2/startup.yml"
-        )
-        .autoLoadModules()
-        .module(b -> JerseyModule.extend(b).addPackage(Api31.class))
-        .run();
-  }
+        var swaggerService = result.createRuntime().getInstance(SwaggerService.class);
+    }
+
+    @Test
+    void runCommand() {
+        var result = testFactory.app("--generate-spec"
+                        , "--config=classpath:config3/startup1.yml", "--d=" + destDir
+                )
+                .autoLoadModules()
+                .module(b -> JerseyModule.extend(b).addPackage(Api31.class))
+                .run();
+    }
+
+    @Test
+    void runCommandWithManyPaths() {
+        var result = testFactory.app("--generate-spec"
+                        , "--config=classpath:config2/startup.yml", "--d=" + destDir
+                )
+                .autoLoadModules()
+                .module(b -> JerseyModule.extend(b).addPackage(Api31.class))
+                .run();
+    }
 }

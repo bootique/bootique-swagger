@@ -28,6 +28,7 @@ import io.bootique.di.TypeLiteral;
 import io.bootique.jersey.JerseyModule;
 import io.bootique.jersey.MappedResource;
 import io.bootique.log.BootLogger;
+import io.bootique.meta.application.OptionMetadata;
 import io.bootique.swagger.command.GenerateSpecCommand;
 import io.bootique.swagger.service.SwaggerConfig;
 import io.bootique.swagger.service.SwaggerService;
@@ -42,6 +43,8 @@ import java.util.Set;
 
 public class SwaggerModule extends ConfigModule {
 
+    public static final String DESTINATION_DIRECTORY_OPTION_NAME = "destDir";
+
     /**
      * @since 2.0.B1
      */
@@ -55,7 +58,9 @@ public class SwaggerModule extends ConfigModule {
         });
 
         SwaggerModule.extend(binder).initAllExtensions();
-        BQCoreModule.extend(binder).addCommand(GenerateSpecCommand.class);
+        BQCoreModule.extend(binder)
+                .addCommand(GenerateSpecCommand.class)
+                .addOption(destinationDirectoryOption());
     }
 
     @Provides
@@ -84,11 +89,18 @@ public class SwaggerModule extends ConfigModule {
     }
 
     private static void installConverter(ModelConverter converter) {
-        // since ModelConverters is a static singleton, let's at least make an attempt
+        // since ModelConverters is a static singleton, lets at least make an attempt
         // to prevent multiple registrations of the same converter
         if (!ModelConverters.getInstance().getConverters().contains(converter)) {
             ModelConverters.getInstance().addConverter(converter);
         }
+    }
+
+    private static OptionMetadata destinationDirectoryOption() {
+        return OptionMetadata.builder(DESTINATION_DIRECTORY_OPTION_NAME, "Directory to save swagger spec files.")
+                .shortName('d')
+                .valueOptional()
+                .build();
     }
 
 }
