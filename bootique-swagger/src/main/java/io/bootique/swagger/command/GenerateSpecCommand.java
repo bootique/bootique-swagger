@@ -23,6 +23,7 @@ import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
 import io.bootique.log.BootLogger;
 import io.bootique.meta.application.CommandMetadata;
+import io.bootique.meta.application.OptionMetadata;
 import io.bootique.swagger.SwaggerModule;
 import io.bootique.swagger.service.SwaggerService;
 
@@ -32,6 +33,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class GenerateSpecCommand extends CommandWithMetadata {
+
+    private static final String DESTINATION_DIRECTORY_OPTION_NAME = "destDir";
 
     private final BootLogger bootLogger;
     private final Provider<SwaggerService> serviceProvider;
@@ -44,9 +47,8 @@ public class GenerateSpecCommand extends CommandWithMetadata {
 
     @Override
     public CommandOutcome run(Cli cli) {
-
         try {
-            var destinationDirectory = cli.optionString(SwaggerModule.DESTINATION_DIRECTORY_OPTION_NAME);
+            var destinationDirectory = cli.optionString(DESTINATION_DIRECTORY_OPTION_NAME);
             if (destinationDirectory == null) {
                 printToStdOut();
             } else {
@@ -91,7 +93,15 @@ public class GenerateSpecCommand extends CommandWithMetadata {
     private static CommandMetadata createMetadata() {
         return CommandMetadata.builder(GenerateSpecCommand.class)
                 .description("Generates openapi spec. By default prints spec contents to std out. " +
-                        "Use -d option to specify target directory.")
+                        "To generate files se -d option and specify target directory.")
+                .addOption(destinationDirectoryOption())
+                .build();
+    }
+
+    private static OptionMetadata destinationDirectoryOption() {
+        return OptionMetadata.builder(DESTINATION_DIRECTORY_OPTION_NAME, "Directory to save swagger spec files.")
+                .shortName('d')
+                .valueOptional()
                 .build();
     }
 }

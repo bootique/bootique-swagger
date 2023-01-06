@@ -43,8 +43,6 @@ import java.util.Set;
 
 public class SwaggerModule extends ConfigModule {
 
-    public static final String DESTINATION_DIRECTORY_OPTION_NAME = "destDir";
-
     /**
      * @since 2.0.B1
      */
@@ -58,9 +56,7 @@ public class SwaggerModule extends ConfigModule {
         });
 
         SwaggerModule.extend(binder).initAllExtensions();
-        BQCoreModule.extend(binder)
-                .addCommand(GenerateSpecCommand.class)
-                .addOption(destinationDirectoryOption());
+        BQCoreModule.extend(binder).addCommand(GenerateSpecCommand.class);
     }
 
     @Provides
@@ -95,12 +91,4 @@ public class SwaggerModule extends ConfigModule {
             ModelConverters.getInstance().addConverter(converter);
         }
     }
-
-    private static OptionMetadata destinationDirectoryOption() {
-        return OptionMetadata.builder(DESTINATION_DIRECTORY_OPTION_NAME, "Directory to save swagger spec files.")
-                .shortName('d')
-                .valueOptional()
-                .build();
-    }
-
 }
