@@ -47,10 +47,6 @@ public class OpenApiModel {
         return pretty;
     }
 
-    public String getMediaType(String path) {
-        return Objects.equals(pathJson, path) ? SwaggerOpenapiApi.MEDIA_TYPE_JSON : SwaggerOpenapiApi.MEDIA_TYPE_YAML;
-    }
-
     public String getPathJson() {
         return pathJson;
     }
@@ -70,12 +66,6 @@ public class OpenApiModel {
             }
         }
         return api;
-    }
-    public boolean hasJsonPath() {
-        return pathJson != null;
-    }
-    public boolean hasYamlPath() {
-        return pathYaml != null;
     }
 
     public String render(String path) {
