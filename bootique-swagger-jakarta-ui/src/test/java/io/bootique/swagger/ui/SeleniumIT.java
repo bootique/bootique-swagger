@@ -109,6 +109,7 @@ public class SeleniumIT {
         assertEquals(jetty.getUrl() + "/openapi.json", urlElement.getText());
     }
 
+    // TODO: this fails on Mac M1. Something with "io.github.bonigarcia:selenium-jupiter" on M1
     @Test
     public void testOpenapiYaml(ChromeDriver driver) {
 
