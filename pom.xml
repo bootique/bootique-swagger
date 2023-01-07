@@ -23,7 +23,7 @@
     <parent>
         <groupId>io.bootique.modules.parent</groupId>
         <artifactId>bootique-modules-parent</artifactId>
-        <version>3.0.15</version>
+        <version>3.0.17</version>
     </parent>
 
     <groupId>io.bootique.swagger</groupId>
@@ -37,8 +37,8 @@
         <swagger.version>2.2.2</swagger.version>
         <swagger.ui.version>4.11.1</swagger.ui.version>
         <mustache.version>0.9.6</mustache.version>
-        <selenium.version>4.2.2</selenium.version>
-        <selenium-jupiter.version>4.1.0</selenium-jupiter.version>
+        <selenium.version>4.7.2</selenium.version>
+        <selenium-jupiter.version>4.3.2</selenium-jupiter.version>
     </properties>
 
     <modules>
@@ -70,6 +70,11 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
                 <version>${slf4j.version}</version>
             </dependency>
         </dependencies>

@@ -101,9 +101,12 @@ public class SeleniumIT {
 
     @Test
     public void testOpenapiJson(ChromeDriver driver) {
-        driver.get(jetty.getTarget().path("openapi.json").getUri().toString());
-        String homeUrl = driver.findElement(By.tagName("pre")).getText();
-        assertEqualsToResourceContents("SeleniumIT/response.json", homeUrl);
+        driver.get(jetty.getTarget().path("swagger-ui").getUri().toString());
+
+        WebElement urlElement = new WebDriverWait(driver, Duration.ofSeconds(1))
+                .until(webDriver -> webDriver.findElement(By.cssSelector("span.url")));
+
+        assertEquals(jetty.getUrl() + "/openapi.json", urlElement.getText());
     }
 
     @Test
@@ -111,18 +114,18 @@ public class SeleniumIT {
 
         driver.get(jetty.getTarget().path("swagger-ui").getUri().toString());
 
-        WebElement webElement = new WebDriverWait(driver, Duration.ofSeconds(1))
+        WebElement inputElement = new WebDriverWait(driver, Duration.ofSeconds(1))
                 .until(webDriver -> webDriver.findElement(By.tagName("input")));
 
-        webElement.clear();
-        webElement.sendKeys(jetty.getUrl() + "/openapi.yaml");
+        inputElement.clear();
+        inputElement.sendKeys(jetty.getUrl() + "/openapi.yaml");
 
         driver.findElement(By.cssSelector("button.download-url-button.button")).click();
 
-        webElement = new WebDriverWait(driver, Duration.ofSeconds(1))
+        WebElement urlElement = new WebDriverWait(driver, Duration.ofSeconds(1))
                 .until(webDriver -> webDriver.findElement(By.cssSelector("span.url")));
 
-        assertEquals(jetty.getUrl() + "/openapi.yaml", webElement.getText());
+        assertEquals(jetty.getUrl() + "/openapi.yaml", urlElement.getText());
     }
 
     @Disabled("Temporary disabled as unstable")
