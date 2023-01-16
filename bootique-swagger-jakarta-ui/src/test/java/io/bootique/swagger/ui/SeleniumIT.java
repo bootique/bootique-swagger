@@ -19,6 +19,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -109,7 +111,8 @@ public class SeleniumIT {
         assertEquals(jetty.getUrl() + "/openapi.json", urlElement.getText());
     }
 
-    // TODO: this fails on Mac M1. Something with "io.github.bonigarcia:selenium-jupiter" on M1
+    // TODO: this fails on Mac M1. Try again when https://github.com/bonigarcia/selenium-jupiter/issues/238 is fixed
+    @DisabledOnOs(architectures = "aarch64", value = OS.MAC)
     @Test
     public void testOpenapiYaml(ChromeDriver driver) {
 
