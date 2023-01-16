@@ -56,6 +56,9 @@ public class SwaggerService {
 
     private Map<String, OpenApiModel> convertSpecs(Map<String, SwaggerSpec> specs) {
         Map<String, OpenApiModel> models = new HashMap<>();
+        if (specs == null) {
+            specs = new HashMap<>();
+        }
         specs.values().stream()
                 .map(swaggerSpec -> createModel(swaggerConfig, swaggerSpec))
                 .filter(Optional::isPresent)
