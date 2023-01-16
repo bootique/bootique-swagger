@@ -24,7 +24,6 @@ import io.bootique.command.CommandWithMetadata;
 import io.bootique.log.BootLogger;
 import io.bootique.meta.application.CommandMetadata;
 import io.bootique.meta.application.OptionMetadata;
-import io.bootique.swagger.SwaggerModule;
 import io.bootique.swagger.service.SwaggerService;
 
 import javax.inject.Provider;
@@ -93,7 +92,7 @@ public class GenerateSpecCommand extends CommandWithMetadata {
     private static CommandMetadata createMetadata() {
         return CommandMetadata.builder(GenerateSpecCommand.class)
                 .description("Generates openapi spec. By default prints spec contents to std out. " +
-                        "To generate files se -d option and specify target directory.")
+                        "To generate spec files use -d option and specify target directory.")
                 .addOption(destinationDirectoryOption())
                 .build();
     }
