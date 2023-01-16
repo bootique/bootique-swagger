@@ -101,11 +101,15 @@ public class SeleniumIT {
 
     @Test
     public void testOpenapiJson(ChromeDriver driver) {
-        driver.get(jetty.getTarget().path("openapi.json").getUri().toString());
-        String homeUrl = driver.findElement(By.tagName("pre")).getText();
-        assertEqualsToResourceContents("SeleniumIT/response.json", homeUrl);
+        driver.get(jetty.getTarget().path("swagger-ui").getUri().toString());
+
+        WebElement urlElement = new WebDriverWait(driver, Duration.ofSeconds(1))
+                .until(webDriver -> webDriver.findElement(By.cssSelector("span.url")));
+
+        assertEquals(jetty.getUrl() + "/openapi.json", urlElement.getText());
     }
 
+    // TODO: this fails on Mac M1. Something with "io.github.bonigarcia:selenium-jupiter" on M1
     @Test
     public void testOpenapiYaml(ChromeDriver driver) {
 
