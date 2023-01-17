@@ -33,7 +33,7 @@ import java.nio.file.Paths;
 
 public class GenerateSpecCommand extends CommandWithMetadata {
 
-    private static final String DESTINATION_DIRECTORY_OPTION_NAME = "destDir";
+    private static final String DESTINATION_DIRECTORY_OPTION_NAME = "target-dir";
 
     private final BootLogger bootLogger;
     private final Provider<SwaggerService> serviceProvider;
