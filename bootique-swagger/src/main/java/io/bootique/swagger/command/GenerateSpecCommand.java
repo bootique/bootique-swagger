@@ -24,7 +24,7 @@ import io.bootique.command.CommandWithMetadata;
 import io.bootique.log.BootLogger;
 import io.bootique.meta.application.CommandMetadata;
 import io.bootique.meta.application.OptionMetadata;
-import io.bootique.swagger.service.SwaggerService;
+import io.bootique.swagger.SwaggerService;
 
 import javax.inject.Provider;
 import java.io.IOException;
@@ -69,7 +69,7 @@ public class GenerateSpecCommand extends CommandWithMetadata {
         for (String key : keys) {
             var fileName = key.replace("/", "_");
             var filePath = destinationDirPath.resolve(fileName);
-            var content = service.getOpenApiModel(key).get().render(key);
+            var content = service.getOpenApiModel(key).render(key);
             Files.write(filePath, content.getBytes());
         }
     }
@@ -79,7 +79,7 @@ public class GenerateSpecCommand extends CommandWithMetadata {
         var service = serviceProvider.get();
         var keys = service.getUrlPatterns();
         keys.forEach(key -> {
-            var content = service.getOpenApiModel(key).get().render(key);
+            var content = service.getOpenApiModel(key).render(key);
             out
                     .append(key)
                     .append("\n")

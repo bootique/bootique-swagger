@@ -19,7 +19,7 @@
 package io.bootique.swagger.web;
 
 import io.bootique.swagger.OpenApiModel;
-import io.bootique.swagger.service.SwaggerService;
+import io.bootique.swagger.SwaggerService;
 import io.swagger.v3.oas.annotations.Operation;
 
 import javax.ws.rs.GET;
@@ -48,9 +48,7 @@ public class SwaggerApi {
     @Operation(hidden = true)
     public Response getOpenApi(@Context UriInfo uriInfo) {
         var path = uriInfo.getPath();
-        return service.getOpenApiModel(path)
-                .map(model -> toResponse(path, model))
-                .orElseGet(() -> notFound(path));
+        return toResponse(path, service.getOpenApiModel(path));
     }
 
     private Response toResponse(String path, OpenApiModel model) {
@@ -59,13 +57,6 @@ public class SwaggerApi {
                 .entity(model.render(path))
                 .type(mediaType)
                 .build();
-    }
-
-    private Response notFound(String path) {
-        return Response
-                .status(Response.Status.NOT_FOUND)
-                .type(MediaType.TEXT_PLAIN_TYPE)
-                .entity("No model at " + path).build();
     }
 
     private String getMediaType(String path, OpenApiModel model) {

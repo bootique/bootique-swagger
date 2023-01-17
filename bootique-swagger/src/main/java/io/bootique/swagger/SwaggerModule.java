@@ -28,10 +28,8 @@ import io.bootique.di.TypeLiteral;
 import io.bootique.jersey.JerseyModule;
 import io.bootique.jersey.MappedResource;
 import io.bootique.log.BootLogger;
-import io.bootique.meta.application.OptionMetadata;
 import io.bootique.swagger.command.GenerateSpecCommand;
-import io.bootique.swagger.service.SwaggerConfig;
-import io.bootique.swagger.service.SwaggerService;
+import io.bootique.swagger.factory.SwaggerServiceFactory;
 import io.bootique.swagger.web.SwaggerApi;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
@@ -80,8 +78,8 @@ public class SwaggerModule extends ConfigModule {
         // side effect - installing converters
         // TODO: suggest Swagger to tie converters to contexts instead of using static ModelConverters
         converters.forEach(SwaggerModule::installConverter);
-        var config = config(SwaggerConfig.class, configFactory);
-        return new SwaggerService(appProvider, config);
+        var config = config(SwaggerServiceFactory.class, configFactory);
+        return config.createSwaggerService(appProvider);
     }
 
     private static void installConverter(ModelConverter converter) {
