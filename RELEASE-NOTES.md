@@ -1,6 +1,7 @@
 ## 3.0.M2
 
 * #34 Add command to generate spec files
+* #35 Remove dependency on jakarta.ws.rs.core.Application
 
 ## 3.0.M1
 
