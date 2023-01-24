@@ -67,7 +67,7 @@ public class SwaggerModule extends ConfigModule {
     @Singleton
     MappedResource<SwaggerApi> provideOpenApiResource(SwaggerService service) {
         var swaggerApi = new SwaggerApi(service);
-        return new MappedResource<>(swaggerApi, service.getUrlPatterns());
+        return new MappedResource<>(swaggerApi, service.getModelPaths());
     }
 
     @Provides

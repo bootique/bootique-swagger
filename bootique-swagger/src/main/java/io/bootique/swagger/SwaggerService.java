@@ -18,12 +18,14 @@
  */
 package io.bootique.swagger;
 
-import io.bootique.swagger.OpenApiModel;
-
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @since 3.0.M2
+ */
 public class SwaggerService {
+
     private final Map<String, OpenApiModel> models;
 
     public SwaggerService(Map<String, OpenApiModel> models) {
@@ -37,8 +39,10 @@ public class SwaggerService {
         return models.get(path);
     }
 
-
-    public Set<String> getUrlPatterns() {
+    /**
+     * Returns a full set of preconfigured API model URL paths.
+     */
+    public Set<String> getModelPaths() {
         return models.keySet();
     }
 }

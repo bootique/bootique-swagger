@@ -61,7 +61,7 @@ public class GenerateSpecCommand extends CommandWithMetadata {
 
     private void saveToFiles(String destinationDirectory) throws IOException {
         var service = serviceProvider.get();
-        var keys = service.getUrlPatterns();
+        var keys = service.getModelPaths();
         var destinationDirPath = Paths.get(destinationDirectory);
         if (Files.notExists(destinationDirPath)) {
             Files.createDirectories(destinationDirPath);
@@ -77,7 +77,7 @@ public class GenerateSpecCommand extends CommandWithMetadata {
     private void printToStdOut() {
         var out = new StringBuilder();
         var service = serviceProvider.get();
-        var keys = service.getUrlPatterns();
+        var keys = service.getModelPaths();
         keys.forEach(key -> {
             var content = service.getOpenApiModel(key).render(key);
             out

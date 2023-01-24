@@ -1,3 +1,7 @@
+## 3.0.M2
+
+* #34 Add command to generate spec files
+
 ## 3.0.M1
 
 * #30 Upgrade to Swagger 2.1.12
