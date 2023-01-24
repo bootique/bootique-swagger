@@ -28,9 +28,7 @@ import io.bootique.jersey.JerseyModule;
 import io.bootique.jersey.MappedResource;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
-import org.glassfish.jersey.server.ResourceConfig;
 
-import javax.inject.Provider;
 import javax.inject.Singleton;
 import java.util.Set;
 
@@ -53,16 +51,13 @@ public class SwaggerModule extends ConfigModule {
 
     @Provides
     @Singleton
-    MappedResource<SwaggerOpenapiApi> provideOpenApiResource(
-            ConfigurationFactory configFactory,
-            Provider<ResourceConfig> appProvider,
-            Set<ModelConverter> converters) {
+    MappedResource<SwaggerOpenapiApi> provideOpenApiResource(ConfigurationFactory configFactory, Set<ModelConverter> converters) {
 
         // side effect - installing converters
         // TODO: suggest Swagger to tie converters to contexts instead of using static ModelConverters
         converters.forEach(SwaggerModule::installConverter);
 
-        return config(SwaggerOpenapiApiFactory.class, configFactory).createResource(appProvider);
+        return config(SwaggerOpenapiApiFactory.class, configFactory).createResource();
     }
 
     private static void installConverter(ModelConverter converter) {

@@ -22,11 +22,9 @@ import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
 import io.bootique.resource.ResourceFactory;
 import io.swagger.v3.oas.models.OpenAPI;
-import jakarta.ws.rs.core.Application;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Provider;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
@@ -47,10 +45,7 @@ public class OpenApiModelFactory {
     private List<String> resourcePackages;
     private List<String> resourceClasses;
 
-    public Optional<OpenApiModel> createModel(
-            Provider<? extends Application> appProvider,
-            ResourceFactory sharedOverrideSpec,
-            boolean prettyPrint) {
+    public Optional<OpenApiModel> createModel(ResourceFactory sharedOverrideSpec, boolean prettyPrint) {
 
         if (pathJson == null && pathYaml == null) {
             LOGGER.info("Neither 'pathJson' not 'pathYaml' are set. Skipping OpenApiModel creation");
@@ -63,14 +58,14 @@ public class OpenApiModelFactory {
         String pathJson = normalizePath(this.pathJson);
         String pathYaml = normalizePath(this.pathYaml);
 
-        return Optional.of(new OpenApiModel(() -> createOpenApi(appProvider.get(), spec, overrideSpec), pathJson, pathYaml, prettyPrint));
+        return Optional.of(new OpenApiModel(() -> createOpenApi(spec, overrideSpec), pathJson, pathYaml, prettyPrint));
     }
 
     protected String normalizePath(String path) {
         return path != null && path.startsWith("/") ? path.substring(1) : path;
     }
 
-    protected OpenAPI createOpenApi(Application app, URL spec, URL overrideSpec) {
+    protected OpenAPI createOpenApi(URL spec, URL overrideSpec) {
 
         // our own implementation. JaxrsOpenApiContextBuilder is too dirty and unpredictable, and not easy to
         // extend to do our own config merging
@@ -78,7 +73,7 @@ public class OpenApiModelFactory {
         List<String> resourcePackages = this.resourcePackages != null ? this.resourcePackages : Collections.emptyList();
         List<String> resourceClasses = this.resourceClasses != null ? this.resourceClasses : Collections.emptyList();
 
-        return new OpenApiLoader(app).load(resourcePackages, resourceClasses, spec, overrideSpec);
+        return new OpenApiLoader().load(resourcePackages, resourceClasses, spec, overrideSpec);
     }
 
     protected URL resolveOverrideSpec(ResourceFactory sharedOverrideSpec) {

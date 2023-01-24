@@ -43,7 +43,7 @@ public class OpenApiModelFactory {
         String pathYaml = normalizePath(this.pathYaml);
 
         return Optional.of(new OpenApiModel(
-                () -> createOpenApi(appProvider.get(), spec, overrideSpec),
+                () -> createOpenApi(spec, overrideSpec),
                 pathJson,
                 pathYaml,
                 prettyPrint));
@@ -53,7 +53,7 @@ public class OpenApiModelFactory {
         return path != null && path.startsWith("/") ? path.substring(1) : path;
     }
 
-    protected OpenAPI createOpenApi(Application app, URL spec, URL overrideSpec) {
+    protected OpenAPI createOpenApi(URL spec, URL overrideSpec) {
 
         // our own implementation. JaxrsOpenApiContextBuilder is too dirty and unpredictable, and not easy to
         // extend to do our own config merging
@@ -61,7 +61,7 @@ public class OpenApiModelFactory {
         List<String> resourcePackages = this.resourcePackages != null ? this.resourcePackages : List.of();
         List<String> resourceClasses = this.resourceClasses != null ? this.resourceClasses : List.of();
 
-        return new OpenApiLoader(app).load(resourcePackages, resourceClasses, spec, overrideSpec);
+        return new OpenApiLoader().load(resourcePackages, resourceClasses, spec, overrideSpec);
     }
 
     protected URL resolveOverrideSpec(ResourceFactory sharedOverrideSpec) {

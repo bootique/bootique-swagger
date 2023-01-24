@@ -39,12 +39,6 @@ import java.util.List;
  */
 public class OpenApiLoader {
 
-    private final Application application;
-
-    public OpenApiLoader(Application application) {
-        this.application = application;
-    }
-
     public OpenAPI load(List<String> resourcePackages, List<String> resourceClasses, URL specLocation, URL overrideSpecLocation) {
 
         // override order
@@ -78,11 +72,9 @@ public class OpenApiLoader {
 
         JaxrsAnnotationScanner scanner = new JaxrsAnnotationScanner();
         scanner.setConfiguration(config);
-        scanner.setApplication(application);
 
         Reader reader = new Reader();
         reader.setConfiguration(config);
-        reader.setApplication(application);
         return reader.read(scanner.classes(), scanner.resources());
     }
 

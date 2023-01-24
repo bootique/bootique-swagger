@@ -22,9 +22,7 @@ import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
 import io.bootique.jersey.MappedResource;
 import io.bootique.resource.ResourceFactory;
-import jakarta.ws.rs.core.Application;
 
-import javax.inject.Provider;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,12 +54,12 @@ public class SwaggerOpenapiApiFactory {
         this.pretty = pretty;
     }
 
-    public MappedResource<SwaggerOpenapiApi> createResource(Provider<? extends Application> appProvider) {
+    public MappedResource<SwaggerOpenapiApi> createResource() {
 
         Map<String, OpenApiModel> models = new HashMap<>();
         resolveSpecs().values()
                 .stream()
-                .map(f -> f.createModel(appProvider, overrideSpec, pretty))
+                .map(f -> f.createModel(overrideSpec, pretty))
                 // skip unmapped models
                 .filter(Optional::isPresent)
                 .map(Optional::get)

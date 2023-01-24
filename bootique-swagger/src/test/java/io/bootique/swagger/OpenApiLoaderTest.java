@@ -43,7 +43,7 @@ public class OpenApiLoaderTest {
 
         OpenAPI openAPI = new OpenAPI();
         openAPI.setPaths(paths);
-        OpenApiLoader loader = new OpenApiLoader(mock(Application.class));
+        OpenApiLoader loader = new OpenApiLoader();
 
         loader.sortPaths(openAPI);
 
