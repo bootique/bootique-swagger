@@ -1,39 +1,18 @@
-/*
- * Licensed to ObjectStyle LLC under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ObjectStyle LLC licenses
- * this file to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-package io.bootique.swagger;
+package io.bootique.swagger.factory;
 
 import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
-import io.bootique.jersey.MappedResource;
 import io.bootique.resource.ResourceFactory;
+import io.bootique.swagger.OpenApiModel;
+import io.bootique.swagger.SwaggerService;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-/**
- * @since 2.0
- */
 @BQConfig
-public class SwaggerOpenapiApiFactory {
-
+public class SwaggerServiceFactory {
+    // shared spec
     private ResourceFactory overrideSpec;
     private Map<String, OpenApiModelFactory> specs;
     private boolean pretty = true;
@@ -54,19 +33,22 @@ public class SwaggerOpenapiApiFactory {
         this.pretty = pretty;
     }
 
-    public MappedResource<SwaggerOpenapiApi> createResource() {
+    public SwaggerService createSwaggerService() {
+        var models = createModels(this.specs);
+        return new SwaggerService(models);
+    }
 
+    private Map<String, OpenApiModel> createModels(Map<String, OpenApiModelFactory> specs) {
         Map<String, OpenApiModel> models = new HashMap<>();
-        resolveSpecs().values()
-                .stream()
-                .map(f -> f.createModel(overrideSpec, pretty))
-                // skip unmapped models
+        if (specs == null) {
+            specs = new HashMap<>();
+        }
+        specs.values().stream()
+                .map(swaggerSpec -> swaggerSpec.createModel(overrideSpec, pretty))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .forEach(m -> indexByPath(models, m));
-
-        SwaggerOpenapiApi resource = new SwaggerOpenapiApi(models);
-        return new MappedResource<>(resource, models.keySet());
+        return models;
     }
 
     private void indexByPath(Map<String, OpenApiModel> models, OpenApiModel model) {
@@ -77,13 +59,5 @@ public class SwaggerOpenapiApiFactory {
         if (model.getPathYaml() != null) {
             models.put(model.getPathYaml(), model);
         }
-    }
-
-    protected Map<String, OpenApiModelFactory> resolveSpecs() {
-        return this.specs != null ? this.specs : Collections.singletonMap("default", defaultApiFactory());
-    }
-
-    protected OpenApiModelFactory defaultApiFactory() {
-        return new OpenApiModelFactory();
     }
 }

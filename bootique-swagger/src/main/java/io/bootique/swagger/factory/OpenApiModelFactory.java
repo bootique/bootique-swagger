@@ -45,7 +45,6 @@ public class OpenApiModelFactory {
     private List<String> resourceClasses;
 
     public Optional<OpenApiModel> createModel(
-            Provider<? extends Application> appProvider,
             ResourceFactory sharedOverrideSpec,
             boolean prettyPrint) {
 

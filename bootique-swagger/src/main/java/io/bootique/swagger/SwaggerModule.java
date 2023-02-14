@@ -33,7 +33,6 @@ import io.bootique.swagger.factory.SwaggerServiceFactory;
 import io.bootique.swagger.web.SwaggerApi;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
-import org.glassfish.jersey.server.ResourceConfig;
 
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -73,13 +72,12 @@ public class SwaggerModule extends ConfigModule {
     @Provides
     @Singleton
     SwaggerService provideSwaggerService(ConfigurationFactory configFactory,
-                                         Provider<ResourceConfig> appProvider,
                                          Set<ModelConverter> converters) {
         // side effect - installing converters
         // TODO: suggest Swagger to tie converters to contexts instead of using static ModelConverters
         converters.forEach(SwaggerModule::installConverter);
         var config = config(SwaggerServiceFactory.class, configFactory);
-        return config.createSwaggerService(appProvider);
+        return config.createSwaggerService();
     }
 
     private static void installConverter(ModelConverter converter) {

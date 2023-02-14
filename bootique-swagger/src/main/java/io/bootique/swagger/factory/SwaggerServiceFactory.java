@@ -24,8 +24,6 @@ import io.bootique.resource.ResourceFactory;
 import io.bootique.swagger.OpenApiModel;
 import io.bootique.swagger.SwaggerService;
 
-import javax.inject.Provider;
-import javax.ws.rs.core.Application;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -53,19 +51,18 @@ public class SwaggerServiceFactory {
         this.pretty = pretty;
     }
 
-    public SwaggerService createSwaggerService(Provider<? extends Application> appProvider) {
-        var models = createModels(this.specs, appProvider);
+    public SwaggerService createSwaggerService() {
+        var models = createModels(this.specs);
         return new SwaggerService(models);
     }
 
-    private Map<String, OpenApiModel> createModels(Map<String, OpenApiModelFactory> specs,
-                                                   Provider<? extends Application> appProvider) {
+    private Map<String, OpenApiModel> createModels(Map<String, OpenApiModelFactory> specs) {
         Map<String, OpenApiModel> models = new HashMap<>();
         if (specs == null) {
             specs = new HashMap<>();
         }
         specs.values().stream()
-                .map(swaggerSpec -> swaggerSpec.createModel(appProvider, overrideSpec, pretty))
+                .map(swaggerSpec -> swaggerSpec.createModel(overrideSpec, pretty))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .forEach(m -> indexByPath(models, m));

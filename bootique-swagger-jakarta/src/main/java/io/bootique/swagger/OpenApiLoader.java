@@ -26,7 +26,6 @@ import io.swagger.v3.jaxrs2.integration.JaxrsAnnotationScanner;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Paths;
-import jakarta.ws.rs.core.Application;
 
 import java.io.IOException;
 import java.net.URL;

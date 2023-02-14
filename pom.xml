@@ -47,6 +47,7 @@
 
         <module>bootique-swagger-jakarta</module>
         <module>bootique-swagger-jakarta-ui</module>
+        <module>bootique-redoc</module>
     </modules>
 
     <scm>
