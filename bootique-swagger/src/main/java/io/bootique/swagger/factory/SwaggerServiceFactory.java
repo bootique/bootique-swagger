@@ -30,10 +30,11 @@ import java.util.Optional;
 
 @BQConfig
 public class SwaggerServiceFactory {
-    // shared spec
+
     private ResourceFactory overrideSpec;
     private Map<String, OpenApiModelFactory> specs;
     private boolean pretty = true;
+    private boolean noWebAccess;
 
     @BQConfigProperty("Zero or more API specifications provided by the application")
     public void setSpecs(Map<String, OpenApiModelFactory> specs) {
@@ -51,9 +52,15 @@ public class SwaggerServiceFactory {
         this.pretty = pretty;
     }
 
+    @BQConfigProperty("Whether to disable web access to OpenAPI descriptors. In this case the descriptors will still be " +
+            "accessible offline via '--generate-spec' command. This is 'false' by default.")
+    public void setNoWebAccess(boolean noWebAccess) {
+        this.noWebAccess = noWebAccess;
+    }
+
     public SwaggerService createSwaggerService() {
         var models = createModels(this.specs);
-        return new SwaggerService(models);
+        return new SwaggerService(models, noWebAccess);
     }
 
     private Map<String, OpenApiModel> createModels(Map<String, OpenApiModelFactory> specs) {

@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @BQTest
@@ -40,6 +41,19 @@ public class AnnotationSpecsIT {
 
     @BQTestTool
     final BQTestFactory testFactory = new BQTestFactory().autoLoadModules();
+
+    @Test
+    @DisplayName("No web access flag should result in 404")
+    public void testNoWebAccess() {
+        testFactory.app("-s", "-c", "classpath:config3/startup0.yml")
+                .module(b -> JerseyModule.extend(b).addPackage(Api31.class))
+                .run();
+
+        Response r = target.path("/c3/model.yaml").request().get();
+        JettyTester.assertNotFound(r)
+                .assertContentType(MediaType.TEXT_HTML_TYPE)
+                .assertContent(c -> c.contains("<h2>HTTP ERROR 404 Not Found</h2>"));
+    }
 
     @Test
     @DisplayName("API classes can be picked individually")

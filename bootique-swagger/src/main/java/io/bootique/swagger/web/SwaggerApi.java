@@ -29,6 +29,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+
 import java.util.Objects;
 
 @Path("_this_is_a_placeholder_that_will_be_replaced_dynamically_")
@@ -47,12 +48,15 @@ public class SwaggerApi {
     @Produces({MEDIA_TYPE_JSON, MEDIA_TYPE_YAML})
     @Operation(hidden = true)
     public Response getOpenApi(@Context UriInfo uriInfo) {
-        var path = uriInfo.getPath();
-        return toResponse(path, service.getOpenApiModel(path));
+        return service.noWebAccess()
+                ? Response.status(Response.Status.NOT_FOUND).build()
+                : toResponse(uriInfo.getPath());
     }
 
-    private Response toResponse(String path, OpenApiModel model) {
-        var mediaType = getMediaType(path, model);
+    private Response toResponse(String path) {
+        OpenApiModel model = service.getOpenApiModel(path);
+        String mediaType = getMediaType(path, model);
+
         return Response.status(Response.Status.OK)
                 .entity(model.render(path))
                 .type(mediaType)
