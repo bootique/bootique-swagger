@@ -35,7 +35,7 @@ import java.util.*;
  */
 // notice that this is not a BQConfig factory, and it is created manually,
 // as we'd like to avoid "modelFactories" property exposure in YAML
-// TODO: some Jackson trick to derserialize this as a map?
+// TODO: some Jackson trick to deserialize this as a map?
 public class SwaggerUiServletFactory {
 
     private Map<String, SwaggerUIModelFactory> modelFactories;
@@ -50,6 +50,7 @@ public class SwaggerUiServletFactory {
         modelFactories.values()
                 .stream()
                 .map(SwaggerUIModelFactory::createModel)
+                .flatMap(Optional::stream)
                 .forEach((m -> models.put(m.getUiPath(), m)));
 
         Set<String> urlPatterns = new HashSet<>();

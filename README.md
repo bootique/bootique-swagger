@@ -69,20 +69,19 @@ And then configure the layout and the sources of the specs:
 ```yaml
 swagger:
   
-  # whether OpenAPI resources should be disallowed on the web 
-  # (and only accessible offline via --generate-spec command)
-  # It is "false" by default.
+  # Whether the OpenAPI resources should be disabled on the web 
+  # and only accessible offline via --generate-spec command. It is "false" by default.
   noWebAccess: false
   
   specs:
-    # arbitrary name of a spec endpoint... Multiple specs at different URLs are supported
+    # Arbitrary name of a spec endpoint... Multiple specs at different URLs are supported
     default:
 
-      # desired URL paths of JSON and YAML resources. Resolved relative to Jersey root URL
+      # Desired URL paths of JSON and YAML resources. Resolved relative to Jersey root URL
       pathJson: "model/openapi.json"
       pathYaml: "model/openapi.yaml"
 
-      # where the spec sources are
+      # Where the spec sources are
       spec: "classpath:main-openapi.yml"
       overrideSpec: "classpath:extra-openapi.yml"
       resourcePackages:
@@ -118,8 +117,12 @@ To view the spec from the same app (e.g. the one added via `bootique-swagger-ope
 relative path of the model resource to the app configuration:
 ```yml
 swaggerui:
+  
   default:
     specPath: model/openapi.json
+    
+     # Whether this UI console should be disabled. "false" by default.
+    noWebAccess: false
 ```
 When you start the application, the console will be available at `/<appcontext>/swagger-ui`. E.g.
 http://127.0.0.1:8080/swagger-ui/ .
