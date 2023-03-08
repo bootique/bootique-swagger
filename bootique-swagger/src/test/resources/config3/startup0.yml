@@ -1,7 +1,7 @@
 swagger:
-  noWebAccess: true
   specs:
     default:
+      noWebAccess: true
       pathYaml: "c3/model.yaml"
       resourceClasses:
         - io.bootique.swagger.config3.Api31

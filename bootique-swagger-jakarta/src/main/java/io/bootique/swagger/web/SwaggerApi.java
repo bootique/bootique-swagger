@@ -48,19 +48,14 @@ public class SwaggerApi {
     @Produces({MEDIA_TYPE_JSON, MEDIA_TYPE_YAML})
     @Operation(hidden = true)
     public Response getOpenApi(@Context UriInfo uriInfo) {
-        return service.noWebAccess()
-                ? Response.status(Response.Status.NOT_FOUND).build()
-                : toResponse(uriInfo.getPath());
+        return toResponse(uriInfo.getPath());
     }
 
     private Response toResponse(String path) {
         OpenApiModel model = service.getOpenApiModel(path);
-        String mediaType = getMediaType(path, model);
-
-        return Response.status(Response.Status.OK)
-                .entity(model.render(path))
-                .type(mediaType)
-                .build();
+        return model.noWebAccess()
+                ? Response.status(Response.Status.NOT_FOUND).build()
+                : Response.status(Response.Status.OK).entity(model.render(path)).type(getMediaType(path, model)).build();
     }
 
     private String getMediaType(String path, OpenApiModel model) {

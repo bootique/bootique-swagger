@@ -1,7 +1,7 @@
 swagger:
-  noWebAccess: true
   specs:
     default:
+      noWebAccess: true
       pathJson: "s1/model.json"
       pathYaml: "s1/model.yaml"
       overrideSpec: "classpath:config1/override-spec.yml"

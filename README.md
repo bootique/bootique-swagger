@@ -69,13 +69,13 @@ And then configure the layout and the sources of the specs:
 ```yaml
 swagger:
   
-  # Whether the OpenAPI resources should be disabled on the web 
-  # and only accessible offline via --generate-spec command. It is "false" by default.
-  noWebAccess: false
-  
   specs:
     # Arbitrary name of a spec endpoint... Multiple specs at different URLs are supported
     default:
+
+      # Whether the OpenAPI resources should be disabled on the web 
+      # and only accessible offline via --generate-spec command. It is "false" by default.
+      noWebAccess: false
 
       # Desired URL paths of JSON and YAML resources. Resolved relative to Jersey root URL
       pathJson: "model/openapi.json"
@@ -121,7 +121,7 @@ swaggerui:
   default:
     specPath: model/openapi.json
     
-     # Whether this UI console should be disabled. "false" by default.
+    # Whether this UI console should be disabled. "false" by default.
     noWebAccess: false
 ```
 When you start the application, the console will be available at `/<appcontext>/swagger-ui`. E.g.

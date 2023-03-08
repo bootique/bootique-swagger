@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.net.URL;
 import java.util.List;
 import java.util.Optional;
+
 @BQConfig
 public class OpenApiModelFactory {
 
@@ -23,6 +24,7 @@ public class OpenApiModelFactory {
     private ResourceFactory spec;
     private List<String> resourcePackages;
     private List<String> resourceClasses;
+    private boolean noWebAccess;
 
     public Optional<OpenApiModel> createModel(
             ResourceFactory sharedOverrideSpec,
@@ -43,7 +45,8 @@ public class OpenApiModelFactory {
                 () -> createOpenApi(spec, overrideSpec),
                 pathJson,
                 pathYaml,
-                prettyPrint));
+                prettyPrint,
+                noWebAccess));
     }
 
     protected String normalizePath(String path) {
@@ -98,5 +101,14 @@ public class OpenApiModelFactory {
     @BQConfigProperty("Location of the OpenAPI spec file. Overrides 'resourcePackages' and 'resourceClasses' model")
     public void setSpec(ResourceFactory spec) {
         this.spec = spec;
+    }
+
+    /**
+     * @since 3.0
+     */
+    @BQConfigProperty("Whether to disable web access to this OpenAPI spec. In that case the descriptors will still be " +
+            "accessible offline via '--generate-spec' command. 'false' by default.")
+    public void setNoWebAccess(boolean noWebAccess) {
+        this.noWebAccess = noWebAccess;
     }
 }

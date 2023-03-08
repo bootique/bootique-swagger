@@ -30,21 +30,31 @@ import java.util.function.Supplier;
  * @since 2.0
  */
 public class OpenApiModel {
+
     private final boolean pretty;
+    private final boolean noWebAccess;
     private final Supplier<OpenAPI> apiSupplier;
     private final String pathJson;
     private final String pathYaml;
     private volatile OpenAPI api;
 
-    public OpenApiModel(Supplier<OpenAPI> apiSupplier, String pathJson, String pathYaml, boolean pretty) {
+    public OpenApiModel(Supplier<OpenAPI> apiSupplier, String pathJson, String pathYaml, boolean pretty, boolean noWebAccess) {
         this.pathJson = pathJson;
         this.pathYaml = pathYaml;
         this.apiSupplier = apiSupplier;
         this.pretty = pretty;
+        this.noWebAccess = noWebAccess;
     }
 
     public boolean isPretty() {
         return pretty;
+    }
+
+    /**
+     * @since 3.0
+     */
+    public boolean noWebAccess() {
+        return noWebAccess;
     }
 
     public String getPathJson() {
