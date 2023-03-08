@@ -23,6 +23,7 @@ import io.bootique.annotation.BQConfigProperty;
 import io.bootique.swagger.ui.model.SwaggerUIServletModel;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -34,6 +35,7 @@ public class SwaggerUIModelFactory {
     private String specUrl;
     private String specPath;
     private String uiPath;
+    private boolean noWebAccess;
 
     private static String getBaseUrl(HttpServletRequest request) {
 
@@ -51,8 +53,10 @@ public class SwaggerUIModelFactory {
         return scheme + "://" + host + portExp + contextPath;
     }
 
-    public SwaggerUIServletModel createModel() {
-        return new SwaggerUIServletModel(specUrlResolver(), uiPath());
+    public Optional<SwaggerUIServletModel> createModel() {
+        return noWebAccess
+                ? Optional.empty()
+                : Optional.of(new SwaggerUIServletModel(specUrlResolver(), uiPath()));
     }
 
     @BQConfigProperty("A full URL of the JSON/YAML descriptor resource")
@@ -70,6 +74,14 @@ public class SwaggerUIModelFactory {
         this.specPath = specPath;
     }
 
+    /**
+     * @since 3.0
+     */
+    @BQConfigProperty("Whether to disable web access to this UI console. 'false' by default.")
+    public void setNoWebAccess(boolean noWebAccess) {
+        this.noWebAccess = noWebAccess;
+    }
+
     private String uiPath() {
         return uiPath != null ? uiPath : "/swagger-ui";
     }
@@ -80,7 +92,7 @@ public class SwaggerUIModelFactory {
 
     private Function<HttpServletRequest, String> specPathResolver() {
 
-        if(specPath == null) {
+        if (specPath == null) {
             return r -> null;
         }
 

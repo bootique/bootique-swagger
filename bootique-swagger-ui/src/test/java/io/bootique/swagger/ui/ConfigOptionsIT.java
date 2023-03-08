@@ -43,6 +43,15 @@ public class ConfigOptionsIT {
     final BQTestFactory testFactory = new BQTestFactory();
 
     @Test
+    @DisplayName("'noWebAccess' should be respected")
+    public void testNoWebAccess() {
+        testFactory.app("-s", "-c", "classpath:ConfigOptionsIT/nowebaccess.yml").autoLoadModules().run();
+
+        Response r = target.path("/swagger-ui").request().get();
+        JettyTester.assertNotFound(r);
+    }
+
+    @Test
     @DisplayName("no config")
     public void testConfig() {
         // must start, but serve nothing
