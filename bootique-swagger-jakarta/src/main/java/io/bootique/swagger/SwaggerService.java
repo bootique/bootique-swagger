@@ -25,10 +25,13 @@ import java.util.Set;
  * @since 3.0.M2
  */
 public class SwaggerService {
-    private final Map<String, OpenApiModel> models;
 
-    public SwaggerService(Map<String, OpenApiModel> models) {
+    private final Map<String, OpenApiModel> models;
+    private final boolean noWebAccess;
+
+    public SwaggerService(Map<String, OpenApiModel> models, boolean noWebAccess) {
         this.models = models;
+        this.noWebAccess = noWebAccess;
     }
 
     public OpenApiModel getOpenApiModel(String path) {
@@ -43,5 +46,9 @@ public class SwaggerService {
      */
     public Set<String> getUrlPatterns() {
         return models.keySet();
+    }
+
+    public boolean noWebAccess() {
+        return noWebAccess;
     }
 }

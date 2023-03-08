@@ -30,6 +30,15 @@ public class GenerateSpecCommand_IT {
     @TempDir
     public Path destDir;
 
+    @Test
+    void noWebAccess() throws Exception {
+        var result = testFactory.app(buildArgs("config1/startup-no-web-access.yml"))
+                .autoLoadModules()
+                .run();
+        assertTrue(result.isSuccess(), "Result should be success.");
+        checkFiles("s1_model.json", "config1/response.json");
+        checkFiles("s1_model.yaml", "config1/response.yml");
+    }
 
     @Test
     void annotationSpec_yamlOverrideSpec() throws Exception {

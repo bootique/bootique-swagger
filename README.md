@@ -68,6 +68,12 @@ And then configure the layout and the sources of the specs:
 
 ```yaml
 swagger:
+  
+  # whether OpenAPI resources should be disallowed on the web 
+  # (and only accessible offline via --generate-spec command)
+  # It is "false" by default.
+  noWebAccess: false
+  
   specs:
     # arbitrary name of a spec endpoint... Multiple specs at different URLs are supported
     default:
