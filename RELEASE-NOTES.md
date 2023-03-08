@@ -2,6 +2,7 @@
 
 * #34 Add command to generate spec files
 * #35 Remove dependency on jakarta.ws.rs.core.Application
+* #38 Support for LocalTime, Year, YearMonth as a API parameters
 
 ## 3.0.M1
 

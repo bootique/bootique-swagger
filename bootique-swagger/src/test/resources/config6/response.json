@@ -1,0 +1,114 @@
+{
+  "openapi" : "3.0.1",
+  "paths" : {
+    "/api6/date/{date}" : {
+      "get" : {
+        "operationId" : "getDate",
+        "parameters" : [ {
+          "name" : "date",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "*/*" : { }
+            }
+          }
+        }
+      }
+    },
+    "/api6/datetime/{datetime}" : {
+      "get" : {
+        "operationId" : "getDateTime",
+        "parameters" : [ {
+          "name" : "datetime",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "*/*" : { }
+            }
+          }
+        }
+      }
+    },
+    "/api6/time/{time}" : {
+      "get" : {
+        "operationId" : "getTime",
+        "parameters" : [ {
+          "name" : "time",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "time"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "*/*" : { }
+            }
+          }
+        }
+      }
+    },
+    "/api6/year/{year}" : {
+      "get" : {
+        "operationId" : "getYear",
+        "parameters" : [ {
+          "name" : "year",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "*/*" : { }
+            }
+          }
+        }
+      }
+    },
+    "/api6/yearmonth/{yearmonth}" : {
+      "get" : {
+        "operationId" : "getYearMonth",
+        "parameters" : [ {
+          "name" : "yearmonth",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "*/*" : { }
+            }
+          }
+        }
+      }
+    }
+  }
+}
