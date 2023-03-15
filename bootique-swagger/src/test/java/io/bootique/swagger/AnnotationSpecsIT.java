@@ -37,19 +37,19 @@ import javax.ws.rs.core.Response;
 @BQTest
 public class AnnotationSpecsIT {
 
-    private static final WebTarget target = ClientBuilder.newClient().target("http://127.0.0.1:8080/");
-
     @BQTestTool
     final BQTestFactory testFactory = new BQTestFactory().autoLoadModules();
 
     @Test
     @DisplayName("No web access flag should result in 404")
     public void testNoWebAccess() {
+        var jetty = JettyTester.create();
         testFactory.app("-s", "-c", "classpath:config3/startup0.yml")
                 .module(b -> JerseyModule.extend(b).addPackage(Api31.class))
+                .module(jetty.moduleReplacingConnectors())
                 .run();
 
-        Response r = target.path("/c3/model.yaml").request().get();
+        Response r = jetty.getTarget().path("/c3/model.yaml").request().get();
         JettyTester.assertNotFound(r)
                 .assertContentType(MediaType.TEXT_HTML_TYPE)
                 .assertContent(c -> c.contains("<h2>HTTP ERROR 404 Not Found</h2>"));
@@ -58,13 +58,15 @@ public class AnnotationSpecsIT {
     @Test
     @DisplayName("API classes can be picked individually")
     public void testResourceClassesFilter() {
+        var jetty = JettyTester.create();
         testFactory.app("-s", "-c", "classpath:config3/startup1.yml")
                 // Contribute the entire package in runtime...
                 // Make sure only classes in "resourceClass" are includes in the spec
                 .module(b -> JerseyModule.extend(b).addPackage(Api31.class))
+                .module(jetty.moduleReplacingConnectors())
                 .run();
 
-        Response r = target.path("/c3/model.yaml").request().get();
+        Response r = jetty.getTarget().path("/c3/model.yaml").request().get();
         JettyTester.assertOk(r)
                 .assertContent(new ResourceFactory("classpath:config3/response1.yml"));
     }
@@ -72,13 +74,15 @@ public class AnnotationSpecsIT {
     @Test
     @DisplayName("API packages can be picked individually")
     public void testResourcePackagesFilter() {
+        var jetty = JettyTester.create();
         testFactory.app("-s", "-c", "classpath:config3/startup2.yml")
                 // Contribute multiple packages to runtime...
                 // Make sure only classes in "resourcePackages" are includes in the spec
                 .module(b -> JerseyModule.extend(b).addPackage(Api31.class).addPackage(Api3a.class))
+                .module(jetty.moduleReplacingConnectors())
                 .run();
 
-        Response r = target.path("/c3/model.yaml").request().get();
+        Response r = jetty.getTarget().path("/c3/model.yaml").request().get();
         JettyTester.assertOk(r)
                 .assertContent(new ResourceFactory("classpath:config3/response2.yml"));
     }
