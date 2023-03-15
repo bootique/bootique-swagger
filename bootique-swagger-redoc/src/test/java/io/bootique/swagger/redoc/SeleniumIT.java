@@ -50,7 +50,8 @@ public class SeleniumIT {
     ChromeOptions chromeOptions = new ChromeOptions()
             .addArguments("--headless")
             .addArguments("--no-sandbox")
-            .addArguments("--disable-dev-shm-usage");
+            .addArguments("--disable-dev-shm-usage")
+            .addArguments("--remote-allow-origins=*");
 
     @Test
     public void testApi_Console(ChromeDriver driver) {
@@ -63,9 +64,9 @@ public class SeleniumIT {
         driver.get(jetty.getTarget().path("redoc").getUri().toString());
 
         WebElement urlElement = new WebDriverWait(driver, Duration.ofSeconds(1))
-                .until(webDriver -> webDriver.findElement(By.cssSelector("span.url")));
+                .until(webDriver -> webDriver.findElement(By.xpath("//a[text()='Download']")));
 
-        assertEquals(jetty.getUrl() + "/openapi.json", urlElement.getText());
+        assertEquals(jetty.getUrl() + "/openapi.json", urlElement.getAttribute("href"));
     }
 
     // TODO: this fails on Mac M1. Try again when https://github.com/bonigarcia/selenium-jupiter/issues/238 is fixed
