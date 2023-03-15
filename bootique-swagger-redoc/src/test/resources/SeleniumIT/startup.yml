@@ -1,0 +1,13 @@
+swagger:
+  pretty: false
+  specs:
+    default:
+      pathJson: openapi.json
+      pathYaml: openapi.yaml
+      overrideSpec: "classpath:SeleniumIT/config-override.yaml"
+      resourceClasses:
+        - io.bootique.swagger.redoc.SeleniumIT$TestApi
+
+redoc:
+  default:
+    specPath: openapi.json
