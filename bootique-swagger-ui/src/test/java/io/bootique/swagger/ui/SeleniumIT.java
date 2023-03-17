@@ -55,7 +55,8 @@ public class SeleniumIT {
     ChromeOptions chromeOptions = new ChromeOptions()
             .addArguments("--headless")
             .addArguments("--no-sandbox")
-            .addArguments("--disable-dev-shm-usage");
+            .addArguments("--disable-dev-shm-usage")
+            .addArguments("--remote-allow-origins=*");
 
     @Test
     public void testApi_Console(ChromeDriver driver) {
