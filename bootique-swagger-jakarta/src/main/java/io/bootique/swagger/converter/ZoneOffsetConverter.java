@@ -34,7 +34,7 @@ import java.util.Iterator;
  */
 public class ZoneOffsetConverter extends BaseModelConverter {
 
-    static final String PATTERN = "^[-+]\\d\\d:\\d\\d$";
+    static final String PATTERN = "^[-+]\\d{2}:\\d{2}$";
 
     @Override
     protected boolean willResolve(AnnotatedType type, ModelConverterContext context, TypeWrapper wrapped) {
