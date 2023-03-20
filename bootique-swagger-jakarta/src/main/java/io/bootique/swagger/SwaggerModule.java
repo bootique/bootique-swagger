@@ -32,6 +32,7 @@ import io.bootique.swagger.command.GenerateSpecCommand;
 import io.bootique.swagger.converter.LocalTimeConverter;
 import io.bootique.swagger.converter.YearConverter;
 import io.bootique.swagger.converter.YearMonthConverter;
+import io.bootique.swagger.converter.ZoneOffsetConverter;
 import io.bootique.swagger.factory.SwaggerServiceFactory;
 import io.bootique.swagger.web.SwaggerApi;
 import io.swagger.v3.core.converter.ModelConverter;
@@ -96,6 +97,7 @@ public class SwaggerModule extends ConfigModule {
         mc.addConverter(new YearMonthConverter());
         mc.addConverter(new YearConverter());
         mc.addConverter(new LocalTimeConverter());
+        mc.addConverter(new ZoneOffsetConverter());
 
         // custom injected converters
         for (ModelConverter c : converters) {

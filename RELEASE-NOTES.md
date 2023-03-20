@@ -5,6 +5,7 @@
 * #38 Support for LocalTime, Year, YearMonth as a API parameters
 * #39 Flag to explicitly disable OpenAPI endpoints
 * #40 Flag to explicitly disable Swagger console
+* #43 Support for ZoneOffset as an API parameter
 
 ## 3.0.M1
 

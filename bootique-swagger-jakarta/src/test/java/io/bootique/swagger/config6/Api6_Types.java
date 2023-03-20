@@ -57,4 +57,10 @@ public class Api6_Types {
     public Response getYearMonth(@PathParam("yearmonth") YearMonth yearmonth) {
         return Response.ok().build();
     }
+
+    @GET
+    @Path("zone-offset/{zone-offset}")
+    public Response getZoneOffset(@PathParam("zone-offset") ZoneOffset zoneOffset) {
+        return Response.ok().build();
+    }
 }

@@ -109,6 +109,28 @@
           }
         }
       }
+    },
+    "/api6/zone-offset/{zone-offset}" : {
+      "get" : {
+        "operationId" : "getZoneOffset",
+        "parameters" : [ {
+          "name" : "zone-offset",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "pattern" : "^[-+]\\d\\d:\\d\\d$",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "*/*" : { }
+            }
+          }
+        }
+      }
     }
   }
 }
