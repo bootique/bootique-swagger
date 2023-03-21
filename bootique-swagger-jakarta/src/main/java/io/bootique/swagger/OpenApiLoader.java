@@ -24,14 +24,14 @@ import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.jaxrs2.Reader;
 import io.swagger.v3.jaxrs2.integration.JaxrsAnnotationScanner;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.media.Schema;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * @since 2.0
@@ -53,7 +53,8 @@ public class OpenApiLoader {
         OpenAPI specOverride = overrideSpecLocation != null ? OpenApiMerger.merge(spec, loadSpec(overrideSpecLocation)) : spec;
 
         // sort paths for stable specs... OpenAPI loads them in different order depending on the JVM version
-        return sortPaths(specOverride);
+        OpenAPI pathsSorted = sortPaths(specOverride);
+        return sortSchemas(pathsSorted);
     }
 
     protected OpenAPI loadSpecFromAnnotations(OpenAPI mergeInto, List<String> resourcePackages, List<String> resourceClasses) {
@@ -94,6 +95,25 @@ public class OpenApiLoader {
 
         api.setPaths(sorted);
 
+        return api;
+    }
+
+    protected OpenAPI sortSchemas(OpenAPI api) {
+
+        Components components = api.getComponents();
+        if (components == null) {
+            return api;
+        }
+
+        Map<String, Schema> schemas = components.getSchemas();
+        if (schemas == null || schemas.size() < 2) {
+            return api;
+        }
+
+        LinkedHashMap<String, Schema> sorted = new LinkedHashMap<>();
+        schemas.keySet().stream().sorted().forEach(s -> sorted.put(s, schemas.get(s)));
+
+        components.setSchemas(sorted);
         return api;
     }
 
