@@ -81,18 +81,12 @@ public class OpenApiLoader {
     protected OpenAPI sortPaths(OpenAPI api) {
 
         Paths paths = api.getPaths();
-        if (paths == null) {
+        if (paths == null || paths.keySet().size() < 2) {
             return api;
         }
 
-        String[] keys = paths.keySet().toArray(new String[0]);
-        Arrays.sort(keys);
-
         Paths sorted = new Paths();
-        for (String key : keys) {
-            sorted.put(key, paths.get(key));
-        }
-
+        paths.keySet().stream().sorted().forEach(p -> sorted.put(p, paths.get(p)));
         api.setPaths(sorted);
 
         return api;
@@ -112,8 +106,8 @@ public class OpenApiLoader {
 
         LinkedHashMap<String, Schema> sorted = new LinkedHashMap<>();
         schemas.keySet().stream().sorted().forEach(s -> sorted.put(s, schemas.get(s)));
-
         components.setSchemas(sorted);
+        
         return api;
     }
 
