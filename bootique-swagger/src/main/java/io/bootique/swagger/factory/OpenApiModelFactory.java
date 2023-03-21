@@ -21,6 +21,7 @@ package io.bootique.swagger.factory;
 import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
 import io.bootique.resource.ResourceFactory;
+import io.bootique.swagger.OpenApiCustomizer;
 import io.bootique.swagger.OpenApiLoader;
 import io.bootique.swagger.OpenApiModel;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -47,8 +48,10 @@ public class OpenApiModelFactory {
     private boolean noWebAccess;
 
     public Optional<OpenApiModel> createModel(
+            String modelName,
             ResourceFactory sharedOverrideSpec,
-            boolean prettyPrint) {
+            boolean prettyPrint,
+            List<OpenApiCustomizer> customizers) {
 
         if (pathJson == null && pathYaml == null) {
             LOGGER.info("Neither 'pathJson' not 'pathYaml' are set. Skipping OpenApiModel creation");
@@ -62,7 +65,7 @@ public class OpenApiModelFactory {
         String pathYaml = normalizePath(this.pathYaml);
 
         return Optional.of(new OpenApiModel(
-                () -> createOpenApi(spec, overrideSpec),
+                () -> createOpenApi(modelName, spec, overrideSpec, customizers),
                 pathJson,
                 pathYaml,
                 prettyPrint,
@@ -73,7 +76,7 @@ public class OpenApiModelFactory {
         return path != null && path.startsWith("/") ? path.substring(1) : path;
     }
 
-    protected OpenAPI createOpenApi(URL spec, URL overrideSpec) {
+    protected OpenAPI createOpenApi(String modelName, URL spec, URL overrideSpec, List<OpenApiCustomizer> customizers) {
 
         // our own implementation. JaxrsOpenApiContextBuilder is too dirty and unpredictable, and not easy to
         // extend to do our own config merging
@@ -81,7 +84,9 @@ public class OpenApiModelFactory {
         List<String> resourcePackages = this.resourcePackages != null ? this.resourcePackages : List.of();
         List<String> resourceClasses = this.resourceClasses != null ? this.resourceClasses : List.of();
 
-        return new OpenApiLoader().load(resourcePackages, resourceClasses, spec, overrideSpec);
+        OpenAPI api = new OpenApiLoader().load(resourcePackages, resourceClasses, spec, overrideSpec);
+        customizers.forEach(c -> c.customize(modelName, api));
+        return api;
     }
 
     protected URL resolveOverrideSpec(ResourceFactory sharedOverrideSpec) {

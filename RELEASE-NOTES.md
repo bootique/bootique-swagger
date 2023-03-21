@@ -7,6 +7,7 @@
 * #40 Flag to explicitly disable Swagger console
 * #43 Support for ZoneOffset as an API parameter
 * #44 OpenAPI model - sort schemas alphabetically
+* #45 OpenApiCustomizer - interface to transform the generated model
 
 ## 3.0.M1
 

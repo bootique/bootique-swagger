@@ -29,6 +29,7 @@ import io.swagger.v3.core.converter.ModelConverter;
 public class SwaggerModuleExtender extends ModuleExtender<SwaggerModuleExtender> {
 
     private SetBuilder<ModelConverter> converters;
+    private SetBuilder<OpenApiCustomizer> customizers;
 
     public SwaggerModuleExtender(Binder binder) {
         super(binder);
@@ -37,6 +38,7 @@ public class SwaggerModuleExtender extends ModuleExtender<SwaggerModuleExtender>
     @Override
     public SwaggerModuleExtender initAllExtensions() {
         contributeConverters();
+        contributeCustomizers();
         return this;
     }
 
@@ -50,10 +52,27 @@ public class SwaggerModuleExtender extends ModuleExtender<SwaggerModuleExtender>
         return this;
     }
 
+    /**
+     * @since 3.0
+     */
+    public SwaggerModuleExtender addApiCustomizer(Class<? extends OpenApiCustomizer> customizerType) {
+        contributeCustomizers().add(customizerType);
+        return this;
+    }
+
+    /**
+     * @since 3.0
+     */
+    public SwaggerModuleExtender addApiCustomizer(OpenApiCustomizer customizer) {
+        contributeCustomizers().addInstance(customizer);
+        return this;
+    }
+
     protected SetBuilder<ModelConverter> contributeConverters() {
-        if (converters == null) {
-            converters = newSet(ModelConverter.class);
-        }
-        return converters;
+        return converters != null ? converters : (converters = newSet(ModelConverter.class));
+    }
+
+    protected SetBuilder<OpenApiCustomizer> contributeCustomizers() {
+        return customizers != null ? customizers : (customizers = newSet(OpenApiCustomizer.class));
     }
 }

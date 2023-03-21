@@ -33,6 +33,8 @@ import io.bootique.swagger.converter.LocalTimeConverter;
 import io.bootique.swagger.converter.YearConverter;
 import io.bootique.swagger.converter.YearMonthConverter;
 import io.bootique.swagger.converter.ZoneOffsetConverter;
+import io.bootique.swagger.customizer.PathSortingCustomizer;
+import io.bootique.swagger.customizer.SchemasSortingCustomizer;
 import io.bootique.swagger.factory.SwaggerServiceFactory;
 import io.bootique.swagger.web.SwaggerApi;
 import io.swagger.v3.core.converter.ModelConverter;
@@ -40,6 +42,8 @@ import io.swagger.v3.core.converter.ModelConverters;
 
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class SwaggerModule extends ConfigModule {
@@ -75,13 +79,16 @@ public class SwaggerModule extends ConfigModule {
 
     @Provides
     @Singleton
-    SwaggerService provideSwaggerService(ConfigurationFactory configFactory, Set<ModelConverter> converters) {
+    SwaggerService provideSwaggerService(
+            ConfigurationFactory configFactory,
+            Set<ModelConverter> converters,
+            Set<OpenApiCustomizer> customizers) {
 
         // side effect of creating SwaggerService is installing ModelConverters
         // TODO: suggest Swagger to tie converters to contexts instead of using static ModelConverters
         installConverters(converters);
 
-        return config(SwaggerServiceFactory.class, configFactory).createSwaggerService();
+        return config(SwaggerServiceFactory.class, configFactory).createSwaggerService(customizers);
     }
 
     private static void installConverters(Set<ModelConverter> converters) {

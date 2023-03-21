@@ -24,14 +24,12 @@ import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.jaxrs2.Reader;
 import io.swagger.v3.jaxrs2.integration.JaxrsAnnotationScanner;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
-import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.Paths;
-import io.swagger.v3.oas.models.media.Schema;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * @since 2.0
@@ -52,9 +50,7 @@ public class OpenApiLoader {
         OpenAPI spec = specLocation != null ? OpenApiMerger.merge(specFromAnnotations, loadSpec(specLocation)) : specFromAnnotations;
         OpenAPI specOverride = overrideSpecLocation != null ? OpenApiMerger.merge(spec, loadSpec(overrideSpecLocation)) : spec;
 
-        // sort paths for stable specs... OpenAPI loads them in different order depending on the JVM version
-        OpenAPI pathsSorted = sortPaths(specOverride);
-        return sortSchemas(pathsSorted);
+        return specOverride;
     }
 
     protected OpenAPI loadSpecFromAnnotations(OpenAPI mergeInto, List<String> resourcePackages, List<String> resourceClasses) {
@@ -76,39 +72,6 @@ public class OpenApiLoader {
         Reader reader = new Reader();
         reader.setConfiguration(config);
         return reader.read(scanner.classes(), scanner.resources());
-    }
-
-    protected OpenAPI sortPaths(OpenAPI api) {
-
-        Paths paths = api.getPaths();
-        if (paths == null || paths.keySet().size() < 2) {
-            return api;
-        }
-
-        Paths sorted = new Paths();
-        paths.keySet().stream().sorted().forEach(p -> sorted.put(p, paths.get(p)));
-        api.setPaths(sorted);
-
-        return api;
-    }
-
-    protected OpenAPI sortSchemas(OpenAPI api) {
-
-        Components components = api.getComponents();
-        if (components == null) {
-            return api;
-        }
-
-        Map<String, Schema> schemas = components.getSchemas();
-        if (schemas == null || schemas.size() < 2) {
-            return api;
-        }
-
-        LinkedHashMap<String, Schema> sorted = new LinkedHashMap<>();
-        schemas.keySet().stream().sorted().forEach(s -> sorted.put(s, schemas.get(s)));
-        components.setSchemas(sorted);
-
-        return api;
     }
 
     protected OpenAPI loadSpec(URL location) {
