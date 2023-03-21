@@ -81,8 +81,7 @@ public class SwaggerModule extends ConfigModule {
         // TODO: suggest Swagger to tie converters to contexts instead of using static ModelConverters
         installConverters(converters);
 
-        var config = config(SwaggerServiceFactory.class, configFactory);
-        return config.createSwaggerService();
+        return config(SwaggerServiceFactory.class, configFactory).createSwaggerService();
     }
 
     private static void installConverters(Set<ModelConverter> converters) {
