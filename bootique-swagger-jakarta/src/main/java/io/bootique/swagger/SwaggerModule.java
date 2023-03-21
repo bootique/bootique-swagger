@@ -102,8 +102,8 @@ public class SwaggerModule extends ConfigModule {
         // custom injected converters
         for (ModelConverter c : converters) {
 
-            // since ModelConverters is a static singleton, lets at least make an attempt to prevent multiple registrations
-            // of the same converter. Those "contains" check is rather weak.
+            // since ModelConverters is a static singleton, lets at least make an attempt to prevent multiple
+            // registrations of the same converter. Those "contains" checks are rather weak though.
             if (!mc.getConverters().contains(c)) {
                 mc.addConverter(c);
             }
