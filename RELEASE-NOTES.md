@@ -8,6 +8,7 @@
 * #43 Support for ZoneOffset as an API parameter
 * #44 OpenAPI model - sort schemas alphabetically
 * #45 OpenApiCustomizer - interface to transform the generated model
+* #46 Upgrade mustache to 0.9.10
 
 ## 3.0.M1
 
