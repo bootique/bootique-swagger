@@ -37,8 +37,8 @@
         <swagger.version>2.2.2</swagger.version>
         <swagger.ui.version>4.11.1</swagger.ui.version>
         <mustache.version>0.9.10</mustache.version>
-        <selenium.version>4.12.1</selenium.version>
-        <selenium-jupiter.version>4.3.7</selenium-jupiter.version>
+        <selenium.version>4.15.0</selenium.version>
+        <selenium-jupiter.version>5.0.0</selenium-jupiter.version>
     </properties>
 
     <modules>
