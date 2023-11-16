@@ -29,6 +29,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -186,7 +187,7 @@ public class SeleniumIT {
                 out.write(data, 0, nRead);
             }
 
-            String expectedString = new String(out.toByteArray(), "UTF-8");
+            String expectedString = out.toString(StandardCharsets.UTF_8);
             assertEquals(expectedString, toTest);
         } catch (IOException e) {
             throw new RuntimeException(e);
