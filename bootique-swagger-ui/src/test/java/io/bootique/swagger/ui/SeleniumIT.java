@@ -26,14 +26,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @BQTest
 @ExtendWith(SeleniumJupiter.class)
@@ -170,28 +165,6 @@ public class SeleniumIT {
         webElement = driver.findElement(
                 By.cssSelector("div.highlight-code:nth-child(2) > pre:nth-child(2) > span:nth-child(6)"));
         assertEquals("\"hello test\"", webElement.getText());
-    }
-
-    void assertEqualsToResourceContents(String expectedResource, String toTest) {
-
-        ClassLoader cl = getClass().getClassLoader();
-
-        try (InputStream in = cl.getResourceAsStream(expectedResource)) {
-            assertNotNull(in);
-
-            // read as bytes to preserve line breaks
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            int nRead;
-            byte[] data = new byte[1024];
-            while ((nRead = in.read(data, 0, data.length)) != -1) {
-                out.write(data, 0, nRead);
-            }
-
-            String expectedString = out.toString(StandardCharsets.UTF_8);
-            assertEquals(expectedString, toTest);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @OpenAPIDefinition
