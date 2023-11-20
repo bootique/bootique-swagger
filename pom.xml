@@ -28,7 +28,7 @@
 
     <groupId>io.bootique.swagger</groupId>
     <artifactId>bootique-swagger-parent</artifactId>
-    <version>3.0.M2-SNAPSHOT</version>
+    <version>3.0.M2</version>
     <packaging>pom</packaging>
     <name>bootique-swagger-parent: Parent of Bootique Swagger integration modules</name>
 
@@ -52,7 +52,7 @@
     <scm>
         <developerConnection>scm:git:ssh://git@github.com/bootique/bootique-swagger</developerConnection>
         <url>https://github.com/bootique/bootique-swagger</url>
-        <tag>HEAD</tag>
+        <tag>3.0.M2</tag>
     </scm>
 
     <dependencyManagement>
