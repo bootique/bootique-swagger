@@ -53,14 +53,14 @@ public class SeleniumIT {
             .addArguments("--remote-allow-origins=*");
 
     @Test
-    public void testApi_Console(ChromeDriver driver) {
+    public void api_Console(ChromeDriver driver) {
         driver.get(jetty.getUrl());
         assertEquals("{\"message\":\"hello test\"}", driver.findElement(By.tagName("pre")).getText());
     }
 
     @Disabled("Temporary disabled as unstable")
     @Test
-    public void testSwaggerUIGet(ChromeDriver driver) {
+    public void swaggerUIGet(ChromeDriver driver) {
 
         driver.get(jetty.getTarget().path("swagger-ui").getUri().toString());
 
@@ -91,13 +91,13 @@ public class SeleniumIT {
     }
 
     @Test
-    public void testSwaggerUIStatic() {
+    public void swaggerUIStatic() {
         Response r = jetty.getTarget().path("/swagger-ui/index.css").request().get();
         JettyTester.assertOk(r);
     }
 
     @Test
-    public void testOpenapiJson(ChromeDriver driver) {
+    public void openapiJson(ChromeDriver driver) {
         driver.get(jetty.getTarget().path("swagger-ui").getUri().toString());
 
         WebElement urlElement = new WebDriverWait(driver, Duration.ofSeconds(1))
@@ -110,7 +110,7 @@ public class SeleniumIT {
     //   Now it fails in CI/CD as well (did GitHub switch to arm?)
     @Disabled
     @Test
-    public void testOpenapiYaml(ChromeDriver driver) {
+    public void openapiYaml(ChromeDriver driver) {
 
         driver.get(jetty.getTarget().path("swagger-ui").getUri().toString());
 
@@ -130,7 +130,7 @@ public class SeleniumIT {
 
     @Disabled("Temporary disabled as unstable")
     @Test
-    public void testSwaggerUIPost(ChromeDriver driver) {
+    public void swaggerUIPost(ChromeDriver driver) {
 
         driver.get(jetty.getTarget().path("swagger-ui").getUri().toString());
 

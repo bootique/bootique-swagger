@@ -40,7 +40,7 @@ public class DefaultConvertersIT {
             .createRuntime();
 
     @Test
-    public void testDefaultConverters() {
+    public void defaultConverters() {
         Response r = jetty.getTarget().path("/model.json").request().get();
         JettyTester.assertOk(r)
                 .assertContent(new ResourceFactory("classpath:config6/response.json"));

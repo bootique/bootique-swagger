@@ -49,7 +49,7 @@ public class ModelConverterIT {
             .createRuntime();
 
     @Test
-    public void testCustomConverter() {
+    public void customConverter() {
         Response r = jetty.getTarget().path("/model.json").request().get();
         JettyTester.assertOk(r)
                 .assertContent(new ResourceFactory("classpath:config5/response.json"));

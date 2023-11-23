@@ -46,14 +46,14 @@ public class AnnotationSpec_YamlOverrideSpec_IT {
             .createRuntime();
 
     @Test
-    public void testYaml() {
+    public void yaml() {
         Response r = jetty.getTarget().path("/s1/model.yaml").request().get();
         JettyTester.assertOk(r)
                 .assertContent(new ResourceFactory("classpath:config1/response.yml"));
     }
 
     @Test
-    public void testJson() {
+    public void json() {
         Response r = jetty.getTarget().path("/s1/model.json").request().get();
         JettyTester.assertOk(r)
                 .assertContent(new ResourceFactory("classpath:config1/response.json"));

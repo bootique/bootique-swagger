@@ -30,7 +30,7 @@ public class ZoneOffsetConverterTest {
     static final Pattern pattern = Pattern.compile(ZoneOffsetConverter.PATTERN);
 
     @Test
-    public void testPattern() {
+    public void pattern() {
         assertTrue(pattern.matcher("-01:30").matches());
         assertTrue(pattern.matcher("+12:00").matches());
 

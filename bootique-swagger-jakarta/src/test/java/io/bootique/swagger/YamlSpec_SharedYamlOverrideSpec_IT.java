@@ -40,7 +40,7 @@ public class YamlSpec_SharedYamlOverrideSpec_IT {
             .createRuntime();
 
     @Test
-    public void testJson() {
+    public void json() {
         Response r1 = jetty.getTarget().path("/c1/model.json").request().get();
         JettyTester.assertOk(r1)
                 .assertContent(new ResourceFactory("classpath:config4/response1.json"));

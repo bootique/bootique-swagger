@@ -41,7 +41,7 @@ public class ModelOrderingIT {
             .createRuntime();
 
     @Test
-    public void testOrdering() {
+    public void ordering() {
         Response r = jetty.getTarget().path("/model.json").request().get();
         JettyTester.assertOk(r)
                 .assertContent(new ResourceFactory("classpath:config7/response.json"));
