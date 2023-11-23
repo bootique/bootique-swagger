@@ -65,7 +65,7 @@ public class MultiTenant_StaticModel_API_IT {
 
     @Test
     @DisplayName("APIs available")
-    public void testApisAvailable() {
+    public void apisAvailable() {
         Response r1 = jetty.getTarget().path("api1").request().get();
         JettyTester.assertOk(r1).assertContent("I am API1");
 
@@ -75,7 +75,7 @@ public class MultiTenant_StaticModel_API_IT {
 
     @Test
     @DisplayName("Static models available")
-    public void testStaticModelsAvailable() {
+    public void staticModelsAvailable() {
         Response r1 = jetty.getTarget().path("models/api1/model.yml").request().get();
         JettyTester.assertOk(r1)
                 .assertContent(new ResourceFactory("classpath:MultiTenant_StaticModel_API_IT/models/api1/model.yml"));
@@ -87,7 +87,7 @@ public class MultiTenant_StaticModel_API_IT {
 
     @Test
     @DisplayName("Static docs available")
-    public void testStaticDocsAvailable() {
+    public void staticDocsAvailable() {
         Response r = jetty.getTarget().path("doc").request().get();
         JettyTester.assertOk(r)
                 .assertContent(new ResourceFactory("classpath:MultiTenant_StaticModel_API_IT/doc/index.html"));
@@ -95,7 +95,7 @@ public class MultiTenant_StaticModel_API_IT {
 
     @Test
     @DisplayName("Swagger UI")
-    public void testMultipleSwaggerUIAvailable() {
+    public void multipleSwaggerUIAvailable() {
 
         String baseUrl = jetty.getUrl();
 
@@ -110,7 +110,7 @@ public class MultiTenant_StaticModel_API_IT {
 
     @Test
     @DisplayName("Swagger UI Resources")
-    public void testMultipleSwaggerUIResourcesAvailable() {
+    public void multipleSwaggerUIResourcesAvailable() {
         Response r1 = jetty.getTarget().path("doc/api1/swagger-ui.css").request().get();
         JettyTester.assertOk(r1);
 

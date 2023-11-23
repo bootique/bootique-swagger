@@ -44,7 +44,7 @@ public class AnnotationSpecsIT {
 
     @Test
     @DisplayName("No web access flag should result in 404")
-    public void testNoWebAccess() {
+    public void noWebAccess() {
         testFactory.app("-s", "-c", "classpath:config3/startup0.yml")
                 .module(b -> JerseyModule.extend(b).addPackage(Api31.class))
                 .run();
@@ -57,7 +57,7 @@ public class AnnotationSpecsIT {
 
     @Test
     @DisplayName("API classes can be picked individually")
-    public void testResourceClassesFilter() {
+    public void resourceClassesFilter() {
         testFactory.app("-s", "-c", "classpath:config3/startup1.yml")
                 // Contribute the entire package in runtime...
                 // Make sure only classes in "resourceClass" are includes in the spec
@@ -71,7 +71,7 @@ public class AnnotationSpecsIT {
 
     @Test
     @DisplayName("API packages can be picked individually")
-    public void testResourcePackagesFilter() {
+    public void resourcePackagesFilter() {
         testFactory.app("-s", "-c", "classpath:config3/startup2.yml")
                 // Contribute multiple packages to runtime...
                 // Make sure only classes in "resourcePackages" are includes in the spec

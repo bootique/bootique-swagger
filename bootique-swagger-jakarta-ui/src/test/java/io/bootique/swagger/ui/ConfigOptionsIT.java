@@ -43,7 +43,7 @@ public class ConfigOptionsIT {
 
     @Test
     @DisplayName("'noWebAccess' should be respected")
-    public void testNoWebAccess() {
+    public void noWebAccess() {
         testFactory.app("-s", "-c", "classpath:ConfigOptionsIT/nowebaccess.yml").autoLoadModules().run();
 
         Response r = target.path("/swagger-ui").request().get();
@@ -52,7 +52,7 @@ public class ConfigOptionsIT {
 
     @Test
     @DisplayName("no config")
-    public void testConfig() {
+    public void config() {
         // must start, but serve nothing
         testFactory.app("-s").autoLoadModules().run();
 
@@ -62,7 +62,7 @@ public class ConfigOptionsIT {
 
     @Test
     @DisplayName("no 'specPath' or 'specUrl' in config")
-    public void testNoSpecUrlNoSpecPath() {
+    public void noSpecUrlNoSpecPath() {
         // must start, but serve nothing
         testFactory.app("-s", "-c", "classpath:ConfigOptionsIT/nospecs.yml").autoLoadModules().run();
 
@@ -73,7 +73,7 @@ public class ConfigOptionsIT {
 
     @Test
     @DisplayName("'specPath' in config")
-    public void testSpecPath() {
+    public void specPath() {
         testFactory.app("-s", "-c", "classpath:ConfigOptionsIT/specpath.yml").autoLoadModules().run();
 
         Response r = target.path("/swagger-ui").request().get();
@@ -83,7 +83,7 @@ public class ConfigOptionsIT {
 
     @Test
     @DisplayName("'specUrl' in config")
-    public void testSpecUrl() {
+    public void specUrl() {
         testFactory.app("-s", "-c", "classpath:ConfigOptionsIT/specurl.yml").autoLoadModules().run();
 
         Response r = target.path("/swagger-ui").request().get();
@@ -93,7 +93,7 @@ public class ConfigOptionsIT {
 
     @Test
     @DisplayName("'uiPath' in config")
-    public void testApi_Console() {
+    public void api_Console() {
         testFactory.app("-s", "-c", "classpath:ConfigOptionsIT/uipath.yml").autoLoadModules().run();
 
         Response r = target.path("/swagger-uix").request().get();
