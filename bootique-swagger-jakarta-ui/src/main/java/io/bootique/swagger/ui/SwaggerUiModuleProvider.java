@@ -20,30 +20,23 @@
 package io.bootique.swagger.ui;
 
 import io.bootique.BQModuleProvider;
-import io.bootique.di.BQModule;
+import io.bootique.bootstrap.BuiltModule;
 import io.bootique.type.TypeRef;
 
-import java.lang.reflect.Type;
-import java.util.Collections;
 import java.util.Map;
 
 
 public class SwaggerUiModuleProvider implements BQModuleProvider {
 
     @Override
-    public BQModule module() {
-        return new SwaggerUiModule();
-    }
-
-    @Override
-    public Map<String, Type> configs() {
-
-        // TODO: config prefix is hardcoded. Refactor away from ConfigModule, and make provider
-        // generate config prefix, reusing it in metadata...
-
+    public BuiltModule buildModule() {
         TypeRef<Map<String, SwaggerUIModelFactory>> type = new TypeRef<>() {
         };
-        return Collections.singletonMap("swaggerui", type.getType());
-    }
 
+        return BuiltModule.of(new SwaggerUiModule())
+                .provider(this)
+                .description("Integrates Swagger web UI console for presenting OpenAPI documentation")
+                .config("swaggerui", type.getType())
+                .build();
+    }
 }

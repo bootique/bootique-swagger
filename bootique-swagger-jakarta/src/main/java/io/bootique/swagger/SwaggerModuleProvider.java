@@ -20,28 +20,22 @@
 package io.bootique.swagger;
 
 import io.bootique.BQModuleProvider;
-import io.bootique.di.BQModule;
+import io.bootique.bootstrap.BuiltModule;
 import io.bootique.jersey.JerseyModuleProvider;
 import io.bootique.swagger.factory.SwaggerServiceFactory;
 
-import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
 
 public class SwaggerModuleProvider implements BQModuleProvider {
 
     @Override
-    public BQModule module() {
-        return new SwaggerModule();
-    }
-
-    @Override
-    public Map<String, Type> configs() {
-
-        // TODO: config prefix is hardcoded. Refactor away from ConfigModule, and make provider
-        // generate config prefix, reusing it in metadata...
-        return Collections.singletonMap("swagger", SwaggerServiceFactory.class);
+    public BuiltModule buildModule() {
+        return BuiltModule.of(new SwaggerModule())
+                .provider(this)
+                .description("Integrates Swagger OpenAPI documentation endpoints")
+                .config("swagger", SwaggerServiceFactory.class)
+                .build();
     }
 
     @Override
