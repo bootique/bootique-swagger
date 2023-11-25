@@ -37,7 +37,7 @@ public class SwaggerModuleProvider implements BQModuleProvider {
     public BuiltModule buildModule() {
         return BuiltModule.of(new SwaggerModule())
                 .provider(this)
-                .description("Integrates Swagger OpenAPI documentation endpoints")
+                .description("Deprecated, can be replaced with 'bootique-swagger-jakarta'.")
                 .config("swagger", SwaggerServiceFactory.class)
                 .build();
     }

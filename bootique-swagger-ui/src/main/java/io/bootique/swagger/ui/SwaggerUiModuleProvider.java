@@ -38,7 +38,7 @@ public class SwaggerUiModuleProvider implements BQModuleProvider {
 
         return BuiltModule.of(new SwaggerUiModule())
                 .provider(this)
-                .description("Integrates Swagger web UI console for presenting OpenAPI documentation")
+                .description("Deprecated, can be replaced with 'bootique-swagger-jakarta-ui'.")
                 .config("swaggerui", type.getType())
                 .build();
     }
