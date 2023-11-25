@@ -23,7 +23,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Paths;
 
 /**
- * @since 2.0.B1
+ * @since 2.0
  */
 public class OpenApiMerger {
 

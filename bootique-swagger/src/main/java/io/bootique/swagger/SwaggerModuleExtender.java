@@ -24,7 +24,7 @@ import io.bootique.di.SetBuilder;
 import io.swagger.v3.core.converter.ModelConverter;
 
 /**
- * @since 2.0.B1
+ * @since 2.0
  */
 public class SwaggerModuleExtender extends ModuleExtender<SwaggerModuleExtender> {
 

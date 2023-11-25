@@ -29,7 +29,7 @@ import java.util.Iterator;
 /**
  * A convenience superclass for custom model converters that simplifies type detection.
  *
- * @since 2.0.B1
+ * @since 2.0
  */
 public abstract class BaseModelConverter implements ModelConverter {
 

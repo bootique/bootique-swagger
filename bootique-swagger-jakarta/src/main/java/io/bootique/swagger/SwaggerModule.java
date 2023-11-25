@@ -49,7 +49,7 @@ import java.util.Set;
 public class SwaggerModule extends ConfigModule {
 
     /**
-     * @since 2.0.B1
+     * @since 2.0
      */
     public static SwaggerModuleExtender extend(Binder binder) {
         return new SwaggerModuleExtender(binder);

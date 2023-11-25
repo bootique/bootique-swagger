@@ -9,7 +9,7 @@ import java.lang.reflect.Type;
  * A wrapper of a {@link Type}. Needed as a common API to for one of the following cases: {@link JavaType},
  * {@link ParameterizedType} or {@link Class}.
  *
- * @since 2.0.B1
+ * @since 2.0
  */
 public interface TypeWrapper {
 
