@@ -31,6 +31,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * @deprecated in favor of the Jakarta flavor
+ */
+@Deprecated(since = "3.0", forRemoval = true)
 public class GenerateSpecCommand extends CommandWithMetadata {
 
     private static final String DESTINATION_DIRECTORY_OPTION_NAME = "target-dir";

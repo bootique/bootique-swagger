@@ -22,8 +22,10 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @since 3.0.M2
+ * @since 3.0
+ * @deprecated in favor of the Jakarta flavor
  */
+@Deprecated(since = "3.0", forRemoval = true)
 public class SwaggerService {
 
     private final Map<String, OpenApiModel> models;

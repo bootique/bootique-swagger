@@ -28,12 +28,14 @@ import io.swagger.v3.oas.models.OpenAPI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Provider;
-import javax.ws.rs.core.Application;
 import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @deprecated in favor of the Jakarta flavor
+ */
+@Deprecated(since = "3.0", forRemoval = true)
 @BQConfig
 public class OpenApiModelFactory {
 

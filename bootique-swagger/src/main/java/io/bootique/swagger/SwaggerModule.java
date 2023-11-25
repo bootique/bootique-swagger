@@ -33,8 +33,6 @@ import io.bootique.swagger.converter.LocalTimeConverter;
 import io.bootique.swagger.converter.YearConverter;
 import io.bootique.swagger.converter.YearMonthConverter;
 import io.bootique.swagger.converter.ZoneOffsetConverter;
-import io.bootique.swagger.customizer.PathSortingCustomizer;
-import io.bootique.swagger.customizer.SchemasSortingCustomizer;
 import io.bootique.swagger.factory.SwaggerServiceFactory;
 import io.bootique.swagger.web.SwaggerApi;
 import io.swagger.v3.core.converter.ModelConverter;
@@ -42,10 +40,12 @@ import io.swagger.v3.core.converter.ModelConverters;
 
 import javax.inject.Provider;
 import javax.inject.Singleton;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
+/**
+ * @deprecated in favor of the Jakarta flavor
+ */
+@Deprecated(since = "3.0", forRemoval = true)
 public class SwaggerModule extends ConfigModule {
 
     /**

@@ -32,6 +32,10 @@ import javax.ws.rs.core.UriInfo;
 
 import java.util.Objects;
 
+/**
+ * @deprecated in favor of the Jakarta flavor
+ */
+@Deprecated(since = "3.0", forRemoval = true)
 @Path("_this_is_a_placeholder_that_will_be_replaced_dynamically_")
 public class SwaggerApi {
 

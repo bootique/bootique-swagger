@@ -1,3 +1,7 @@
+## 3.0-M3
+
+* #47 (Jakarta migration) Deprecate javax modules
+
 ## 3.0.M2
 
 * #34 Add command to generate spec files

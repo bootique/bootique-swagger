@@ -29,6 +29,10 @@ import io.bootique.swagger.customizer.SchemasSortingCustomizer;
 
 import java.util.*;
 
+/**
+ * @deprecated in favor of the Jakarta flavor
+ */
+@Deprecated(since = "3.0", forRemoval = true)
 @BQConfig
 public class SwaggerServiceFactory {
 

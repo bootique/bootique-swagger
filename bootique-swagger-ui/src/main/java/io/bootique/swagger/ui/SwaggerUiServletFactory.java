@@ -32,7 +32,9 @@ import java.util.*;
 
 /**
  * @since 2.0
+ * @deprecated in favor of the Jakarta flavor
  */
+@Deprecated(since = "3.0", forRemoval = true)
 // notice that this is not a BQConfig factory, and it is created manually,
 // as we'd like to avoid "modelFactories" property exposure in YAML
 // TODO: some Jackson trick to deserialize this as a map?

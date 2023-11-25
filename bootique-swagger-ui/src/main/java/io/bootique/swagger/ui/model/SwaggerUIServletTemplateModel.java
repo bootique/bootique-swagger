@@ -20,7 +20,9 @@ package io.bootique.swagger.ui.model;
 
 /**
  * @since 2.0
+ * @deprecated in favor of the Jakarta flavor
  */
+@Deprecated(since = "3.0", forRemoval = true)
 public class SwaggerUIServletTemplateModel {
 
     private final String apiUrl;

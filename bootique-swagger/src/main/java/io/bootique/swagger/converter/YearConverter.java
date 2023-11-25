@@ -29,6 +29,10 @@ import io.swagger.v3.oas.models.media.Schema;
 import java.time.Year;
 import java.util.Iterator;
 
+/**
+ * @deprecated in favor of the Jakarta flavor
+ */
+@Deprecated(since = "3.0", forRemoval = true)
 public class YearConverter extends BaseModelConverter {
 
     @Override

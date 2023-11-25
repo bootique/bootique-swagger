@@ -28,7 +28,9 @@ import java.util.function.Function;
 
 /**
  * @since 2.0
+ * @deprecated in favor of the Jakarta flavor
  */
+@Deprecated(since = "3.0", forRemoval = true)
 @BQConfig("A Swagger UI 'console' pointing to a specific API model")
 public class SwaggerUIModelFactory {
 
