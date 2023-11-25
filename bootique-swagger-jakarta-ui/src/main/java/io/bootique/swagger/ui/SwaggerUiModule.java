@@ -19,8 +19,10 @@
 
 package io.bootique.swagger.ui;
 
-import io.bootique.ConfigModule;
+import io.bootique.BQModuleProvider;
+import io.bootique.bootstrap.BuiltModule;
 import io.bootique.config.ConfigurationFactory;
+import io.bootique.di.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Provides;
 import io.bootique.di.TypeLiteral;
@@ -32,7 +34,20 @@ import javax.inject.Singleton;
 import java.util.Map;
 
 
-public class SwaggerUiModule extends ConfigModule {
+public class SwaggerUiModule implements BQModule, BQModuleProvider {
+
+    private static final String CONFIG_PREFIX = "swaggerui";
+
+    @Override
+    public BuiltModule buildModule() {
+        TypeRef<Map<String, SwaggerUIModelFactory>> type = new TypeRef<>() {
+        };
+
+        return BuiltModule.of(this)
+                .description("Integrates Swagger web UI console for presenting OpenAPI documentation")
+                .config(CONFIG_PREFIX, type.getType())
+                .build();
+    }
 
     @Override
     public void configure(Binder binder) {
@@ -44,8 +59,8 @@ public class SwaggerUiModule extends ConfigModule {
     @Singleton
     private MappedServlet<SwaggerUiServlet> provideJerseyServlet(ConfigurationFactory configFactory) {
 
-        Map<String, SwaggerUIModelFactory> configs = config(new TypeRef<>() {
-        }, configFactory);
+        Map<String, SwaggerUIModelFactory> configs = configFactory.config(new TypeRef<>() {
+        }, CONFIG_PREFIX);
 
         return new SwaggerUiServletFactory(configs).createServlet();
     }

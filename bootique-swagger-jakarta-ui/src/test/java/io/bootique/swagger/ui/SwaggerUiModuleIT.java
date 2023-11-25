@@ -19,24 +19,26 @@
 
 package io.bootique.swagger.ui;
 
-import io.bootique.BQModuleProvider;
-import io.bootique.bootstrap.BuiltModule;
-import io.bootique.type.TypeRef;
+import io.bootique.BQRuntime;
+import io.bootique.junit5.*;
+import org.junit.jupiter.api.Test;
 
-import java.util.Map;
+@BQTest
+public class SwaggerUiModuleIT {
 
+    @BQTestTool
+    final BQTestFactory testFactory = new BQTestFactory();
 
-public class SwaggerUiModuleProvider implements BQModuleProvider {
+    @Test
+    public void autoLoadable() {
+        BQModuleProviderChecker.testAutoLoadable(SwaggerUiModule.class);
+    }
 
-    @Override
-    public BuiltModule buildModule() {
-        TypeRef<Map<String, SwaggerUIModelFactory>> type = new TypeRef<>() {
-        };
-
-        return BuiltModule.of(new SwaggerUiModule())
-                .provider(this)
-                .description("Integrates Swagger web UI console for presenting OpenAPI documentation")
-                .config("swaggerui", type.getType())
-                .build();
+    @Test
+    public void moduleDeclaresDependencies() {
+        final BQRuntime bqRuntime = testFactory.app().moduleProvider(new SwaggerUiModule()).createRuntime();
+        BQRuntimeChecker.testModulesLoaded(bqRuntime,
+                SwaggerUiModule.class
+        );
     }
 }

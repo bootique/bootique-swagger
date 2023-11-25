@@ -20,8 +20,10 @@
 package io.bootique.swagger;
 
 import io.bootique.BQCoreModule;
-import io.bootique.ConfigModule;
+import io.bootique.BQModuleProvider;
+import io.bootique.bootstrap.BuiltModule;
 import io.bootique.config.ConfigurationFactory;
+import io.bootique.di.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Provides;
 import io.bootique.di.TypeLiteral;
@@ -33,8 +35,6 @@ import io.bootique.swagger.converter.LocalTimeConverter;
 import io.bootique.swagger.converter.YearConverter;
 import io.bootique.swagger.converter.YearMonthConverter;
 import io.bootique.swagger.converter.ZoneOffsetConverter;
-import io.bootique.swagger.customizer.PathSortingCustomizer;
-import io.bootique.swagger.customizer.SchemasSortingCustomizer;
 import io.bootique.swagger.factory.SwaggerServiceFactory;
 import io.bootique.swagger.web.SwaggerApi;
 import io.swagger.v3.core.converter.ModelConverter;
@@ -42,11 +42,13 @@ import io.swagger.v3.core.converter.ModelConverters;
 
 import javax.inject.Provider;
 import javax.inject.Singleton;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
-public class SwaggerModule extends ConfigModule {
+public class SwaggerModule implements BQModule, BQModuleProvider {
+
+    private static final String CONFIG_PREFIX = "swagger";
 
     /**
      * @since 2.0
@@ -54,6 +56,21 @@ public class SwaggerModule extends ConfigModule {
     public static SwaggerModuleExtender extend(Binder binder) {
         return new SwaggerModuleExtender(binder);
     }
+
+    @Override
+    public BuiltModule buildModule() {
+        return BuiltModule.of(this)
+                .description("Integrates Swagger OpenAPI documentation endpoints")
+                .config(CONFIG_PREFIX, SwaggerServiceFactory.class)
+                .build();
+    }
+
+    @Override
+    @Deprecated(since = "3.0", forRemoval = true)
+    public Collection<BQModuleProvider> dependencies() {
+        return Collections.singletonList(new JerseyModule());
+    }
+
 
     @Override
     public void configure(Binder binder) {
@@ -88,7 +105,7 @@ public class SwaggerModule extends ConfigModule {
         // TODO: suggest Swagger to tie converters to contexts instead of using static ModelConverters
         installConverters(converters);
 
-        return config(SwaggerServiceFactory.class, configFactory).createSwaggerService(customizers);
+        return configFactory.config(SwaggerServiceFactory.class, CONFIG_PREFIX).createSwaggerService(customizers);
     }
 
     private static void installConverters(Set<ModelConverter> converters) {
