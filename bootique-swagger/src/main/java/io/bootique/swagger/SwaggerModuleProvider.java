@@ -20,7 +20,7 @@
 package io.bootique.swagger;
 
 import io.bootique.BQModuleProvider;
-import io.bootique.bootstrap.BuiltModule;
+import io.bootique.ModuleCrate;
 import io.bootique.jersey.JerseyModuleProvider;
 import io.bootique.swagger.factory.SwaggerServiceFactory;
 
@@ -34,8 +34,8 @@ import java.util.Collections;
 public class SwaggerModuleProvider implements BQModuleProvider {
 
     @Override
-    public BuiltModule buildModule() {
-        return BuiltModule.of(new SwaggerModule())
+    public ModuleCrate moduleCrate() {
+        return ModuleCrate.of(new SwaggerModule())
                 .provider(this)
                 .description("Deprecated, can be replaced with 'bootique-swagger-jakarta'.")
                 .config("swagger", SwaggerServiceFactory.class)

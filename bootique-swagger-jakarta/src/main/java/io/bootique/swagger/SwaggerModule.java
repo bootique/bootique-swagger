@@ -21,7 +21,7 @@ package io.bootique.swagger;
 
 import io.bootique.BQCoreModule;
 import io.bootique.BQModuleProvider;
-import io.bootique.bootstrap.BuiltModule;
+import io.bootique.ModuleCrate;
 import io.bootique.config.ConfigurationFactory;
 import io.bootique.di.BQModule;
 import io.bootique.di.Binder;
@@ -58,8 +58,8 @@ public class SwaggerModule implements BQModule, BQModuleProvider {
     }
 
     @Override
-    public BuiltModule buildModule() {
-        return BuiltModule.of(this)
+    public ModuleCrate moduleCrate() {
+        return ModuleCrate.of(this)
                 .description("Integrates Swagger OpenAPI documentation endpoints")
                 .config(CONFIG_PREFIX, SwaggerServiceFactory.class)
                 .build();

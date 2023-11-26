@@ -20,7 +20,7 @@
 package io.bootique.swagger.ui;
 
 import io.bootique.BQModuleProvider;
-import io.bootique.bootstrap.BuiltModule;
+import io.bootique.ModuleCrate;
 import io.bootique.type.TypeRef;
 
 import java.util.Map;
@@ -32,11 +32,11 @@ import java.util.Map;
 public class SwaggerUiModuleProvider implements BQModuleProvider {
 
     @Override
-    public BuiltModule buildModule() {
+    public ModuleCrate moduleCrate() {
         TypeRef<Map<String, SwaggerUIModelFactory>> type = new TypeRef<>() {
         };
 
-        return BuiltModule.of(new SwaggerUiModule())
+        return ModuleCrate.of(new SwaggerUiModule())
                 .provider(this)
                 .description("Deprecated, can be replaced with 'bootique-swagger-jakarta-ui'.")
                 .config("swaggerui", type.getType())

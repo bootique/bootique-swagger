@@ -20,7 +20,7 @@
 package io.bootique.swagger.ui;
 
 import io.bootique.BQModuleProvider;
-import io.bootique.bootstrap.BuiltModule;
+import io.bootique.ModuleCrate;
 import io.bootique.config.ConfigurationFactory;
 import io.bootique.di.BQModule;
 import io.bootique.di.Binder;
@@ -39,11 +39,11 @@ public class SwaggerUiModule implements BQModule, BQModuleProvider {
     private static final String CONFIG_PREFIX = "swaggerui";
 
     @Override
-    public BuiltModule buildModule() {
+    public ModuleCrate moduleCrate() {
         TypeRef<Map<String, SwaggerUIModelFactory>> type = new TypeRef<>() {
         };
 
-        return BuiltModule.of(this)
+        return ModuleCrate.of(this)
                 .description("Integrates Swagger web UI console for presenting OpenAPI documentation")
                 .config(CONFIG_PREFIX, type.getType())
                 .build();
