@@ -19,8 +19,10 @@
 
 package io.bootique.swagger.ui;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
+import io.bootique.annotation.BQConfig;
 import io.bootique.jetty.MappedServlet;
 import io.bootique.swagger.ui.model.SwaggerUIServletModel;
 
@@ -33,13 +35,12 @@ import java.util.*;
 /**
  * @since 2.0
  */
-// notice that this is not a BQConfig factory, and it is created manually,
-// as we'd like to avoid "modelFactories" property exposure in YAML
-// TODO: some Jackson trick to deserialize this as a map?
 public class SwaggerUiServletFactory {
 
-    private Map<String, SwaggerUIModelFactory> modelFactories;
+    private final Map<String, SwaggerUIModelFactory> modelFactories;
 
+    @BQConfig("A map of Swagger models by name")
+    @JsonCreator
     public SwaggerUiServletFactory(Map<String, SwaggerUIModelFactory> modelFactories) {
         this.modelFactories = modelFactories;
     }
