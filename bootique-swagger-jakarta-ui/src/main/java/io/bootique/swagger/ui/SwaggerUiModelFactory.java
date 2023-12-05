@@ -30,7 +30,7 @@ import java.util.function.Function;
  * @since 2.0
  */
 @BQConfig("A Swagger UI 'console' pointing to a specific API model")
-public class SwaggerUIModelFactory {
+public class SwaggerUiModelFactory {
 
     private String specUrl;
     private String specPath;

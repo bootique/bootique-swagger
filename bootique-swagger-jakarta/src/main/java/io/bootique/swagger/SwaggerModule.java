@@ -20,10 +20,9 @@
 package io.bootique.swagger;
 
 import io.bootique.BQCoreModule;
-import io.bootique.BQModuleProvider;
 import io.bootique.ModuleCrate;
 import io.bootique.config.ConfigurationFactory;
-import io.bootique.di.BQModule;
+import io.bootique.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Provides;
 import io.bootique.di.TypeLiteral;
@@ -42,11 +41,9 @@ import io.swagger.v3.core.converter.ModelConverters;
 
 import javax.inject.Provider;
 import javax.inject.Singleton;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Set;
 
-public class SwaggerModule implements BQModule, BQModuleProvider {
+public class SwaggerModule implements BQModule {
 
     private static final String CONFIG_PREFIX = "swagger";
 
@@ -58,19 +55,12 @@ public class SwaggerModule implements BQModule, BQModuleProvider {
     }
 
     @Override
-    public ModuleCrate moduleCrate() {
+    public ModuleCrate crate() {
         return ModuleCrate.of(this)
                 .description("Integrates Swagger OpenAPI documentation endpoints")
                 .config(CONFIG_PREFIX, SwaggerServiceFactory.class)
                 .build();
     }
-
-    @Override
-    @Deprecated(since = "3.0", forRemoval = true)
-    public Collection<BQModuleProvider> dependencies() {
-        return Collections.singletonList(new JerseyModule());
-    }
-
 
     @Override
     public void configure(Binder binder) {

@@ -20,6 +20,7 @@
 package io.bootique.swagger.ui;
 
 import io.bootique.ConfigModule;
+import io.bootique.ModuleCrate;
 import io.bootique.config.ConfigurationFactory;
 import io.bootique.di.Binder;
 import io.bootique.di.Provides;
@@ -36,6 +37,17 @@ import java.util.Map;
  */
 @Deprecated(since = "3.0", forRemoval = true)
 public class SwaggerUiModule extends ConfigModule {
+
+    @Override
+    public ModuleCrate crate() {
+        TypeRef<Map<String, SwaggerUIModelFactory>> type = new TypeRef<>() {
+        };
+
+        return ModuleCrate.of(this)
+                .description("Deprecated, can be replaced with 'bootique-swagger-jakarta-ui'.")
+                .config("swaggerui", type.getType())
+                .build();
+    }
 
     @Override
     public void configure(Binder binder) {

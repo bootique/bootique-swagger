@@ -21,6 +21,7 @@ package io.bootique.swagger;
 
 import io.bootique.BQCoreModule;
 import io.bootique.ConfigModule;
+import io.bootique.ModuleCrate;
 import io.bootique.config.ConfigurationFactory;
 import io.bootique.di.Binder;
 import io.bootique.di.Provides;
@@ -53,6 +54,14 @@ public class SwaggerModule extends ConfigModule {
      */
     public static SwaggerModuleExtender extend(Binder binder) {
         return new SwaggerModuleExtender(binder);
+    }
+
+    @Override
+    public ModuleCrate crate() {
+        return ModuleCrate.of(this)
+                .description("Deprecated, can be replaced with 'bootique-swagger-jakarta'.")
+                .config("swagger", SwaggerServiceFactory.class)
+                .build();
     }
 
     @Override

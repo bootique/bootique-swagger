@@ -19,26 +19,15 @@
 
 package io.bootique.swagger.ui;
 
-import io.bootique.BQRuntime;
-import io.bootique.junit5.*;
+import io.bootique.junit5.BQModuleTester;
+import io.bootique.junit5.BQTest;
 import org.junit.jupiter.api.Test;
 
 @BQTest
-public class SwaggerUiModuleIT {
-
-    @BQTestTool
-    final BQTestFactory testFactory = new BQTestFactory();
+public class SwaggerUiModuleTest {
 
     @Test
     public void autoLoadable() {
-        BQModuleProviderChecker.testAutoLoadable(SwaggerUiModule.class);
-    }
-
-    @Test
-    public void moduleDeclaresDependencies() {
-        final BQRuntime bqRuntime = testFactory.app().moduleProvider(new SwaggerUiModule()).createRuntime();
-        BQRuntimeChecker.testModulesLoaded(bqRuntime,
-                SwaggerUiModule.class
-        );
+        BQModuleTester.of(SwaggerUiModule.class).testAutoLoadable().testConfig();
     }
 }

@@ -19,10 +19,9 @@
 
 package io.bootique.swagger.ui;
 
-import io.bootique.BQModuleProvider;
+import io.bootique.BQModule;
 import io.bootique.ModuleCrate;
 import io.bootique.config.ConfigurationFactory;
-import io.bootique.di.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Provides;
 import io.bootique.di.TypeLiteral;
@@ -32,12 +31,12 @@ import io.bootique.jetty.MappedServlet;
 import javax.inject.Singleton;
 
 
-public class SwaggerUiModule implements BQModule, BQModuleProvider {
+public class SwaggerUiModule implements BQModule {
 
     private static final String CONFIG_PREFIX = "swaggerui";
 
     @Override
-    public ModuleCrate moduleCrate() {
+    public ModuleCrate crate() {
         return ModuleCrate.of(this)
                 .description("Integrates Swagger web UI console for presenting OpenAPI documentation")
                 .config(CONFIG_PREFIX, SwaggerUiServletFactory.class)

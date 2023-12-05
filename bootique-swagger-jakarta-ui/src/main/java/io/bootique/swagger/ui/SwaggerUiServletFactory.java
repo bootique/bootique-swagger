@@ -37,11 +37,11 @@ import java.util.*;
  */
 public class SwaggerUiServletFactory {
 
-    private final Map<String, SwaggerUIModelFactory> modelFactories;
+    private final Map<String, SwaggerUiModelFactory> modelFactories;
 
     @BQConfig("A map of Swagger models by name")
     @JsonCreator
-    public SwaggerUiServletFactory(Map<String, SwaggerUIModelFactory> modelFactories) {
+    public SwaggerUiServletFactory(Map<String, SwaggerUiModelFactory> modelFactories) {
         this.modelFactories = modelFactories;
     }
 
@@ -50,7 +50,7 @@ public class SwaggerUiServletFactory {
         Map<String, SwaggerUIServletModel> models = new HashMap<>();
         modelFactories.values()
                 .stream()
-                .map(SwaggerUIModelFactory::createModel)
+                .map(SwaggerUiModelFactory::createModel)
                 .flatMap(Optional::stream)
                 .forEach((m -> models.put(m.getUiPath(), m)));
 
