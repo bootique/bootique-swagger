@@ -19,7 +19,7 @@
 
 package io.bootique.swagger.ui;
 
-import io.bootique.ConfigModule;
+import io.bootique.BQModule;
 import io.bootique.ModuleCrate;
 import io.bootique.config.ConfigurationFactory;
 import io.bootique.di.Binder;
@@ -36,7 +36,9 @@ import java.util.Map;
  * @deprecated in favor of the Jakarta flavor
  */
 @Deprecated(since = "3.0", forRemoval = true)
-public class SwaggerUiModule extends ConfigModule {
+public class SwaggerUiModule implements BQModule {
+
+    private static final String CONFIG_PREFIX = "swaggerui";
 
     @Override
     public ModuleCrate crate() {
@@ -45,7 +47,7 @@ public class SwaggerUiModule extends ConfigModule {
 
         return ModuleCrate.of(this)
                 .description("Deprecated, can be replaced with 'bootique-swagger-jakarta-ui'.")
-                .config("swaggerui", type.getType())
+                .config(CONFIG_PREFIX, type.getType())
                 .build();
     }
 
@@ -59,8 +61,8 @@ public class SwaggerUiModule extends ConfigModule {
     @Singleton
     private MappedServlet<SwaggerUiServlet> provideJerseyServlet(ConfigurationFactory configFactory) {
 
-        Map<String, SwaggerUIModelFactory> configs = config(new TypeRef<>() {
-        }, configFactory);
+        Map<String, SwaggerUIModelFactory> configs = configFactory.config(new TypeRef<>() {
+        }, CONFIG_PREFIX);
 
         return new SwaggerUiServletFactory(configs).createServlet();
     }

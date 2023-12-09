@@ -20,7 +20,7 @@
 package io.bootique.swagger;
 
 import io.bootique.BQCoreModule;
-import io.bootique.ConfigModule;
+import io.bootique.BQModule;
 import io.bootique.ModuleCrate;
 import io.bootique.config.ConfigurationFactory;
 import io.bootique.di.Binder;
@@ -47,7 +47,9 @@ import java.util.Set;
  * @deprecated in favor of the Jakarta flavor
  */
 @Deprecated(since = "3.0", forRemoval = true)
-public class SwaggerModule extends ConfigModule {
+public class SwaggerModule implements BQModule {
+
+    private static final String CONFIG_PREFIX = "swagger";
 
     /**
      * @since 2.0
@@ -60,7 +62,7 @@ public class SwaggerModule extends ConfigModule {
     public ModuleCrate crate() {
         return ModuleCrate.of(this)
                 .description("Deprecated, can be replaced with 'bootique-swagger-jakarta'.")
-                .config("swagger", SwaggerServiceFactory.class)
+                .config(CONFIG_PREFIX, SwaggerServiceFactory.class)
                 .build();
     }
 
@@ -97,7 +99,7 @@ public class SwaggerModule extends ConfigModule {
         // TODO: suggest Swagger to tie converters to contexts instead of using static ModelConverters
         installConverters(converters);
 
-        return config(SwaggerServiceFactory.class, configFactory).createSwaggerService(customizers);
+        return configFactory.config(SwaggerServiceFactory.class, CONFIG_PREFIX).createSwaggerService(customizers);
     }
 
     private static void installConverters(Set<ModelConverter> converters) {
