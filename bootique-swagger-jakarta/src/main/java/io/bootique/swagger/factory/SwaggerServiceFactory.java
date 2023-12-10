@@ -6,17 +6,33 @@ import io.bootique.resource.ResourceFactory;
 import io.bootique.swagger.OpenApiCustomizer;
 import io.bootique.swagger.OpenApiModel;
 import io.bootique.swagger.SwaggerService;
+import io.bootique.swagger.converter.LocalTimeConverter;
+import io.bootique.swagger.converter.YearConverter;
+import io.bootique.swagger.converter.YearMonthConverter;
+import io.bootique.swagger.converter.ZoneOffsetConverter;
 import io.bootique.swagger.customizer.PathSortingCustomizer;
 import io.bootique.swagger.customizer.SchemasSortingCustomizer;
+import io.swagger.v3.core.converter.ModelConverter;
+import io.swagger.v3.core.converter.ModelConverters;
 
+import javax.inject.Inject;
 import java.util.*;
 
 @BQConfig
 public class SwaggerServiceFactory {
 
+    private final Set<ModelConverter> converters;
+    private final Set<OpenApiCustomizer> diCustomizers;
+
     private ResourceFactory overrideSpec;
     private Map<String, OpenApiModelFactory> specs;
     private boolean pretty = true;
+
+    @Inject
+    public SwaggerServiceFactory(Set<ModelConverter> converters, Set<OpenApiCustomizer> diCustomizers) {
+        this.converters = converters;
+        this.diCustomizers = diCustomizers;
+    }
 
     @BQConfigProperty("Zero or more API specifications provided by the application")
     public void setSpecs(Map<String, OpenApiModelFactory> specs) {
@@ -34,11 +50,16 @@ public class SwaggerServiceFactory {
         this.pretty = pretty;
     }
 
-    public SwaggerService createSwaggerService(Set<OpenApiCustomizer> customizers) {
-        return new SwaggerService(createModels(specs, prepareCustomizers(customizers)));
+    public SwaggerService create() {
+
+        // side effect of creating SwaggerService is installing ModelConverters
+        // TODO: suggest Swagger to tie converters to contexts instead of using static ModelConverters
+        installConverters(converters);
+
+        return new SwaggerService(createModels(specs, prepareCustomizers()));
     }
 
-    private List<OpenApiCustomizer> prepareCustomizers(Set<OpenApiCustomizer> diCustomizers) {
+    private List<OpenApiCustomizer> prepareCustomizers() {
 
         // start with standard customizers, so that the user-provided ones can fix the model to
         // their liking
@@ -78,6 +99,31 @@ public class SwaggerServiceFactory {
 
         if (model.getPathYaml() != null) {
             models.put(model.getPathYaml(), model);
+        }
+    }
+
+    private static void installConverters(Set<ModelConverter> converters) {
+
+        // Internally "ModelConverters.addConverter()" inserts each converter in the beginning of the list
+        // So the order of addition (standard first, then custom) allows custom injected converters to override the
+        // standard ones.
+
+        ModelConverters mc = ModelConverters.getInstance();
+
+        // standard converters
+        mc.addConverter(new YearMonthConverter());
+        mc.addConverter(new YearConverter());
+        mc.addConverter(new LocalTimeConverter());
+        mc.addConverter(new ZoneOffsetConverter());
+
+        // custom injected converters
+        for (ModelConverter c : converters) {
+
+            // since ModelConverters is a static singleton, lets at least make an attempt to prevent multiple
+            // registrations of the same converter. Those "contains" checks are rather weak though.
+            if (!mc.getConverters().contains(c)) {
+                mc.addConverter(c);
+            }
         }
     }
 }

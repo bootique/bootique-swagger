@@ -20,9 +20,9 @@
 package io.bootique.swagger;
 
 import io.bootique.BQCoreModule;
+import io.bootique.BQModule;
 import io.bootique.ModuleCrate;
 import io.bootique.config.ConfigurationFactory;
-import io.bootique.BQModule;
 import io.bootique.di.Binder;
 import io.bootique.di.Provides;
 import io.bootique.di.TypeLiteral;
@@ -30,18 +30,11 @@ import io.bootique.jersey.JerseyModule;
 import io.bootique.jersey.MappedResource;
 import io.bootique.log.BootLogger;
 import io.bootique.swagger.command.GenerateSpecCommand;
-import io.bootique.swagger.converter.LocalTimeConverter;
-import io.bootique.swagger.converter.YearConverter;
-import io.bootique.swagger.converter.YearMonthConverter;
-import io.bootique.swagger.converter.ZoneOffsetConverter;
 import io.bootique.swagger.factory.SwaggerServiceFactory;
 import io.bootique.swagger.web.SwaggerApi;
-import io.swagger.v3.core.converter.ModelConverter;
-import io.swagger.v3.core.converter.ModelConverters;
 
 import javax.inject.Provider;
 import javax.inject.Singleton;
-import java.util.Set;
 
 public class SwaggerModule implements BQModule {
 
@@ -86,40 +79,7 @@ public class SwaggerModule implements BQModule {
 
     @Provides
     @Singleton
-    SwaggerService provideSwaggerService(
-            ConfigurationFactory configFactory,
-            Set<ModelConverter> converters,
-            Set<OpenApiCustomizer> customizers) {
-
-        // side effect of creating SwaggerService is installing ModelConverters
-        // TODO: suggest Swagger to tie converters to contexts instead of using static ModelConverters
-        installConverters(converters);
-
-        return configFactory.config(SwaggerServiceFactory.class, CONFIG_PREFIX).createSwaggerService(customizers);
-    }
-
-    private static void installConverters(Set<ModelConverter> converters) {
-
-        // Internally "ModelConverters.addConverter()" inserts each converter in the beginning of the list
-        // So the order of addition (standard first, then custom) allows custom injected converters to override the
-        // standard ones.
-
-        ModelConverters mc = ModelConverters.getInstance();
-
-        // standard converters
-        mc.addConverter(new YearMonthConverter());
-        mc.addConverter(new YearConverter());
-        mc.addConverter(new LocalTimeConverter());
-        mc.addConverter(new ZoneOffsetConverter());
-
-        // custom injected converters
-        for (ModelConverter c : converters) {
-
-            // since ModelConverters is a static singleton, lets at least make an attempt to prevent multiple
-            // registrations of the same converter. Those "contains" checks are rather weak though.
-            if (!mc.getConverters().contains(c)) {
-                mc.addConverter(c);
-            }
-        }
+    SwaggerService provideSwaggerService(ConfigurationFactory configFactory) {
+        return configFactory.config(SwaggerServiceFactory.class, CONFIG_PREFIX).create();
     }
 }

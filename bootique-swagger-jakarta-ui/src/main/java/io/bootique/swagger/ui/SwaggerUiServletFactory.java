@@ -45,7 +45,7 @@ public class SwaggerUiServletFactory {
         this.modelFactories = modelFactories;
     }
 
-    public MappedServlet<SwaggerUiServlet> createServlet() {
+    public MappedServlet<SwaggerUiServlet> create() {
 
         Map<String, SwaggerUIServletModel> models = new HashMap<>();
         modelFactories.values()

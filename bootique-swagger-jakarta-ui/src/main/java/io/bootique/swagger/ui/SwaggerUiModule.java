@@ -51,7 +51,7 @@ public class SwaggerUiModule implements BQModule {
 
     @Provides
     @Singleton
-    private MappedServlet<SwaggerUiServlet> provideJerseyServlet(ConfigurationFactory configFactory) {
-        return configFactory.config(SwaggerUiServletFactory.class, CONFIG_PREFIX).createServlet();
+    private MappedServlet<SwaggerUiServlet> provideSwaggerUiServlet(ConfigurationFactory configFactory) {
+        return configFactory.config(SwaggerUiServletFactory.class, CONFIG_PREFIX).create();
     }
 }
