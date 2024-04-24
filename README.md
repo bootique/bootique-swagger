@@ -15,7 +15,7 @@
   KIND, either express or implied.  See the License for the
   specific language governing permissions and limitations
   under the License.
-  -->
+ -->
 
 [![build test deploy](https://github.com/bootique/bootique-swagger/actions/workflows/maven.yml/badge.svg)](https://github.com/bootique/bootique-swagger/actions/workflows/maven.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/io.bootique.swagger/bootique-swagger.svg?colorB=brightgreen)](https://search.maven.org/artifact/io.bootique.swagger/bootique-swagger/)
