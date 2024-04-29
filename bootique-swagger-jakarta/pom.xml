@@ -113,18 +113,15 @@
         <dependency>
             <groupId>io.bootique.jersey</groupId>
             <artifactId>bootique-jersey-jakarta</artifactId>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-jaxrs2-jakarta</artifactId>
-            <scope>compile</scope>
         </dependency>
         <!-- Override the wrong version of "jackson-datatype-jsr310" in swagger-core -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
