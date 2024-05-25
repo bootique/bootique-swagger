@@ -71,10 +71,14 @@ public class SwaggerUiServlet extends DefaultServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         String pathInfo = request.getPathInfo();
-        if (pathInfo != null && !"/".equals(pathInfo)) {
-            super.doGet(request, response);
-        } else {
+
+        // root path - generate console HTML
+        if (pathInfo == null || pathInfo.equals("/")) {
             doGetConsole(request, response);
+        }
+        // anything else is a static resource
+        else {
+            super.doGet(request, response);
         }
     }
 
