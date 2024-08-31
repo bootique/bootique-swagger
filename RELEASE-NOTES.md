@@ -1,6 +1,7 @@
 ## 3.0-M5
 
 * #48 Upgrade Swagger to 2.2.23
+* #49 Upgrade Swagger UI to 5.17.14
 
 ## 3.0-M3
 
