@@ -1,3 +1,7 @@
+## 3.0-M5
+
+* #48 Upgrade Swagger to 2.2.23
+
 ## 3.0-M3
 
 * #47 (Jakarta migration) Deprecate javax modules
