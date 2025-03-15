@@ -15,7 +15,7 @@ import io.bootique.swagger.customizer.SchemasSortingCustomizer;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.*;
 
 @BQConfig

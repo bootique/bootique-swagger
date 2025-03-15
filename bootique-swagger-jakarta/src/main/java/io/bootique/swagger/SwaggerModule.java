@@ -33,8 +33,8 @@ import io.bootique.swagger.command.GenerateSpecCommand;
 import io.bootique.swagger.factory.SwaggerServiceFactory;
 import io.bootique.swagger.web.SwaggerApi;
 
-import javax.inject.Provider;
-import javax.inject.Singleton;
+import jakarta.inject.Provider;
+import jakarta.inject.Singleton;
 
 public class SwaggerModule implements BQModule {
 

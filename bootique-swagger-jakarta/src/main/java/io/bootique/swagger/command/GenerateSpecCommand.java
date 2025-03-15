@@ -26,7 +26,7 @@ import io.bootique.meta.application.CommandMetadata;
 import io.bootique.meta.application.OptionMetadata;
 import io.bootique.swagger.SwaggerService;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;

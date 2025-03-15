@@ -28,7 +28,7 @@ import io.bootique.di.TypeLiteral;
 import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedServlet;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 
 public class SwaggerUiModule implements BQModule {
