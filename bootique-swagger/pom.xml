@@ -119,7 +119,12 @@
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-jaxrs2</artifactId>
         </dependency>
-        <!-- Override the wrong version of "jackson-datatype-jsr310" in swagger-core -->
+        <!-- Fix the version of the "swagger" transitive dependency -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <!-- Fix the version of the "swagger" transitive dependency -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
