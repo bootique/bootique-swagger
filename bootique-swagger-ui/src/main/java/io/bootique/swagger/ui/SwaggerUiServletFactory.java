@@ -19,8 +19,10 @@
 
 package io.bootique.swagger.ui;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
+import io.bootique.annotation.BQConfig;
 import io.bootique.jetty.MappedServlet;
 import io.bootique.swagger.ui.model.SwaggerUIServletModel;
 
@@ -32,26 +34,23 @@ import java.util.*;
 
 /**
  * @since 2.0
- * @deprecated in favor of the Jakarta flavor
  */
-@Deprecated(since = "3.0", forRemoval = true)
-// notice that this is not a BQConfig factory, and it is created manually,
-// as we'd like to avoid "modelFactories" property exposure in YAML
-// TODO: some Jackson trick to deserialize this as a map?
 public class SwaggerUiServletFactory {
 
-    private Map<String, SwaggerUIModelFactory> modelFactories;
+    private final Map<String, SwaggerUiModelFactory> modelFactories;
 
-    public SwaggerUiServletFactory(Map<String, SwaggerUIModelFactory> modelFactories) {
+    @BQConfig("A map of Swagger models by name")
+    @JsonCreator
+    public SwaggerUiServletFactory(Map<String, SwaggerUiModelFactory> modelFactories) {
         this.modelFactories = modelFactories;
     }
 
-    public MappedServlet<SwaggerUiServlet> createServlet() {
+    public MappedServlet<SwaggerUiServlet> create() {
 
         Map<String, SwaggerUIServletModel> models = new HashMap<>();
         modelFactories.values()
                 .stream()
-                .map(SwaggerUIModelFactory::createModel)
+                .map(SwaggerUiModelFactory::createModel)
                 .flatMap(Optional::stream)
                 .forEach((m -> models.put(m.getUiPath(), m)));
 

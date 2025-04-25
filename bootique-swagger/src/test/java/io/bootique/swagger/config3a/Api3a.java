@@ -18,8 +18,8 @@
  */
 package io.bootique.swagger.config3a;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
 
 @Path("api3a")
 public class Api3a {

@@ -20,30 +20,33 @@
 package io.bootique.swagger.ui;
 
 import com.github.mustachejava.Mustache;
-import io.bootique.jetty.servlet.StaticServlet;
 import io.bootique.swagger.ui.model.SwaggerUIServletModel;
 import io.bootique.swagger.ui.model.SwaggerUIServletTemplateModel;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.eclipse.jetty.servlet.DefaultServlet;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
 /**
+ * A servlet that renders dynamically-generated Swagger console HTML for the root path, and for all other paths
+ * serves Swagger static resources (JS, CSS, etc.).
+ *
  * @since 2.0
- * @deprecated in favor of the Jakarta flavor
  */
-@Deprecated(since = "3.0", forRemoval = true)
-public class SwaggerUiServlet extends StaticServlet {
+public class SwaggerUiServlet extends DefaultServlet {
 
     static final String PATH_INFO_ONLY_PARAMETER = "pathInfoOnly";
+    static final String RESOURCE_BASE_PARAMETER = "resourceBase";
 
-    private Mustache template;
-    private Map<String, SwaggerUIServletModel> models;
+    private final String resourceBase;
+    private final Mustache template;
+    private final Map<String, SwaggerUIServletModel> models;
 
     public SwaggerUiServlet(String resourceBase, Mustache template, Map<String, SwaggerUIServletModel> models) {
-        super(resourceBase);
+        this.resourceBase = resourceBase;
         this.template = template;
         this.models = models;
     }
@@ -51,20 +54,31 @@ public class SwaggerUiServlet extends StaticServlet {
     @Override
     public String getInitParameter(String name) {
 
-        // "pathInfoOnly = true" ensures that the part of the URL matching the servlet path
-        // ("/swagger-ui" in our case) is not included in the file path when resolving a static resource.
-
-        return PATH_INFO_ONLY_PARAMETER.equals(name) ? "true" : super.getInitParameter(name);
+        // special rules for Bootique-defined parameters
+        switch (name) {
+            // "pathInfoOnly = true" ensures that the part of the URL matching the servlet path
+            // ("/swagger-ui" in our case) is not included in the file path when resolving a static resource.
+            case PATH_INFO_ONLY_PARAMETER:
+                return "true";
+            case RESOURCE_BASE_PARAMETER:
+                return this.resourceBase;
+            default:
+                return super.getInitParameter(name);
+        }
     }
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         String pathInfo = request.getPathInfo();
-        if (pathInfo != null && !"/".equals(pathInfo)) {
-            super.doGet(request, response);
-        } else {
+
+        // root path - generate console HTML
+        if (pathInfo == null || pathInfo.equals("/")) {
             doGetConsole(request, response);
+        }
+        // anything else is a static resource
+        else {
+            super.doGet(request, response);
         }
     }
 

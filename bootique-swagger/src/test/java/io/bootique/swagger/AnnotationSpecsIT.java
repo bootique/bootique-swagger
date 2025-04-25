@@ -26,13 +26,13 @@ import io.bootique.junit5.BQTestTool;
 import io.bootique.resource.ResourceFactory;
 import io.bootique.swagger.config3.Api31;
 import io.bootique.swagger.config3a.Api3a;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 @BQTest
 public class AnnotationSpecsIT {

@@ -11,6 +11,12 @@ import io.github.bonigarcia.seljup.Options;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,12 +26,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -114,18 +114,18 @@ public class SeleniumIT {
 
         driver.get(jetty.getTarget().path("swagger-ui").getUri().toString());
 
-        WebElement inputElement = new WebDriverWait(driver, Duration.ofSeconds(1))
+        WebElement webElement = new WebDriverWait(driver, Duration.ofSeconds(1))
                 .until(webDriver -> webDriver.findElement(By.tagName("input")));
 
-        inputElement.clear();
-        inputElement.sendKeys(jetty.getUrl() + "/openapi.yaml");
+        webElement.clear();
+        webElement.sendKeys(jetty.getUrl() + "/openapi.yaml");
 
         driver.findElement(By.cssSelector("button.download-url-button.button")).click();
 
-        WebElement urlElement = new WebDriverWait(driver, Duration.ofSeconds(1))
+        webElement = new WebDriverWait(driver, Duration.ofSeconds(1))
                 .until(webDriver -> webDriver.findElement(By.cssSelector("span.url")));
 
-        assertEquals(jetty.getUrl() + "/openapi.yaml", urlElement.getText());
+        assertEquals(jetty.getUrl() + "/openapi.yaml", webElement.getText());
     }
 
     @Disabled("Temporary disabled as unstable")

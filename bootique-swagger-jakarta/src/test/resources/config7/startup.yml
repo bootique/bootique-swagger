@@ -1,6 +1,0 @@
-swagger:
-  specs:
-    default:
-      pathJson: "model.json"
-      resourcePackages:
-        - "io.bootique.swagger.config7"

@@ -22,10 +22,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @since 3.0
- * @deprecated in favor of the Jakarta flavor
+ * @since 3.0.M2
  */
-@Deprecated(since = "3.0", forRemoval = true)
 public class SwaggerService {
 
     private final Map<String, OpenApiModel> models;
@@ -44,7 +42,7 @@ public class SwaggerService {
     /**
      * Returns a full set of preconfigured API model URL paths.
      */
-    public Set<String> getModelPaths() {
+    public Set<String> getUrlPatterns() {
         return models.keySet();
     }
 }

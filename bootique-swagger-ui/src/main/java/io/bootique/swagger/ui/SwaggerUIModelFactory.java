@@ -21,18 +21,16 @@ package io.bootique.swagger.ui;
 import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
 import io.bootique.swagger.ui.model.SwaggerUIServletModel;
+import jakarta.servlet.http.HttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 import java.util.function.Function;
 
 /**
  * @since 2.0
- * @deprecated in favor of the Jakarta flavor
  */
-@Deprecated(since = "3.0", forRemoval = true)
 @BQConfig("A Swagger UI 'console' pointing to a specific API model")
-public class SwaggerUIModelFactory {
+public class SwaggerUiModelFactory {
 
     private String specUrl;
     private String specPath;

@@ -27,27 +27,19 @@ import io.bootique.di.Provides;
 import io.bootique.di.TypeLiteral;
 import io.bootique.jetty.JettyModule;
 import io.bootique.jetty.MappedServlet;
-import io.bootique.type.TypeRef;
 
 import jakarta.inject.Singleton;
-import java.util.Map;
 
-/**
- * @deprecated in favor of the Jakarta flavor
- */
-@Deprecated(since = "3.0", forRemoval = true)
+
 public class SwaggerUiModule implements BQModule {
 
     private static final String CONFIG_PREFIX = "swaggerui";
 
     @Override
     public ModuleCrate crate() {
-        TypeRef<Map<String, SwaggerUIModelFactory>> type = new TypeRef<>() {
-        };
-
         return ModuleCrate.of(this)
-                .description("Deprecated, can be replaced with 'bootique-swagger-jakarta-ui'.")
-                .config(CONFIG_PREFIX, type.getType())
+                .description("Integrates Swagger web UI console for presenting OpenAPI documentation")
+                .config(CONFIG_PREFIX, SwaggerUiServletFactory.class)
                 .build();
     }
 
@@ -59,11 +51,7 @@ public class SwaggerUiModule implements BQModule {
 
     @Provides
     @Singleton
-    private MappedServlet<SwaggerUiServlet> provideJerseyServlet(ConfigurationFactory configFactory) {
-
-        Map<String, SwaggerUIModelFactory> configs = configFactory.config(new TypeRef<>() {
-        }, CONFIG_PREFIX);
-
-        return new SwaggerUiServletFactory(configs).createServlet();
+    private MappedServlet<SwaggerUiServlet> provideSwaggerUiServlet(ConfigurationFactory configFactory) {
+        return configFactory.config(SwaggerUiServletFactory.class, CONFIG_PREFIX).create();
     }
 }

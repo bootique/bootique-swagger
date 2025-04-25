@@ -22,20 +22,16 @@ import io.bootique.swagger.OpenApiModel;
 import io.bootique.swagger.SwaggerService;
 import io.swagger.v3.oas.annotations.Operation;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
 
 import java.util.Objects;
 
-/**
- * @deprecated in favor of the Jakarta flavor
- */
-@Deprecated(since = "3.0", forRemoval = true)
 @Path("_this_is_a_placeholder_that_will_be_replaced_dynamically_")
 public class SwaggerApi {
 

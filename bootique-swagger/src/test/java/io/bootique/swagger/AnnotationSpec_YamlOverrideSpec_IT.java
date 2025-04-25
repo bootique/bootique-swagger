@@ -26,11 +26,8 @@ import io.bootique.junit5.BQApp;
 import io.bootique.junit5.BQTest;
 import io.bootique.resource.ResourceFactory;
 import io.bootique.swagger.config1.Test1Api;
+import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
-
-import javax.ws.rs.core.Response;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @BQTest
 public class AnnotationSpec_YamlOverrideSpec_IT {

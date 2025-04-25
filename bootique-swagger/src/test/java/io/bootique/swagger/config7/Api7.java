@@ -18,8 +18,8 @@
  */
 package io.bootique.swagger.config7;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
 
 @Path("api7")
 public class Api7 {

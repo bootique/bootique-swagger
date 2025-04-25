@@ -1,8 +1,0 @@
-swagger:
-  specs:
-    default:
-      pathJson: "s1/model.json"
-      pathYaml: "s1/model.yaml"
-      overrideSpec: "classpath:config1/override-spec.yml"
-      resourcePackages:
-        - "io.bootique.swagger.config1"

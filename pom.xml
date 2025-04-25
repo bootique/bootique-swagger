@@ -44,9 +44,6 @@
     <modules>
         <module>bootique-swagger</module>
         <module>bootique-swagger-ui</module>
-
-        <module>bootique-swagger-jakarta</module>
-        <module>bootique-swagger-jakarta-ui</module>
     </modules>
 
     <scm>

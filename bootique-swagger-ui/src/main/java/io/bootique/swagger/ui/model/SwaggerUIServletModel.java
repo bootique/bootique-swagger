@@ -18,14 +18,13 @@
  */
 package io.bootique.swagger.ui.model;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.function.Function;
 
 /**
  * @since 2.0
- * @deprecated in favor of the Jakarta flavor
  */
-@Deprecated(since = "3.0", forRemoval = true)
 public class SwaggerUIServletModel {
 
     private final Function<HttpServletRequest, String> specUrlResolver;

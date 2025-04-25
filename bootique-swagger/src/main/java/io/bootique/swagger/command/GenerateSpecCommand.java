@@ -31,10 +31,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-/**
- * @deprecated in favor of the Jakarta flavor
- */
-@Deprecated(since = "3.0", forRemoval = true)
 public class GenerateSpecCommand extends CommandWithMetadata {
 
     private static final String DESTINATION_DIRECTORY_OPTION_NAME = "target-dir";
@@ -65,7 +61,7 @@ public class GenerateSpecCommand extends CommandWithMetadata {
 
     private void saveToFiles(String destinationDirectory) throws IOException {
         var service = serviceProvider.get();
-        var keys = service.getModelPaths();
+        var keys = service.getUrlPatterns();
         var destinationDirPath = Paths.get(destinationDirectory);
         if (Files.notExists(destinationDirPath)) {
             Files.createDirectories(destinationDirPath);
@@ -81,7 +77,7 @@ public class GenerateSpecCommand extends CommandWithMetadata {
     private void printToStdOut() {
         var out = new StringBuilder();
         var service = serviceProvider.get();
-        var keys = service.getModelPaths();
+        var keys = service.getUrlPatterns();
         keys.forEach(key -> {
             var content = service.getOpenApiModel(key).render(key);
             out

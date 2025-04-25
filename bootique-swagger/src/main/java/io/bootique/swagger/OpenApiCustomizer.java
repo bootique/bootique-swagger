@@ -24,9 +24,7 @@ import io.swagger.v3.oas.models.OpenAPI;
  * An in-place customizer of the mutable OpenAPI model object.
  *
  * @since 3.0
- * @deprecated in favor of the Jakarta flavor
  */
-@Deprecated(since = "3.0", forRemoval = true)
 public interface OpenApiCustomizer {
 
     void customize(String name, OpenAPI api);

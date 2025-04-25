@@ -1,6 +1,0 @@
-swagger:
-  specs:
-    default:
-      pathYaml: "c3/model.yaml"
-      resourcePackages:
-        - io.bootique.swagger.config3

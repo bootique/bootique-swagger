@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 public class SwaggerUiModuleTest {
 
     @Test
-    public void autoLoadable() {
+    public void check() {
         BQModuleTester.of(SwaggerUiModule.class).testAutoLoadable().testConfig();
     }
 }

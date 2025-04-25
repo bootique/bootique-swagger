@@ -24,12 +24,11 @@ import io.bootique.junit5.BQTest;
 import io.bootique.junit5.BQTestFactory;
 import io.bootique.junit5.BQTestTool;
 import io.bootique.resource.ResourceFactory;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -94,7 +93,7 @@ public class ConfigOptionsIT {
 
     @Test
     @DisplayName("'uiPath' in config")
-    public void apiConsole() {
+    public void api_Console() {
         testFactory.app("-s", "-c", "classpath:ConfigOptionsIT/uipath.yml").autoLoadModules().run();
 
         Response r = target.path("/swagger-uix").request().get();

@@ -1,6 +1,0 @@
-swagger:
-  specs:
-    default:
-      pathYaml: "c3/model.yaml"
-      resourceClasses:
-        - io.bootique.swagger.config3.Api31

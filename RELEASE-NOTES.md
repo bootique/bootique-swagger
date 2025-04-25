@@ -1,3 +1,7 @@
+## 4.0-M1
+
+* #50 Remove deprecated modules (javax flavor)
+
 ## 3.0-M6
 
 * #48 Upgrade Swagger to 2.2.23

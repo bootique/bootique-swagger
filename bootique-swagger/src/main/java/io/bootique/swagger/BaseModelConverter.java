@@ -30,9 +30,7 @@ import java.util.Iterator;
  * A convenience superclass for custom model converters that simplifies type detection.
  *
  * @since 2.0
- * @deprecated in favor of the Jakarta flavor
  */
-@Deprecated(since = "3.0", forRemoval = true)
 public abstract class BaseModelConverter implements ModelConverter {
 
     @Override
