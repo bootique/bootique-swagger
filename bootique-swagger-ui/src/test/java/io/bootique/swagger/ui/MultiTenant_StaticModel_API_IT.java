@@ -22,6 +22,7 @@ import io.bootique.BQRuntime;
 import io.bootique.Bootique;
 import io.bootique.jersey.JerseyModule;
 import io.bootique.jetty.JettyModule;
+import io.bootique.jetty.MappedServlet;
 import io.bootique.jetty.junit5.JettyTester;
 import io.bootique.junit5.BQApp;
 import io.bootique.junit5.BQTest;
@@ -58,8 +59,8 @@ public class MultiTenant_StaticModel_API_IT {
             .autoLoadModules()
             .module(jetty.moduleReplacingConnectors())
             .module(b -> JerseyModule.extend(b).addResource(Api1.class).addResource(Api2.class))
-            .module(b -> JettyModule.extend(b).addStaticServlet("models", "/models/*"))
-            .module(b -> JettyModule.extend(b).addStaticServlet("doc", "/doc/*"))
+            .module(b -> JettyModule.extend(b).addMappedServlet(MappedServlet.ofStatic("/models/*").name("models").build()))
+            .module(b -> JettyModule.extend(b).addMappedServlet(MappedServlet.ofStatic("/doc/*").name("doc").build()))
             .createRuntime();
 
 
