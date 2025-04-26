@@ -40,12 +40,12 @@
         <dependencies>
             <dependency>
                 <groupId>io.bootique.jetty</groupId>
-                <artifactId>bootique-jetty-jakarta</artifactId>
+                <artifactId>bootique-jetty</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.bootique.jetty</groupId>
-                <artifactId>bootique-jetty-jakarta-junit5</artifactId>
+                <artifactId>bootique-jetty-junit5</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -140,7 +140,7 @@
         <!-- Unit test dependencies -->
         <dependency>
             <groupId>io.bootique.jetty</groupId>
-            <artifactId>bootique-jetty-jakarta-junit5</artifactId>
+            <artifactId>bootique-jetty-junit5</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
