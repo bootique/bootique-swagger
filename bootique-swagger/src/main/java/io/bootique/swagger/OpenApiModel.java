@@ -79,20 +79,21 @@ public class OpenApiModel {
     }
 
     public String render(String path) {
-        return Objects.equals(pathJson, path) ? printJson() : printYaml();
+        OpenAPI api = getApi();
+        return Objects.equals(pathJson, path) ? printJson(api) : printYaml(api);
     }
 
-    private String printJson() {
+    private String printJson(OpenAPI api) {
         try {
-            return this.isPretty() ? Json.pretty(this.getApi()) : Json.mapper().writeValueAsString(this.getApi());
+            return this.isPretty() ? Json.pretty(api) : Json.mapper().writeValueAsString(api);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Error converting model to JSON", e);
         }
     }
 
-    private String printYaml() {
+    private String printYaml(OpenAPI api) {
         try {
-            return this.isPretty() ? Yaml.pretty(this.getApi()) : Yaml.mapper().writeValueAsString(this.getApi());
+            return this.isPretty() ? Yaml.pretty(api) : Yaml.mapper().writeValueAsString(api);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Error converting model to JSON", e);
         }
