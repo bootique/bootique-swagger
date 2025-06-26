@@ -33,10 +33,13 @@ public class SwaggerService {
     }
 
     public OpenApiModel getOpenApiModel(String path) {
-        if (models.get(path) == null) {
+        OpenApiModel model = models.get(path);
+
+        if (model == null) {
             throw new IllegalStateException("Can't find OpenApi model by path " + path);
         }
-        return models.get(path);
+        
+        return model;
     }
 
     /**
