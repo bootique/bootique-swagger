@@ -1,0 +1,49 @@
+{
+  "openapi" : "3.0.1",
+  "paths" : {
+    "/api7/1" : {
+      "get" : {
+        "operationId" : "_1",
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OZ"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api7/9" : {
+      "get" : {
+        "operationId" : "_9",
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OA"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "OA" : {
+        "type" : "object"
+      },
+      "OZ" : {
+        "type" : "object"
+      }
+    }
+  }
+}

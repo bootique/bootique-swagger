@@ -21,6 +21,7 @@ package io.bootique.swagger;
 import io.bootique.ModuleExtender;
 import io.bootique.di.Binder;
 import io.bootique.di.SetBuilder;
+import io.bootique.swagger.web.OpenApiRequestCustomizer;
 import io.swagger.v3.core.converter.ModelConverter;
 
 /**
@@ -30,6 +31,7 @@ public class SwaggerModuleExtender extends ModuleExtender<SwaggerModuleExtender>
 
     private SetBuilder<ModelConverter> converters;
     private SetBuilder<OpenApiCustomizer> customizers;
+    private SetBuilder<OpenApiRequestCustomizer> requestCustomizers;
 
     public SwaggerModuleExtender(Binder binder) {
         super(binder);
@@ -39,6 +41,7 @@ public class SwaggerModuleExtender extends ModuleExtender<SwaggerModuleExtender>
     public SwaggerModuleExtender initAllExtensions() {
         contributeConverters();
         contributeCustomizers();
+        contributeRequestCustomizers();
         return this;
     }
 
@@ -68,11 +71,31 @@ public class SwaggerModuleExtender extends ModuleExtender<SwaggerModuleExtender>
         return this;
     }
 
+    /**
+     * @since 4.0
+     */
+    public SwaggerModuleExtender addRequestCustomizer(Class<? extends OpenApiRequestCustomizer> customizerType) {
+        contributeRequestCustomizers().add(customizerType);
+        return this;
+    }
+
+    /**
+     * @since 4.0
+     */
+    public SwaggerModuleExtender addRequestCustomizer(OpenApiRequestCustomizer customizer) {
+        contributeRequestCustomizers().addInstance(customizer);
+        return this;
+    }
+
     protected SetBuilder<ModelConverter> contributeConverters() {
         return converters != null ? converters : (converters = newSet(ModelConverter.class));
     }
 
     protected SetBuilder<OpenApiCustomizer> contributeCustomizers() {
         return customizers != null ? customizers : (customizers = newSet(OpenApiCustomizer.class));
+    }
+
+    protected SetBuilder<OpenApiRequestCustomizer> contributeRequestCustomizers() {
+        return requestCustomizers != null ? requestCustomizers : (requestCustomizers = newSet(OpenApiRequestCustomizer.class));
     }
 }

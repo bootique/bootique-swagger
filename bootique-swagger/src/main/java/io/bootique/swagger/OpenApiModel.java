@@ -19,10 +19,12 @@
 package io.bootique.swagger;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.bootique.swagger.openapi.OpenAPICloner;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.oas.models.OpenAPI;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -76,6 +78,37 @@ public class OpenApiModel {
             }
         }
         return api;
+    }
+
+    /**
+     * Applies customizations to the internal Open API descriptor, returning a customized copy of the model. The
+     * underlying shared OpenAPI model will not be changed by this method.
+     *
+     * @since 4.0
+     */
+    public OpenApiModel customize(String path, List<OpenApiCustomizer> customizers) {
+
+        if (customizers.isEmpty()) {
+            return this;
+        }
+
+        OpenAPI[] customApi = new OpenAPI[1];
+
+        // a caching supplier that would lazily clone shared OpenAPI, and reuse it from then on...
+        Supplier<OpenAPI> cloneSupplier = () -> {
+
+            if (customApi[0] == null) {
+                customApi[0] = OpenAPICloner.cloneOpenAPI(getApi());
+            }
+
+            return customApi[0];
+        };
+
+        customizers.forEach(c -> c.customize(path, cloneSupplier));
+
+        return customApi[0] != null
+                ? new OpenApiModel(cloneSupplier, pathJson, pathYaml, pretty, noWebAccess)
+                : this;
     }
 
     public String render(String path) {

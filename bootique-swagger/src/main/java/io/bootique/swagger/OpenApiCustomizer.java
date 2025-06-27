@@ -20,6 +20,8 @@ package io.bootique.swagger;
 
 import io.swagger.v3.oas.models.OpenAPI;
 
+import java.util.function.Supplier;
+
 /**
  * An in-place customizer of the mutable OpenAPI model object.
  *
@@ -27,5 +29,11 @@ import io.swagger.v3.oas.models.OpenAPI;
  */
 public interface OpenApiCustomizer {
 
-    void customize(String name, OpenAPI api);
+    /**
+     * @since 4.0
+     */
+    // passing Supplier<OpenAPI> instead of just OpenAPI, thus giving a caller full control over scoping the
+    // provided instance. E.g., the caller might lazily clone a shared OpenAPI instance to limit customizations to
+    // a single request scope without messing up the shared object
+    void customize(String name, Supplier<OpenAPI> apiSupplier);
 }

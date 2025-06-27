@@ -22,13 +22,16 @@ import io.bootique.swagger.OpenApiCustomizer;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Paths;
 
+import java.util.function.Supplier;
+
 /**
  * @since 3.0
  */
 public class PathSortingCustomizer implements OpenApiCustomizer {
 
     @Override
-    public void customize(String name, OpenAPI api) {
+    public void customize(String name, Supplier<OpenAPI> apiSupplier) {
+        OpenAPI api = apiSupplier.get();
         Paths paths = api.getPaths();
         if (paths != null && paths.keySet().size() >= 2) {
             Paths sorted = new Paths();

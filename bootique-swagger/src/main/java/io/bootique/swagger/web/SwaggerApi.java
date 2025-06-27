@@ -18,10 +18,11 @@
  */
 package io.bootique.swagger.web;
 
+import io.bootique.swagger.OpenApiCustomizer;
 import io.bootique.swagger.OpenApiModel;
 import io.bootique.swagger.SwaggerService;
 import io.swagger.v3.oas.annotations.Operation;
-
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -30,7 +31,9 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Path("_this_is_a_placeholder_that_will_be_replaced_dynamically_")
 public class SwaggerApi {
@@ -39,20 +42,27 @@ public class SwaggerApi {
     private static final String MEDIA_TYPE_YAML = "application/yaml";
 
     private final SwaggerService service;
+    private final Set<OpenApiRequestCustomizer> customizers;
 
-    public SwaggerApi(SwaggerService service) {
+    public SwaggerApi(SwaggerService service, Set<OpenApiRequestCustomizer> customizers) {
         this.service = service;
+        this.customizers = customizers;
     }
 
     @GET
     @Produces({MEDIA_TYPE_JSON, MEDIA_TYPE_YAML})
     @Operation(hidden = true)
-    public Response getOpenApi(@Context UriInfo uriInfo) {
-        return toResponse(uriInfo.getPath());
-    }
+    public Response getOpenApi(@Context HttpServletRequest request, @Context UriInfo uriInfo) {
 
-    private Response toResponse(String path) {
-        OpenApiModel model = service.getOpenApiModel(path);
+        String path = uriInfo.getPath();
+
+        List<OpenApiCustomizer> requestCustomizers = customizers
+                .stream()
+                .map(c -> requestCustomizer(request, c))
+                .toList();
+
+        OpenApiModel model = service.getOpenApiModel(path).customize(path, requestCustomizers);
+
         return model.noWebAccess()
                 ? Response.status(Response.Status.NOT_FOUND).build()
                 : Response.status(Response.Status.OK).entity(model.render(path)).type(getMediaType(path, model)).build();
@@ -60,5 +70,9 @@ public class SwaggerApi {
 
     private String getMediaType(String path, OpenApiModel model) {
         return Objects.equals(model.getPathJson(), path) ? MEDIA_TYPE_JSON : MEDIA_TYPE_YAML;
+    }
+
+    private static OpenApiCustomizer requestCustomizer(HttpServletRequest request, OpenApiRequestCustomizer customizer) {
+        return (n, s) -> customizer.customize(request, s);
     }
 }

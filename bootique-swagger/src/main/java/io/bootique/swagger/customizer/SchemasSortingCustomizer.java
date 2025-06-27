@@ -25,6 +25,7 @@ import io.swagger.v3.oas.models.media.Schema;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * @since 3.0
@@ -32,7 +33,8 @@ import java.util.Map;
 public class SchemasSortingCustomizer implements OpenApiCustomizer {
 
     @Override
-    public void customize(String name, OpenAPI api) {
+    public void customize(String name, Supplier<OpenAPI> apiSupplier) {
+        OpenAPI api = apiSupplier.get();
         Components components = api.getComponents();
         if (components != null) {
 

@@ -1,6 +1,7 @@
 ## 4.0-M1
 
 * #50 Remove deprecated modules (javax flavor)
+* #51 Per-request OpenAPI model customization
 
 ## 3.0-M6
 

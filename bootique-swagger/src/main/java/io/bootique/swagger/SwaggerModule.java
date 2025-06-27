@@ -31,10 +31,12 @@ import io.bootique.jersey.MappedResource;
 import io.bootique.log.BootLogger;
 import io.bootique.swagger.command.GenerateSpecCommand;
 import io.bootique.swagger.factory.SwaggerServiceFactory;
+import io.bootique.swagger.web.OpenApiRequestCustomizer;
 import io.bootique.swagger.web.SwaggerApi;
-
 import jakarta.inject.Provider;
 import jakarta.inject.Singleton;
+
+import java.util.Set;
 
 public class SwaggerModule implements BQModule {
 
@@ -72,8 +74,10 @@ public class SwaggerModule implements BQModule {
 
     @Provides
     @Singleton
-    MappedResource<SwaggerApi> provideOpenApiResource(SwaggerService service) {
-        var swaggerApi = new SwaggerApi(service);
+    MappedResource<SwaggerApi> provideOpenApiResource(
+            SwaggerService service,
+            Set<OpenApiRequestCustomizer> customizers) {
+        SwaggerApi swaggerApi = new SwaggerApi(service, customizers);
         return new MappedResource<>(swaggerApi, service.getUrlPatterns());
     }
 

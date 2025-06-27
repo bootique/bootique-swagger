@@ -65,7 +65,7 @@ public class OpenApiModelFactory {
         List<String> resourceClasses = this.resourceClasses != null ? this.resourceClasses : List.of();
 
         OpenAPI api = new OpenApiLoader().load(resourcePackages, resourceClasses, spec, overrideSpec);
-        customizers.forEach(c -> c.customize(modelName, api));
+        customizers.forEach(c -> c.customize(modelName, () -> api));
         return api;
     }
 
