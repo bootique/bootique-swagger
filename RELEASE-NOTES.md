@@ -1,3 +1,7 @@
+## 3.0-RC2
+
+* #53 Bump org.apache.commons:commons-lang3 from 3.17.0 to 3.18.0
+
 ## 3.0-M6
 
 * #48 Upgrade Swagger to 2.2.23
