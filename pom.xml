@@ -38,7 +38,7 @@
         <mustache.version>0.9.10</mustache.version>
         <selenium.version>4.15.0</selenium.version>
         <selenium-jupiter.version>4.3.7</selenium-jupiter.version>
-        <commons.lang.version>3.17.0</commons.lang.version>
+        <commons.lang.version>3.18.0</commons.lang.version>
     </properties>
 
     <modules>
