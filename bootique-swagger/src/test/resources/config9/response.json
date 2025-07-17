@@ -1,0 +1,57 @@
+{
+  "openapi" : "3.0.1",
+  "paths" : {
+    "/api9/deprecated-object" : {
+      "get" : {
+        "operationId" : "oDeprecated",
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ODeprecated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api9/deprecated-object-property" : {
+      "get" : {
+        "operationId" : "oPropDeprecated",
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OPropDeprecated"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "ODeprecated" : {
+        "type" : "object",
+        "deprecated" : true
+      },
+      "OPropDeprecated" : {
+        "type" : "object",
+        "properties" : {
+          "x" : {
+            "type" : "integer",
+            "format" : "int32",
+            "deprecated" : true
+          }
+        }
+      }
+    }
+  }
+}
