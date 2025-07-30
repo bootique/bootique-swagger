@@ -31,13 +31,13 @@ public interface OpenApiCustomizer {
 
     /**
      * A callback invoked by Bootique to allow this customizer to inspect and alter the provided Open API model.
-     * Calling "apiSupplier.get()" within the customizer returns a mutable copy of the {@link OpenAPI} object that can
-     * be changed directly.
+     * Calling "apiSupplier.get()" within the customizer returns a mutable copy of the {@link OpenAPI}
+     * object that can be changed directly.
      *
      * @since 4.0
      */
-    // passing Supplier<OpenAPI> instead of just OpenAPI, thus giving a caller full control over scoping the
-    // provided instance. E.g., the caller might lazily clone a shared OpenAPI instance to limit customizations to
-    // a single request scope without messing up the shared object
+    // passing Supplier<OpenAPI> instead of just OpenAPI gives the *caller* control over scoping the provided instance.
+    // E.g., it might lazily clone a shared OpenAPI instance to limit customizations to a single request scope without
+    // messing up the shared object
     void customize(String name, Supplier<OpenAPI> apiSupplier);
 }

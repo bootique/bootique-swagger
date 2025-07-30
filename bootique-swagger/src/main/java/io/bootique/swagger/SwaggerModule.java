@@ -31,7 +31,6 @@ import io.bootique.jersey.MappedResource;
 import io.bootique.log.BootLogger;
 import io.bootique.swagger.command.GenerateSpecCommand;
 import io.bootique.swagger.factory.SwaggerServiceFactory;
-import io.bootique.swagger.web.OpenApiRequestCustomizer;
 import io.bootique.swagger.web.SwaggerApi;
 import jakarta.inject.Provider;
 import jakarta.inject.Singleton;

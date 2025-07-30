@@ -21,7 +21,6 @@ package io.bootique.swagger;
 import io.bootique.ModuleExtender;
 import io.bootique.di.Binder;
 import io.bootique.di.SetBuilder;
-import io.bootique.swagger.web.OpenApiRequestCustomizer;
 import io.swagger.v3.core.converter.ModelConverter;
 
 /**

@@ -20,6 +20,7 @@ package io.bootique.swagger.web;
 
 import io.bootique.swagger.OpenApiCustomizer;
 import io.bootique.swagger.OpenApiModel;
+import io.bootique.swagger.OpenApiRequestCustomizer;
 import io.bootique.swagger.SwaggerService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
