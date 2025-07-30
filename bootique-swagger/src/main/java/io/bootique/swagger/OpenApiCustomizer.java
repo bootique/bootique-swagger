@@ -30,6 +30,10 @@ import java.util.function.Supplier;
 public interface OpenApiCustomizer {
 
     /**
+     * A callback invoked by Bootique to allow this customizer to inspect and alter the provided Open API model.
+     * Calling "apiSupplier.get()" within the customizer returns a mutable copy of the {@link OpenAPI} object that can
+     * be changed directly.
+     *
      * @since 4.0
      */
     // passing Supplier<OpenAPI> instead of just OpenAPI, thus giving a caller full control over scoping the

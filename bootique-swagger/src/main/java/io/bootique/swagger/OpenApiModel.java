@@ -94,7 +94,7 @@ public class OpenApiModel {
 
         OpenAPI[] customApi = new OpenAPI[1];
 
-        // a caching supplier that would lazily clone shared OpenAPI, and reuse it from then on...
+        // a caching supplier that would lazily clone shared OpenAPI and reuse it from then on...
         Supplier<OpenAPI> cloneSupplier = () -> {
 
             if (customApi[0] == null) {
