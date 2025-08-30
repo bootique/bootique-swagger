@@ -97,6 +97,10 @@
                         <groupId>org.apache.commons</groupId>
                         <artifactId>commons-compress</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>com.github.docker-java</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
