@@ -55,16 +55,13 @@ public class SwaggerUiServlet extends ResourceServlet {
     public String getInitParameter(String name) {
 
         // special rules for Bootique-defined parameters
-        switch (name) {
+        return switch (name) {
             // "pathInfoOnly = true" ensures that the part of the URL matching the servlet path
             // ("/swagger-ui" in our case) is not included in the file path when resolving a static resource.
-            case PATH_INFO_ONLY_PARAMETER:
-                return "true";
-            case RESOURCE_BASE_PARAMETER:
-                return this.resourceBase;
-            default:
-                return super.getInitParameter(name);
-        }
+            case PATH_INFO_ONLY_PARAMETER -> "true";
+            case RESOURCE_BASE_PARAMETER -> this.resourceBase;
+            default -> super.getInitParameter(name);
+        };
     }
 
     @Override
