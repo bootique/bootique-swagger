@@ -32,60 +32,6 @@
     <name>bootique-swagger-ui: Swagger web UI Integration with Bootique</name>
     <description>Provides Swagger.io web UI integration with Bootique</description>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>io.bootique.jetty</groupId>
-                <artifactId>bootique-jetty</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.bootique.jetty</groupId>
-                <artifactId>bootique-jetty-junit5</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.bootique.jersey</groupId>
-                <artifactId>bootique-jersey</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.spullara.mustache.java</groupId>
-                <artifactId>compiler</artifactId>
-                <version>${mustache.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.seleniumhq.selenium</groupId>
-                <artifactId>selenium-java</artifactId>
-                <version>${selenium.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.github.bonigarcia</groupId>
-                <artifactId>selenium-jupiter</artifactId>
-                <version>${selenium-jupiter.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>*</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.fasterxml.jackson.core</groupId>
-                        <artifactId>*</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.apache.commons</groupId>
-                        <artifactId>commons-compress</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.webjars</groupId>
-                <artifactId>swagger-ui</artifactId>
-                <version>${swagger.ui.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <dependencies>
         <!-- Compile dependencies -->
         <dependency>
