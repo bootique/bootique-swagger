@@ -40,6 +40,7 @@
         <selenium-jupiter.version>4.3.7</selenium-jupiter.version>
         <commons.compress.version>1.26.1</commons.compress.version>
         <commons.lang.version>3.18.0</commons.lang.version>
+        <guava.version>33.4.8-jre</guava.version>
     </properties>
 
     <modules>
@@ -79,6 +80,12 @@
                 <groupId>org.seleniumhq.selenium</groupId>
                 <artifactId>selenium-java</artifactId>
                 <version>${selenium.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.google.guava</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>io.github.bonigarcia</groupId>
@@ -107,6 +114,11 @@
                 <groupId>org.webjars</groupId>
                 <artifactId>swagger-ui</artifactId>
                 <version>${swagger.ui.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.datatype</groupId>
