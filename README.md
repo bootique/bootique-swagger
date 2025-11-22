@@ -20,6 +20,7 @@
 [![build test deploy](https://github.com/bootique/bootique-swagger/actions/workflows/maven.yml/badge.svg)](https://github.com/bootique/bootique-swagger/actions/workflows/maven.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/io.bootique.swagger/bootique-swagger.svg?colorB=brightgreen)](https://search.maven.org/artifact/io.bootique.swagger/bootique-swagger/)
 
+
 # bootique-swagger
 
 Integrates [Swagger](http://swagger.io/) REST API documentation services with Bootique. Supports modern
