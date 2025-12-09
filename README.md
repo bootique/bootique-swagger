@@ -123,12 +123,6 @@ swaggerui:
     
     # Whether this UI console should be disabled. "false" by default.
     noWebAccess: false
-
-    # An optional JS function to control how API requests are executed
-    requestInterceptor: |
-      function(req) {
-        return req;
-      }
 ```
 When you start the application, the console will be available at `/<appcontext>/swagger-ui`. E.g.
 http://127.0.0.1:8080/swagger-ui/ .
@@ -148,3 +142,15 @@ swaggerui:
     specUrl: https://example.org/model/openapi.json
 ```
 
+If you want to customize the Swagger UI behavior in the browser, you can pass some custom JavaScript to the Swagger 
+object:
+```yml
+swaggerui:
+  
+  default:
+    # An optional JS function to control how API requests are executed
+    requestInterceptor: |
+        function(req) {
+          return req;
+        }
+```
