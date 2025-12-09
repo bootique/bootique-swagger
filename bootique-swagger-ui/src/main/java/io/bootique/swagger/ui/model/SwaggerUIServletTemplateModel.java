@@ -21,21 +21,5 @@ package io.bootique.swagger.ui.model;
 /**
  * @since 2.0
  */
-public class SwaggerUIServletTemplateModel {
-
-    private final String apiUrl;
-    private final String resourcePath;
-
-    public SwaggerUIServletTemplateModel(String apiUrl, String resourcePath) {
-        this.apiUrl = apiUrl;
-        this.resourcePath = resourcePath;
-    }
-
-    public String getApiUrl() {
-        return apiUrl;
-    }
-
-    public String getResourcePath() {
-        return resourcePath;
-    }
+public record SwaggerUIServletTemplateModel(String apiUrl, String resourcePath, String requestInterceptor) {
 }

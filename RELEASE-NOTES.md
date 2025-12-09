@@ -1,3 +1,7 @@
+## 4.0-M2
+
+* #54 swagger-ui: configurable "requestInterceptor"
+
 ## 4.0-M1
 
 * #50 Remove deprecated modules (javax flavor)

@@ -36,6 +36,7 @@ public class SwaggerUiModelFactory {
     private String specPath;
     private String uiPath;
     private boolean noWebAccess;
+    private String requestInterceptor;
 
     private static String getBaseUrl(HttpServletRequest request) {
 
@@ -56,7 +57,7 @@ public class SwaggerUiModelFactory {
     public Optional<SwaggerUIServletModel> createModel() {
         return noWebAccess
                 ? Optional.empty()
-                : Optional.of(new SwaggerUIServletModel(specUrlResolver(), uiPath()));
+                : Optional.of(new SwaggerUIServletModel(specUrlResolver(), uiPath(), requestInterceptor()));
     }
 
     @BQConfigProperty("A full URL of the JSON/YAML descriptor resource")
@@ -80,6 +81,21 @@ public class SwaggerUiModelFactory {
     @BQConfigProperty("Whether to disable web access to this UI console. 'false' by default.")
     public void setNoWebAccess(boolean noWebAccess) {
         this.noWebAccess = noWebAccess;
+    }
+
+    /**
+     * @since 4.0
+     */
+    @BQConfigProperty("""
+            (Optional) A chunk of JavaScript for the SwaggerUIBundle.requestInterceptor property.
+            Allows to specify a custom handler of API requests executed from Swagger.""")
+    public void setRequestInterceptor(String requestInterceptor) {
+        this.requestInterceptor = requestInterceptor;
+    }
+
+    private String requestInterceptor() {
+        String trimmed = requestInterceptor != null ? requestInterceptor.trim() : "";
+        return trimmed.isEmpty() ? null : trimmed;
     }
 
     private String uiPath() {

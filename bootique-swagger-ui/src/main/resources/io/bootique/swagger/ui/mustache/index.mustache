@@ -25,6 +25,10 @@
               SwaggerUIStandalonePreset
             ],
             layout: "StandaloneLayout",
+            {{#requestInterceptor}}
+            requestInterceptor:
+{{{.}}}
+{{/requestInterceptor}}
           });
         };
     </script>

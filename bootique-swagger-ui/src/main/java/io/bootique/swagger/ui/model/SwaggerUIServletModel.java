@@ -29,16 +29,18 @@ public class SwaggerUIServletModel {
 
     private final Function<HttpServletRequest, String> specUrlResolver;
     private final String uiPath;
+    private final String requestInterceptor;
 
-    public SwaggerUIServletModel(Function<HttpServletRequest, String> specUrlResolver, String uiPath) {
+    public SwaggerUIServletModel(Function<HttpServletRequest, String> specUrlResolver, String uiPath, String requestInterceptor) {
         this.specUrlResolver = specUrlResolver;
         this.uiPath = uiPath;
+        this.requestInterceptor = requestInterceptor;
     }
 
     public SwaggerUIServletTemplateModel createTemplateModel(HttpServletRequest request) {
         String apiUrl = getSpecUrl(request);
         String resourcePath = getResourcePath(request);
-        return new SwaggerUIServletTemplateModel(apiUrl, resourcePath);
+        return new SwaggerUIServletTemplateModel(apiUrl, resourcePath, requestInterceptor);
     }
 
     public String getUiPath() {

@@ -100,4 +100,15 @@ public class ConfigOptionsIT {
         JettyTester.assertOk(r)
                 .assertContent(new ResourceFactory("classpath:ConfigOptionsIT/response3.html"));
     }
+
+    @Test
+    @DisplayName("'requestInterceptor' in config")
+    public void requestInterceptor() {
+        testFactory.app("-s", "-c", "classpath:ConfigOptionsIT/request-interceptor.yml").autoLoadModules().run();
+
+        Response r = target.path("/swagger-path").request().get();
+        JettyTester.assertOk(r)
+                .assertContent(new ResourceFactory("classpath:ConfigOptionsIT/response4.html"));
+    }
+
 }
