@@ -142,7 +142,7 @@ swaggerui:
     specUrl: https://example.org/model/openapi.json
 ```
 
-If you want to customize the Swagger UI behavior in the browser, you can pass some custom JavaScript to the Swagger 
+If you want to customize the Swagger UI behavior in the browser, you can pass custom JavaScript to the Swagger 
 object:
 ```yml
 swaggerui:
