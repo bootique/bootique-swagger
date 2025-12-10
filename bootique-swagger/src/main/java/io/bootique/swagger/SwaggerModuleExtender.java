@@ -31,6 +31,7 @@ public class SwaggerModuleExtender extends ModuleExtender<SwaggerModuleExtender>
     private SetBuilder<ModelConverter> converters;
     private SetBuilder<OpenApiCustomizer> customizers;
     private SetBuilder<OpenApiRequestCustomizer> requestCustomizers;
+    private SetBuilder<OpenApiModelFilter> modelFilters;
 
     public SwaggerModuleExtender(Binder binder) {
         super(binder);
@@ -41,6 +42,7 @@ public class SwaggerModuleExtender extends ModuleExtender<SwaggerModuleExtender>
         contributeConverters();
         contributeCustomizers();
         contributeRequestCustomizers();
+        contributeModelFilters();
         return this;
     }
 
@@ -86,6 +88,22 @@ public class SwaggerModuleExtender extends ModuleExtender<SwaggerModuleExtender>
         return this;
     }
 
+    /**
+     * @since 4.0
+     */
+    public SwaggerModuleExtender addModelFilter(OpenApiModelFilter filter) {
+        contributeModelFilters().addInstance(filter);
+        return this;
+    }
+
+    /**
+     * @since 4.0
+     */
+    public SwaggerModuleExtender addModelFilter(Class<? extends OpenApiModelFilter> filterType) {
+        contributeModelFilters().add(filterType);
+        return this;
+    }
+
     protected SetBuilder<ModelConverter> contributeConverters() {
         return converters != null ? converters : (converters = newSet(ModelConverter.class));
     }
@@ -96,5 +114,9 @@ public class SwaggerModuleExtender extends ModuleExtender<SwaggerModuleExtender>
 
     protected SetBuilder<OpenApiRequestCustomizer> contributeRequestCustomizers() {
         return requestCustomizers != null ? requestCustomizers : (requestCustomizers = newSet(OpenApiRequestCustomizer.class));
+    }
+
+    protected SetBuilder<OpenApiModelFilter> contributeModelFilters() {
+        return modelFilters != null ? modelFilters : (modelFilters = newSet(OpenApiModelFilter.class));
     }
 }

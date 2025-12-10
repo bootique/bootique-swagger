@@ -39,15 +39,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiPredicate;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @BQTest
-public class OpenApiRequestModelFilterIT {
+public class OpenApiModelFilterIT {
 
-    static BiPredicate<String, PathItem.HttpMethod>[] allowPathAndMethodCheck = new BiPredicate[1];
+    static AtomicReference<OpenApiModelFilter> allowPathAndMethodCheck = new AtomicReference<>();
 
     final JettyTester jetty = JettyTester.create();
 
@@ -57,14 +57,14 @@ public class OpenApiRequestModelFilterIT {
             .autoLoadModules()
             .module(jetty.moduleReplacingConnectors())
             .module(b -> JerseyModule.extend(b).addResource(TestApis.class))
-            .module(b -> SwaggerModule.extend(b).addRequestCustomizer(new OpenApiRequestModelFilter((p, m) -> allowPathAndMethodCheck[0].test(p, m))))
+            .module(b -> SwaggerModule.extend(b).addModelFilter((r, p, m) -> allowPathAndMethodCheck.get().shouldInclude(r, p, m)))
             .createRuntime();
 
 
     @ParameterizedTest
     @MethodSource
     public void includeExcludePaths(List<String> allowedPaths, Map<String, Boolean> expectedPathsPolicy) throws JsonProcessingException {
-        allowPathAndMethodCheck[0] = (p, m) -> allowedPaths.contains(p);
+        allowPathAndMethodCheck.set((r, p, m) -> allowedPaths.contains(p));
 
         Response r = jetty.getTarget().path("/model.json")
                 .request()
@@ -76,9 +76,7 @@ public class OpenApiRequestModelFilterIT {
         pathsNode.fieldNames().forEachRemaining(paths::add);
 
         for (Map.Entry<String, Boolean> e : expectedPathsPolicy.entrySet()) {
-            if (e.getValue()) {
-                assertEquals(e.getValue(), paths.contains(e.getKey()), () -> "Path '" + e.getKey() + "' should not be allowed for " + allowedPaths);
-            }
+            assertEquals(e.getValue(), paths.contains(e.getKey()), () -> "Path '" + e.getKey() + "' should not be allowed for " + allowedPaths);
         }
     }
 
@@ -93,7 +91,7 @@ public class OpenApiRequestModelFilterIT {
 
     @Test
     public void includeExcludeMethods() throws JsonProcessingException {
-        allowPathAndMethodCheck[0] = (p, m) -> p.equals("/t/hi") || (p.equals("/t/1") && m == PathItem.HttpMethod.PUT);
+        allowPathAndMethodCheck.set((r, p, m) -> p.equals("/t/hi") || (p.equals("/t/1") && m == PathItem.HttpMethod.PUT));
 
         Response r = jetty.getTarget().path("/model.json")
                 .request()
@@ -115,8 +113,8 @@ public class OpenApiRequestModelFilterIT {
     @ParameterizedTest
     @MethodSource
     public void includeExcludeSchemas(List<String> allowedPaths, Set<String> expectedSchemas) throws JsonProcessingException {
-        allowPathAndMethodCheck[0] = (p, m) -> allowedPaths.contains(p);
-
+        allowPathAndMethodCheck.set((r, p, m) -> allowedPaths.contains(p));
+        
         Response r = jetty.getTarget().path("/model.json")
                 .request()
                 .get();

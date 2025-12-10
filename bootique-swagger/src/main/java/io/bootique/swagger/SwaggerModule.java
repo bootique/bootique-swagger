@@ -35,6 +35,7 @@ import io.bootique.swagger.web.SwaggerApi;
 import jakarta.inject.Provider;
 import jakarta.inject.Singleton;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class SwaggerModule implements BQModule {
@@ -75,8 +76,13 @@ public class SwaggerModule implements BQModule {
     @Singleton
     MappedResource<SwaggerApi> provideOpenApiResource(
             SwaggerService service,
-            Set<OpenApiRequestCustomizer> customizers) {
-        SwaggerApi swaggerApi = new SwaggerApi(service, customizers);
+            Set<OpenApiRequestCustomizer> customizers,
+            Set<OpenApiModelFilter> modelFilters) {
+
+        Set<OpenApiRequestCustomizer> allCustomizers = modelFilters.isEmpty() ? customizers : new HashSet<>(customizers);
+        modelFilters.stream().map(OpenApiModelFilterCustomizer::new).forEach(allCustomizers::add);
+
+        SwaggerApi swaggerApi = new SwaggerApi(service, allCustomizers);
         return new MappedResource<>(swaggerApi, service.getUrlPatterns());
     }
 

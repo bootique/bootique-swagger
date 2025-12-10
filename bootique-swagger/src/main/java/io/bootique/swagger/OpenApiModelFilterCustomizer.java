@@ -28,7 +28,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -42,14 +41,14 @@ import java.util.stream.Stream;
  *
  * @since 4.0
  */
-public class OpenApiRequestModelFilter implements OpenApiRequestCustomizer {
+class OpenApiModelFilterCustomizer implements OpenApiRequestCustomizer {
 
     private static final String SCHEMA_REF_PREFIX = "#/components/schemas/";
 
-    private final BiPredicate<String, PathItem.HttpMethod> allowPathAndMethodCheck;
+    private final OpenApiModelFilter filter;
 
-    public OpenApiRequestModelFilter(BiPredicate<String, PathItem.HttpMethod> allowPathAndMethodCheck) {
-        this.allowPathAndMethodCheck = allowPathAndMethodCheck;
+    public OpenApiModelFilterCustomizer(OpenApiModelFilter filter) {
+        this.filter = filter;
     }
 
     @Override
@@ -59,7 +58,7 @@ public class OpenApiRequestModelFilter implements OpenApiRequestCustomizer {
         if (api.getPaths() != null) {
 
             // get rid of inaccessible paths
-            Set<String> pathsInUse = pathsInUse(api);
+            Set<String> pathsInUse = pathsInUse(request, api);
             api.getPaths().keySet().removeIf(p -> !pathsInUse.contains(p));
 
             // get rid of unused schemas
@@ -70,14 +69,14 @@ public class OpenApiRequestModelFilter implements OpenApiRequestCustomizer {
         }
     }
 
-    private Set<String> pathsInUse(OpenAPI api) {
+    private Set<String> pathsInUse(HttpServletRequest request, OpenAPI api) {
         return api.getPaths().entrySet().stream()
                 // strip off disallowed operations, and if nothing is left, remove the path
-                .map(e -> filterOps(e.getKey(), e.getValue()) ? e.getKey() : null)
+                .map(e -> filterOps(request, e.getKey(), e.getValue()) ? e.getKey() : null)
                 .collect(Collectors.toSet());
     }
 
-    private boolean filterOps(String path, PathItem pi) {
+    private boolean filterOps(HttpServletRequest request, String path, PathItem pi) {
 
         Function<PathItem.HttpMethod, Operation> getOp = m -> switch (m) {
             case GET -> pi.getGet();
@@ -106,7 +105,7 @@ public class OpenApiRequestModelFilter implements OpenApiRequestCustomizer {
         boolean hasOpsLeft = false;
         for (PathItem.HttpMethod m : PathItem.HttpMethod.values()) {
             if (getOp.apply(m) != null) {
-                if (!allowPathAndMethodCheck.test(path, m)) {
+                if (!filter.shouldInclude(request, path, m)) {
                     nullifyOp.accept(m);
                 } else {
                     hasOpsLeft = true;
