@@ -1,6 +1,7 @@
 ## 4.0-M2
 
 * #54 swagger-ui: configurable "requestInterceptor"
+* #55 OpenAPI customizer to filter out paths and schemas
 
 ## 4.0-M1
 
