@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
  * @since 4.0
  */
 @FunctionalInterface
-public interface OpenApiModelFilter {
+public interface OpenApiModelRequestFilter {
 
     boolean shouldInclude(HttpServletRequest request, String path, PathItem.HttpMethod method);
 }

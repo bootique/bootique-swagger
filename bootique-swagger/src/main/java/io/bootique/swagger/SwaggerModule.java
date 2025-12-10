@@ -77,7 +77,7 @@ public class SwaggerModule implements BQModule {
     MappedResource<SwaggerApi> provideOpenApiResource(
             SwaggerService service,
             Set<OpenApiRequestCustomizer> customizers,
-            Set<OpenApiModelFilter> modelFilters) {
+            Set<OpenApiModelRequestFilter> modelFilters) {
 
         Set<OpenApiRequestCustomizer> allCustomizers = modelFilters.isEmpty() ? customizers : new HashSet<>(customizers);
         modelFilters.stream().map(OpenApiModelFilterCustomizer::new).forEach(allCustomizers::add);

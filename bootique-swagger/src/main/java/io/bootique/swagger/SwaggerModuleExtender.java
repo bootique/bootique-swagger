@@ -31,7 +31,7 @@ public class SwaggerModuleExtender extends ModuleExtender<SwaggerModuleExtender>
     private SetBuilder<ModelConverter> converters;
     private SetBuilder<OpenApiCustomizer> customizers;
     private SetBuilder<OpenApiRequestCustomizer> requestCustomizers;
-    private SetBuilder<OpenApiModelFilter> modelFilters;
+    private SetBuilder<OpenApiModelRequestFilter> requestFilters;
 
     public SwaggerModuleExtender(Binder binder) {
         super(binder);
@@ -42,7 +42,7 @@ public class SwaggerModuleExtender extends ModuleExtender<SwaggerModuleExtender>
         contributeConverters();
         contributeCustomizers();
         contributeRequestCustomizers();
-        contributeModelFilters();
+        contributeRequestFilters();
         return this;
     }
 
@@ -91,16 +91,16 @@ public class SwaggerModuleExtender extends ModuleExtender<SwaggerModuleExtender>
     /**
      * @since 4.0
      */
-    public SwaggerModuleExtender addModelFilter(OpenApiModelFilter filter) {
-        contributeModelFilters().addInstance(filter);
+    public SwaggerModuleExtender addRequestFilter(OpenApiModelRequestFilter filter) {
+        contributeRequestFilters().addInstance(filter);
         return this;
     }
 
     /**
      * @since 4.0
      */
-    public SwaggerModuleExtender addModelFilter(Class<? extends OpenApiModelFilter> filterType) {
-        contributeModelFilters().add(filterType);
+    public SwaggerModuleExtender addRequestFilter(Class<? extends OpenApiModelRequestFilter> filterType) {
+        contributeRequestFilters().add(filterType);
         return this;
     }
 
@@ -116,7 +116,7 @@ public class SwaggerModuleExtender extends ModuleExtender<SwaggerModuleExtender>
         return requestCustomizers != null ? requestCustomizers : (requestCustomizers = newSet(OpenApiRequestCustomizer.class));
     }
 
-    protected SetBuilder<OpenApiModelFilter> contributeModelFilters() {
-        return modelFilters != null ? modelFilters : (modelFilters = newSet(OpenApiModelFilter.class));
+    protected SetBuilder<OpenApiModelRequestFilter> contributeRequestFilters() {
+        return requestFilters != null ? requestFilters : (requestFilters = newSet(OpenApiModelRequestFilter.class));
     }
 }

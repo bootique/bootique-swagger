@@ -45,9 +45,9 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 @BQTest
-public class OpenApiModelFilterIT {
+public class OpenApiModelRequestFilterIT {
 
-    static AtomicReference<OpenApiModelFilter> allowPathAndMethodCheck = new AtomicReference<>();
+    static AtomicReference<OpenApiModelRequestFilter> allowPathAndMethodCheck = new AtomicReference<>();
 
     final JettyTester jetty = JettyTester.create();
 
@@ -57,7 +57,7 @@ public class OpenApiModelFilterIT {
             .autoLoadModules()
             .module(jetty.moduleReplacingConnectors())
             .module(b -> JerseyModule.extend(b).addResource(TestApis.class))
-            .module(b -> SwaggerModule.extend(b).addModelFilter((r, p, m) -> allowPathAndMethodCheck.get().shouldInclude(r, p, m)))
+            .module(b -> SwaggerModule.extend(b).addRequestFilter((r, p, m) -> allowPathAndMethodCheck.get().shouldInclude(r, p, m)))
             .createRuntime();
 
 
@@ -114,7 +114,7 @@ public class OpenApiModelFilterIT {
     @MethodSource
     public void includeExcludeSchemas(List<String> allowedPaths, Set<String> expectedSchemas) throws JsonProcessingException {
         allowPathAndMethodCheck.set((r, p, m) -> allowedPaths.contains(p));
-        
+
         Response r = jetty.getTarget().path("/model.json")
                 .request()
                 .get();

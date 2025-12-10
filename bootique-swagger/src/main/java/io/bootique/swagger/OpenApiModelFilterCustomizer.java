@@ -45,9 +45,9 @@ class OpenApiModelFilterCustomizer implements OpenApiRequestCustomizer {
 
     private static final String SCHEMA_REF_PREFIX = "#/components/schemas/";
 
-    private final OpenApiModelFilter filter;
+    private final OpenApiModelRequestFilter filter;
 
-    public OpenApiModelFilterCustomizer(OpenApiModelFilter filter) {
+    public OpenApiModelFilterCustomizer(OpenApiModelRequestFilter filter) {
         this.filter = filter;
     }
 
