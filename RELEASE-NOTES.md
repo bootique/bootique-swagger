@@ -2,6 +2,7 @@
 
 * #54 swagger-ui: configurable "requestInterceptor"
 * #55 OpenAPI model filter
+* #56 Update Swagger UI to 5.31.0
 
 ## 4.0-M1
 
