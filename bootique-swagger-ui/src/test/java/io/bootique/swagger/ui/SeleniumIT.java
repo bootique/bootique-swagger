@@ -42,7 +42,7 @@ public class SeleniumIT {
             .autoLoadModules()
             .module(jetty.moduleReplacingConnectors())
             .module(binder -> BQCoreModule.extend(binder).addConfig("classpath:SeleniumIT/startup.yml"))
-            .module(binder -> JerseyModule.extend(binder).addResource(TestApi.class))
+            .module(binder -> JerseyModule.extend(binder).addApiResource(TestApi.class))
             .createRuntime();
 
     @Options

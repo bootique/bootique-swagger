@@ -56,7 +56,7 @@ public class OpenApiModelRequestFilterIT {
             .app("-s", "-c", "classpath:config10/startup.yml")
             .autoLoadModules()
             .module(jetty.moduleReplacingConnectors())
-            .module(b -> JerseyModule.extend(b).addResource(TestApis.class))
+            .module(b -> JerseyModule.extend(b).addApiResource(TestApis.class))
             .module(b -> SwaggerModule.extend(b).addRequestFilter((r, p, m) -> allowPathAndMethodCheck.get().shouldInclude(r, p, m)))
             .createRuntime();
 

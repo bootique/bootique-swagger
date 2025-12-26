@@ -58,7 +58,7 @@ public class MultiTenant_StaticModel_API_IT {
             .app("-s", "-c", "classpath:MultiTenant_StaticModel_API_IT/startup.yml")
             .autoLoadModules()
             .module(jetty.moduleReplacingConnectors())
-            .module(b -> JerseyModule.extend(b).addResource(Api1.class).addResource(Api2.class))
+            .module(b -> JerseyModule.extend(b).addApiResource(Api1.class).addApiResource(Api2.class))
             .module(b -> JettyModule.extend(b).addMappedServlet(MappedServlet.ofStatic("/models/*").name("models").build()))
             .module(b -> JettyModule.extend(b).addMappedServlet(MappedServlet.ofStatic("/doc/*").name("doc").build()))
             .createRuntime();

@@ -39,7 +39,7 @@ public class AnnotationSpec_YamlOverrideSpec_IT {
             .app("-s", "-c", "classpath:config1/startup.yml")
             .autoLoadModules()
             .module(jetty.moduleReplacingConnectors())
-            .module(b -> JerseyModule.extend(b).addResource(Test1Api.class))
+            .module(b -> JerseyModule.extend(b).addApiResource(Test1Api.class))
             .createRuntime();
 
     @Test
