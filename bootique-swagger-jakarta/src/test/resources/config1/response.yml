@@ -20,7 +20,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Test1Data'
+                $ref: "#/components/schemas/Test1Data"
     put:
       tags:
       - b
@@ -29,7 +29,7 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/Test1Data'
+              $ref: "#/components/schemas/Test1Data"
       responses:
         default:
           description: default response
