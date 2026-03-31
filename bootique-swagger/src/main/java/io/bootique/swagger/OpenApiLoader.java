@@ -27,6 +27,7 @@ import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.models.OpenAPI;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.List;
@@ -76,8 +77,8 @@ public class OpenApiLoader {
     protected OpenAPI loadSpec(URL location) {
 
         ObjectMapper mapper = createMapper(location);
-        try {
-            return mapper.readValue(location, OpenAPI.class);
+        try (InputStream in = location.openStream()) {
+            return mapper.readValue(in, OpenAPI.class);
         } catch (IOException e) {
             throw new RuntimeException("Error reading configuration from " + location, e);
         }
