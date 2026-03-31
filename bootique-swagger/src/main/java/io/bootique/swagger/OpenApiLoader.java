@@ -26,9 +26,6 @@ import io.swagger.v3.jaxrs2.Reader;
 import io.swagger.v3.jaxrs2.integration.JaxrsAnnotationScanner;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.models.OpenAPI;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -40,8 +37,6 @@ import java.util.Set;
  * @since 2.0
  */
 public class OpenApiLoader {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(OpenApiLoader.class);
 
     public OpenAPI load(List<String> resourcePackages, List<String> resourceClasses, URL specLocation, URL overrideSpecLocation) {
 
@@ -82,9 +77,7 @@ public class OpenApiLoader {
         try {
             Reader reader = new Reader();
             reader.setConfiguration(config);
-            OpenAPI api = reader.read(classes, scanner.resources());
-            detector.warnOnConflicts(LOGGER);
-            return api;
+            return reader.read(classes, scanner.resources());
         } finally {
             ModelConverters.getInstance().removeConverter(detector);
         }

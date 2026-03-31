@@ -20,45 +20,95 @@ package io.bootique.swagger;
 
 import io.bootique.BQRuntime;
 import io.bootique.Bootique;
-import io.bootique.jetty.junit.JettyTester;
 import io.bootique.junit.BQApp;
 import io.bootique.junit.BQTest;
-import jakarta.ws.rs.core.Response;
+import io.swagger.v3.oas.models.OpenAPI;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @BQTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ConflictingSchemaIT {
 
-    static final JettyTester jetty = JettyTester.create();
-
-    @BQApp
+    @BQApp(skipRun = true)
     static final BQRuntime app = Bootique
             .app("-s", "-c", "classpath:config11/startup.yml")
             .autoLoadModules()
-            .module(jetty.moduleReplacingConnectors())
+            .createRuntime();
+
+    @BQApp(skipRun = true)
+    static final BQRuntime app12 = Bootique
+            .app("-s", "-c", "classpath:config12/startup.yml")
+            .autoLoadModules()
+            .createRuntime();
+
+    @BQApp(skipRun = true)
+    static final BQRuntime app13 = Bootique
+            .app("-s", "-c", "classpath:config13/startup.yml")
+            .autoLoadModules()
             .createRuntime();
 
     @Test
+    // putting this test in front to ensure we can capture stderr before pollution by other tests
+    @Order(1)
     public void conflictingSchemaWarn() {
         PrintStream savedErr = System.err;
         ByteArrayOutputStream captured = new ByteArrayOutputStream();
         System.setErr(new PrintStream(captured));
 
         try {
-            Response r = jetty.getTarget().path("/model.json").request().get();
-            JettyTester.assertOk(r);
+            app.getInstance(SwaggerService.class).getOpenApiModel("model.json").getApi();
         } finally {
             System.setErr(savedErr);
         }
 
         String log = captured.toString();
-        assertTrue(log.contains("** Multiple classes are mapped to OpenAPI schema 'MySchema'"), log);
+        assertTrue(log.contains("** Schema name 'MySchema' is already used by"), log);
         assertTrue(log.contains("io.bootique.swagger.config11.p1.MySchema"), "Expected p1.MySchema in warning");
         assertTrue(log.contains("io.bootique.swagger.config11.p2.MySchema"), "Expected p2.MySchema in warning");
+    }
+
+    @Test
+    @Order(2)
+    public void conflictingSchemaRenamed() {
+        SwaggerService service = app.getInstance(SwaggerService.class);
+        OpenAPI api = service.getOpenApiModel("model.json").getApi();
+        Map<String, ?> schemas = api.getComponents().getSchemas();
+        assertEquals(2, schemas.size(), schemas.keySet().toString());
+        assertTrue(schemas.containsKey("MySchema"), "Original schema 'MySchema' must be present");
+        assertTrue(schemas.containsKey("MySchema1"), "Renamed schema 'MySchema1' must be present");
+    }
+
+    @Test
+    public void threeWayConflict() {
+        SwaggerService service = app12.getInstance(SwaggerService.class);
+        OpenAPI api = service.getOpenApiModel("model.json").getApi();
+        Map<String, ?> schemas = api.getComponents().getSchemas();
+        assertEquals(3, schemas.size(), schemas.keySet().toString());
+        assertTrue(schemas.containsKey("MySchema"), "Original schema 'MySchema' must be present");
+        assertTrue(schemas.containsKey("MySchema1"), "Renamed schema 'MySchema1' must be present");
+        assertTrue(schemas.containsKey("MySchema2"), "Renamed schema 'MySchema2' must be present");
+    }
+
+    @Test
+    public void subschemaConflict() {
+        SwaggerService service = app13.getInstance(SwaggerService.class);
+        OpenAPI api = service.getOpenApiModel("model.json").getApi();
+        Map<String, ?> schemas = api.getComponents().getSchemas();
+        // Container and Box are top-level (no conflict), Inner conflicts and gets renamed
+        assertEquals(4, schemas.size(), schemas.keySet().toString());
+        assertTrue(schemas.containsKey("Container"), "'Container' must be present");
+        assertTrue(schemas.containsKey("Box"), "'Box' must be present");
+        assertTrue(schemas.containsKey("Inner"), "Original 'Inner' must be present");
+        assertTrue(schemas.containsKey("Inner1"), "Renamed 'Inner1' must be present");
     }
 }

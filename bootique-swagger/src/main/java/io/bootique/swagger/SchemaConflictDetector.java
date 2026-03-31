@@ -24,66 +24,98 @@ import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.models.media.Schema;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * A temporary {@link ModelConverter} installed around a swagger {@link io.swagger.v3.jaxrs2.Reader#read} call
- * to detect Java classes that map to the same OpenAPI schema name.
- *
- * @since 4.0
+ * to detect Java classes that map to the same OpenAPI schema name, renaming conflicts to ensure all schemas
+ * are included in the model.
  */
 class SchemaConflictDetector implements ModelConverter {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SchemaConflictDetector.class);
     private static final String SCHEMA_REF_PREFIX = "#/components/schemas/";
 
-    private final Map<String, Set<String>> schemaNameToClasses = new LinkedHashMap<>();
+    // tracks which Java class first claimed each schema name
+    private final Map<String, String> schemaNameToClass = new HashMap<>();
 
     @Override
     public Schema resolve(AnnotatedType annotatedType, ModelConverterContext context, Iterator<ModelConverter> chain) {
-        Schema result = chain.hasNext() ? chain.next().resolve(annotatedType, context, chain) : null;
+        if (!chain.hasNext()) {
+            return null;
+        }
 
-        if (result != null && result.get$ref() != null) {
+        String thisClass = extractClassName(annotatedType.getType());
+
+        if (thisClass != null) {
+            String proposedName = computeSchemaName(annotatedType);
+            if (proposedName != null) {
+                String existingClass = schemaNameToClass.get(proposedName);
+                if (existingClass != null && !existingClass.equals(thisClass)) {
+                    String newName = findUniqueName(proposedName);
+                    LOGGER.warn("** Schema name '{}' is already used by '{}'. Renaming '{}' to '{}'.",
+                            proposedName, existingClass, thisClass, newName);
+                    annotatedType.name(newName);
+                }
+            }
+        }
+
+        Schema result = chain.next().resolve(annotatedType, context, chain);
+
+        if (result != null && result.get$ref() != null && thisClass != null) {
             String ref = result.get$ref();
             if (ref.startsWith(SCHEMA_REF_PREFIX)) {
                 String schemaName = ref.substring(SCHEMA_REF_PREFIX.length());
-                String className = extractClassName(annotatedType.getType());
-                if (className != null) {
-                    schemaNameToClasses
-                            .computeIfAbsent(schemaName, k -> new LinkedHashSet<>())
-                            .add(className);
-                }
+                schemaNameToClass.putIfAbsent(schemaName, thisClass);
             }
         }
 
         return result;
     }
 
-    void warnOnConflicts(Logger logger) {
-        schemaNameToClasses.forEach((name, classes) -> {
-            if (classes.size() > 1) {
-                logger.warn("""
-                        ** Multiple classes are mapped to OpenAPI schema '{}'. Only one definition will be included, \
-                        resulting in an incorrect model. Conflicting classes: {}""", name, classes);
-            }
-        });
+    private String findUniqueName(String base) {
+        int i = 1;
+        while (schemaNameToClass.containsKey(base + i)) {
+            i++;
+        }
+        return base + i;
+    }
+
+    private String computeSchemaName(AnnotatedType annotatedType) {
+        if (annotatedType.getName() != null && !annotatedType.getName().isEmpty()) {
+            return annotatedType.getName();
+        }
+        Class<?> clazz = extractClass(annotatedType.getType());
+        if (clazz == null) {
+            return null;
+        }
+        io.swagger.v3.oas.annotations.media.Schema annotation = clazz.getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+        if (annotation != null && !annotation.name().isEmpty()) {
+            return annotation.name();
+        }
+        return clazz.getSimpleName();
     }
 
     private String extractClassName(Type type) {
+        Class<?> clazz = extractClass(type);
+        return clazz != null ? clazz.getName() : null;
+    }
+
+    private Class<?> extractClass(Type type) {
         if (type instanceof JavaType jt) {
-            return jt.getRawClass().getName();
+            return jt.getRawClass();
         }
         if (type instanceof Class<?> c) {
-            return c.getName();
+            return c;
         }
         if (type instanceof ParameterizedType pt && pt.getRawType() instanceof Class<?> c) {
-            return c.getName();
+            return c;
         }
         return null;
     }

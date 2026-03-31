@@ -1,6 +1,6 @@
 ## 4.0-M4
 
-* #57 Print warnings on conflicting schema names
+* #57 Rename conflicting schema names
 
 ## 4.0-M2
 
