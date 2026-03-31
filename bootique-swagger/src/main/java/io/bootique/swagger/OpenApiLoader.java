@@ -19,23 +19,29 @@
 package io.bootique.swagger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.jaxrs2.Reader;
 import io.swagger.v3.jaxrs2.integration.JaxrsAnnotationScanner;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.models.OpenAPI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @since 2.0
  */
 public class OpenApiLoader {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(OpenApiLoader.class);
 
     public OpenAPI load(List<String> resourcePackages, List<String> resourceClasses, URL specLocation, URL overrideSpecLocation) {
 
@@ -69,9 +75,19 @@ public class OpenApiLoader {
         JaxrsAnnotationScanner scanner = new JaxrsAnnotationScanner<>();
         scanner.setConfiguration(config);
 
-        Reader reader = new Reader();
-        reader.setConfiguration(config);
-        return reader.read(scanner.classes(), scanner.resources());
+        Set<Class<?>> classes = scanner.classes();
+
+        SchemaConflictDetector detector = new SchemaConflictDetector();
+        ModelConverters.getInstance().addConverter(detector);
+        try {
+            Reader reader = new Reader();
+            reader.setConfiguration(config);
+            OpenAPI api = reader.read(classes, scanner.resources());
+            detector.warnOnConflicts(LOGGER);
+            return api;
+        } finally {
+            ModelConverters.getInstance().removeConverter(detector);
+        }
     }
 
     protected OpenAPI loadSpec(URL location) {
