@@ -33,7 +33,7 @@ public class PathSortingCustomizer implements OpenApiCustomizer {
     public void customize(String name, Supplier<OpenAPI> apiSupplier) {
         OpenAPI api = apiSupplier.get();
         Paths paths = api.getPaths();
-        if (paths != null && paths.keySet().size() >= 2) {
+        if (paths != null && paths.size() >= 2) {
             Paths sorted = new Paths();
             paths.keySet().stream().sorted().forEach(p -> sorted.put(p, paths.get(p)));
             api.setPaths(sorted);
