@@ -48,9 +48,8 @@ public class OpenApiLoader {
         OpenAPI specFromAnnotations = !resourcePackages.isEmpty() || !resourceClasses.isEmpty()
                 ? loadSpecFromAnnotations(empty, resourcePackages, resourceClasses) : empty;
         OpenAPI spec = specLocation != null ? OpenApiMerger.merge(specFromAnnotations, loadSpec(specLocation)) : specFromAnnotations;
-        OpenAPI specOverride = overrideSpecLocation != null ? OpenApiMerger.merge(spec, loadSpec(overrideSpecLocation)) : spec;
 
-        return specOverride;
+        return overrideSpecLocation != null ? OpenApiMerger.merge(spec, loadSpec(overrideSpecLocation)) : spec;
     }
 
     protected OpenAPI loadSpecFromAnnotations(OpenAPI mergeInto, List<String> resourcePackages, List<String> resourceClasses) {
@@ -66,7 +65,7 @@ public class OpenApiLoader {
             config.setResourceClasses(new HashSet<>(resourceClasses));
         }
 
-        JaxrsAnnotationScanner scanner = new JaxrsAnnotationScanner();
+        JaxrsAnnotationScanner scanner = new JaxrsAnnotationScanner<>();
         scanner.setConfiguration(config);
 
         Reader reader = new Reader();
