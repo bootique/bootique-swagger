@@ -12,6 +12,7 @@ import io.bootique.swagger.converter.YearMonthConverter;
 import io.bootique.swagger.converter.ZoneOffsetConverter;
 import io.bootique.swagger.customizer.PathSortingCustomizer;
 import io.bootique.swagger.customizer.SchemasSortingCustomizer;
+import io.bootique.swagger.customizer.TagsSortingCustomizer;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
 
@@ -64,9 +65,10 @@ public class SwaggerServiceFactory {
         // start with standard customizers, so that the user-provided ones can fix the model to
         // their liking
 
-        List<OpenApiCustomizer> customizers = new ArrayList<>(2 + diCustomizers.size());
+        List<OpenApiCustomizer> customizers = new ArrayList<>(3 + diCustomizers.size());
         customizers.add(new PathSortingCustomizer());
         customizers.add(new SchemasSortingCustomizer());
+        customizers.add(new TagsSortingCustomizer());
         customizers.addAll(diCustomizers);
 
         return customizers;

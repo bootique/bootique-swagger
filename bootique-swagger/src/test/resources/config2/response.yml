@@ -8,6 +8,9 @@ servers:
   description: prod server
 - url: http://staging-config2.example.com
   description: stage server
+tags:
+- name: a
+- name: b
 paths:
   /config2/test2:
     get:

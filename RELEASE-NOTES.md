@@ -1,6 +1,7 @@
 ## 4.0-M4
 
 * #57 Rename conflicting schema names
+* #58 Alphabetical Tag Ordering for OpenAPI Descriptors
 
 ## 4.0-M2
 

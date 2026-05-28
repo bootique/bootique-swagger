@@ -1,0 +1,54 @@
+{
+  "openapi" : "3.0.1",
+  "tags" : [ {
+    "name" : "a"
+  }, {
+    "name" : "m"
+  }, {
+    "name" : "z"
+  } ],
+  "paths" : {
+    "/api14/1" : {
+      "get" : {
+        "tags" : [ "z" ],
+        "operationId" : "e1",
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "*/*" : { }
+            }
+          }
+        }
+      }
+    },
+    "/api14/2" : {
+      "get" : {
+        "tags" : [ "m" ],
+        "operationId" : "e2",
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "*/*" : { }
+            }
+          }
+        }
+      }
+    },
+    "/api14/3" : {
+      "get" : {
+        "tags" : [ "a" ],
+        "operationId" : "e3",
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "*/*" : { }
+            }
+          }
+        }
+      }
+    }
+  }
+}

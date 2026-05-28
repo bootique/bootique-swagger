@@ -3,6 +3,11 @@
   "info" : {
     "title" : "Local override spec"
   },
+  "tags" : [ {
+    "name" : "a"
+  }, {
+    "name" : "b"
+  } ],
   "paths" : {
     "/config2/test2" : {
       "get" : {
