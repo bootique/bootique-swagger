@@ -141,7 +141,7 @@ class OpenApiModelFilterCustomizer implements OpenApiRequestCustomizer {
         api.getPaths().forEach((path, pi) -> {
 
             // strip off disallowed operations, and if nothing is left, the path is no longer in use
-            excludedTags.addAll(filterOps(request, path, pi));
+            excludedTags.addAll(nullifyOpsNotInUse(request, path, pi));
 
             if (!pi.readOperations().isEmpty()) {
                 paths.add(path);
@@ -151,10 +151,7 @@ class OpenApiModelFilterCustomizer implements OpenApiRequestCustomizer {
         return new PathsInUse(paths, excludedTags);
     }
 
-    /**
-     * Removes operations that are not allowed for this request, returning the tags of the removed operations.
-     */
-    private Set<String> filterOps(HttpServletRequest request, String path, PathItem pi) {
+    private Set<String> nullifyOpsNotInUse(HttpServletRequest request, String path, PathItem pi) {
 
         Function<PathItem.HttpMethod, Operation> getOp = m -> switch (m) {
             case GET -> pi.getGet();
