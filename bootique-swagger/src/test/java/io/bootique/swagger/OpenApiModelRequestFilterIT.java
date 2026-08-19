@@ -112,6 +112,58 @@ public class OpenApiModelRequestFilterIT {
 
     @ParameterizedTest
     @MethodSource
+    public void includeExcludeTags(List<String> allowedPaths, Set<String> expectedTags) throws JsonProcessingException {
+        allowPathAndMethodCheck.set((r, p, m) -> allowedPaths.contains(p));
+
+        Response r = jetty.getTarget().path("/model.json")
+                .request()
+                .get();
+        String modelJson = JettyTester.assertOk(r).getContentAsString();
+        JsonNode tagsNode = app.getInstance(JacksonService.class).newObjectMapper().readTree(modelJson).get("tags");
+
+        Set<String> tags = new HashSet<>();
+        if (tagsNode != null) {
+            tagsNode.forEach(t -> tags.add(t.get("name").asText()));
+        }
+
+        assertEquals(expectedTags, tags);
+    }
+
+    static Stream<Arguments> includeExcludeTags() {
+        return Stream.of(
+                Arguments.arguments(List.of("/t/hi", "/t/1", "/t/2", "/t/3", "/t/4"), Set.of("hi", "one", "two", "shared")),
+                Arguments.arguments(List.of("/t/hi"), Set.of("hi")),
+                Arguments.arguments(List.of("/t/2"), Set.of("two")),
+
+                // "shared" is used by both /t/3 and /t/4, so it must survive as long as one of them is included
+                Arguments.arguments(List.of("/t/3"), Set.of("shared")),
+                Arguments.arguments(List.of("/t/3", "/t/4"), Set.of("shared")),
+                Arguments.arguments(List.of(), Set.of())
+        );
+    }
+
+    @Test
+    public void includeExcludeTags_MethodLevel() throws JsonProcessingException {
+
+        // "/t/1" GET and PUT are both tagged "one", so excluding just one of them must not drop the tag
+        allowPathAndMethodCheck.set((r, p, m) -> p.equals("/t/1") && m == PathItem.HttpMethod.PUT);
+
+        Response r = jetty.getTarget().path("/model.json")
+                .request()
+                .get();
+        String modelJson = JettyTester.assertOk(r).getContentAsString();
+        JsonNode tagsNode = app.getInstance(JacksonService.class).newObjectMapper().readTree(modelJson).get("tags");
+
+        Set<String> tags = new HashSet<>();
+        if (tagsNode != null) {
+            tagsNode.forEach(t -> tags.add(t.get("name").asText()));
+        }
+
+        assertEquals(Set.of("one"), tags);
+    }
+
+    @ParameterizedTest
+    @MethodSource
     public void includeExcludeSchemas(List<String> allowedPaths, Set<String> expectedSchemas) throws JsonProcessingException {
         allowPathAndMethodCheck.set((r, p, m) -> allowedPaths.contains(p));
 

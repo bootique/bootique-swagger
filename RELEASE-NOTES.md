@@ -1,3 +1,7 @@
+## 4.0-M6
+
+* #59 OpenAPI: hide unused tags for excluded endpoints
+
 ## 4.0-M4
 
 * #57 Rename conflicting schema names

@@ -23,9 +23,13 @@ import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
+import io.swagger.v3.oas.models.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -58,8 +62,15 @@ class OpenApiModelFilterCustomizer implements OpenApiRequestCustomizer {
         if (api.getPaths() != null) {
 
             // get rid of inaccessible paths
-            Set<String> pathsInUse = pathsInUse(request, api);
-            api.getPaths().keySet().removeIf(p -> !pathsInUse.contains(p));
+            PathsInUse pathsInUse = pathsInUse(request, api);
+            api.getPaths().keySet().removeIf(p -> !pathsInUse.paths().contains(p));
+
+            // get rid of unused tags. Whatever is still attached to the model after the filtering is in use
+            Set<String> unusedTags = pathsInUse.maybeUnusedTags();
+            if (!unusedTags.isEmpty()) {
+                forEachTag(api, unusedTags::remove);
+                removeTags(api, unusedTags);
+            }
 
             // get rid of unused schemas
             if (api.getComponents() != null && api.getComponents().getSchemas() != null) {
@@ -69,14 +80,81 @@ class OpenApiModelFilterCustomizer implements OpenApiRequestCustomizer {
         }
     }
 
-    private Set<String> pathsInUse(HttpServletRequest request, OpenAPI api) {
-        return api.getPaths().entrySet().stream()
-                // strip off disallowed operations, and if nothing is left, remove the path
-                .map(e -> filterOps(request, e.getKey(), e.getValue()) ? e.getKey() : null)
-                .collect(Collectors.toSet());
+    private static void forEachTag(OpenAPI api, Consumer<String> consumer) {
+
+        // a model may contain shared or circular PathItem refs, so track visited items by identity
+        Set<PathItem> seen = Collections.newSetFromMap(new IdentityHashMap<>());
+
+        forEachTag(api.getPaths(), consumer, seen);
+        forEachTag(api.getWebhooks(), consumer, seen);
+
+        if (api.getComponents() != null) {
+            forEachTag(api.getComponents().getPathItems(), consumer, seen);
+
+            if (api.getComponents().getCallbacks() != null) {
+                api.getComponents().getCallbacks().values().forEach(cb -> forEachTag(cb, consumer, seen));
+            }
+        }
     }
 
-    private boolean filterOps(HttpServletRequest request, String path, PathItem pi) {
+    private static void forEachTag(Map<String, PathItem> pathItems, Consumer<String> consumer, Set<PathItem> seen) {
+        if (pathItems != null) {
+            pathItems.values().forEach(pi -> forEachTag(pi, consumer, seen));
+        }
+    }
+
+    private static void forEachTag(PathItem pathItem, Consumer<String> consumer, Set<PathItem> seen) {
+        if (pathItem != null && seen.add(pathItem)) {
+            pathItem.readOperations().forEach(op -> forEachTag(op, consumer, seen));
+        }
+    }
+
+    private static void forEachTag(Operation op, Consumer<String> consumer, Set<PathItem> seen) {
+
+        if (op.getTags() != null) {
+            op.getTags().forEach(consumer);
+        }
+
+        if (op.getCallbacks() != null) {
+            op.getCallbacks().values().forEach(cb -> forEachTag(cb, consumer, seen));
+        }
+    }
+
+    private static void removeTags(OpenAPI api, Set<String> toRemove) {
+
+        if (toRemove.isEmpty() || api.getTags() == null) {
+            return;
+        }
+
+        List<Tag> tags = api.getTags().stream()
+                .filter(t -> !toRemove.contains(t.getName()))
+                .collect(Collectors.toList());
+
+        api.setTags(tags.isEmpty() ? null : tags);
+    }
+
+    private PathsInUse pathsInUse(HttpServletRequest request, OpenAPI api) {
+
+        Set<String> paths = new HashSet<>();
+        Set<String> excludedTags = new HashSet<>();
+
+        api.getPaths().forEach((path, pi) -> {
+
+            // strip off disallowed operations, and if nothing is left, the path is no longer in use
+            excludedTags.addAll(filterOps(request, path, pi));
+
+            if (!pi.readOperations().isEmpty()) {
+                paths.add(path);
+            }
+        });
+
+        return new PathsInUse(paths, excludedTags);
+    }
+
+    /**
+     * Removes operations that are not allowed for this request, returning the tags of the removed operations.
+     */
+    private Set<String> filterOps(HttpServletRequest request, String path, PathItem pi) {
 
         Function<PathItem.HttpMethod, Operation> getOp = m -> switch (m) {
             case GET -> pi.getGet();
@@ -102,18 +180,18 @@ class OpenApiModelFilterCustomizer implements OpenApiRequestCustomizer {
             }
         };
 
-        boolean hasOpsLeft = false;
+        Set<String> excludedTags = new HashSet<>();
+        Set<PathItem> seen = Collections.newSetFromMap(new IdentityHashMap<>());
+
         for (PathItem.HttpMethod m : PathItem.HttpMethod.values()) {
-            if (getOp.apply(m) != null) {
-                if (!filter.shouldInclude(request, path, m)) {
-                    nullifyOp.accept(m);
-                } else {
-                    hasOpsLeft = true;
-                }
+            Operation op = getOp.apply(m);
+            if (op != null && !filter.shouldInclude(request, path, m)) {
+                nullifyOp.accept(m);
+                forEachTag(op, excludedTags::add, seen);
             }
         }
 
-        return hasOpsLeft;
+        return excludedTags;
     }
 
     private static Set<String> schemaRefsInUse(OpenAPI api) {
@@ -191,5 +269,9 @@ class OpenApiModelFilterCustomizer implements OpenApiRequestCustomizer {
         if (schema.getProperties() != null) {
             schema.getProperties().values().forEach(s -> appendDependents(schemas, schemaRefs, s));
         }
+    }
+
+
+    record PathsInUse(Set<String> paths, Set<String> maybeUnusedTags) {
     }
 }
