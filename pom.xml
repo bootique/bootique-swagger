@@ -40,7 +40,7 @@
         <selenium-jupiter.version>6.3.2</selenium-jupiter.version>
         <commons.compress.version>1.26.1</commons.compress.version>
         <commons.io.version>2.21.0</commons.io.version>
-        <commons.lang.version>3.18.0</commons.lang.version>
+        <commons.lang.version>3.20.0</commons.lang.version>
         <guava.version>33.4.8-jre</guava.version>
     </properties>
 
@@ -174,6 +174,11 @@
                     <exclusion>
                         <groupId>jakarta.activation</groupId>
                         <artifactId>jakarta.activation-api</artifactId>
+                    </exclusion>
+                    <!-- slf4j is managed centrally by Bootique, and re-declared below -->
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>*</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
