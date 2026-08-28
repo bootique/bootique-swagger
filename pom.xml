@@ -39,7 +39,7 @@
         <selenium.version>4.15.0</selenium.version>
         <selenium-jupiter.version>6.3.2</selenium-jupiter.version>
         <commons.compress.version>1.26.1</commons.compress.version>
-        <commons.io.version>2.19.0</commons.io.version>
+        <commons.io.version>2.21.0</commons.io.version>
         <commons.lang.version>3.18.0</commons.lang.version>
         <guava.version>33.4.8-jre</guava.version>
     </properties>
