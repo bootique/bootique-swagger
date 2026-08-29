@@ -146,10 +146,9 @@
                 <version>${swagger.version}</version>
                 <exclusions>
                     <!-- Most of these are dependencies of "swagger-core". Relying on recursive exclusion -->
-                    <!-- Jersey uses Jakarta Validation 2.x elsewhere, so excluding old 1.x -->
                     <exclusion>
                         <groupId>jakarta.validation</groupId>
-                        <artifactId>validation-api</artifactId>
+                        <artifactId>*</artifactId>
                     </exclusion>
                     <exclusion>
                         <groupId>jakarta.xml.bind</groupId>
