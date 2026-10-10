@@ -49,6 +49,11 @@
         </dependency>
         <!-- Fix the version of the "swagger" transitive dependency -->
         <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+        </dependency>
+        <!-- Fix the version of the "swagger" transitive dependency -->
+        <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>

@@ -34,6 +34,8 @@
 
     <properties>
         <swagger.version>2.2.23</swagger.version>
+        <!-- must match the javassist version used by jersey-hk2 of the current Jersey -->
+        <javassist.version>3.33.0-GA</javassist.version>
         <swagger.ui.version>5.31.0</swagger.ui.version>
         <mustache.version>0.9.10</mustache.version>
         <selenium.version>4.15.0</selenium.version>
@@ -182,6 +184,11 @@
                         <groupId>org.yaml</groupId>
                         <artifactId>snakeyaml</artifactId>
                     </exclusion>
+                    <!-- swagger-jaxrs2-jakarta brings an older javassist than jersey-hk2 (via bootique-jersey) -->
+                    <exclusion>
+                        <groupId>org.javassist</groupId>
+                        <artifactId>javassist</artifactId>
+                    </exclusion>
                     <!-- swagger-core-jakarta brings an older commons-lang3 than Bootique declares -->
                     <exclusion>
                         <groupId>org.apache.commons</groupId>
@@ -193,6 +200,11 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>${javassist.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
